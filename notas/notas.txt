@@ -1,0 +1,19 @@
+Tecnologías
+- React
+- Webpack
+- Babel (compilador JS)
+
+Estructura
+- package.json
+- webpack.config.js
+- src
+-- index.js (punto de entrada)
+-- routes.js (módulo donde están las rutas de la app)
+-- components
+--- AppRoutes.js (renderiza las rutas de routes.js)
+--- LoginPage.js
+--- >XmppLogin.js
+-- static
+--- index.html
+--- css
+--- js (donde webpack genera bundle.js)

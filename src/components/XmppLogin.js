@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
 
-class NameForm extends Component {
+class JidPassLabels extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {jidValue: '', passValue: ''};
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleJidChange = this.handleJidChange.bind(this);
+    this.handlePassChange = this.handlePassChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value}); 
+  handleJidChange(event) {
+    this.setState({jidValue: event.target.value});
+  }
+
+  handlePassChange(event) {
+    this.setState({passValue: event.target.value});
   }
 
   handleSubmit(event) {
-    alert('Submitted ' + this.props.label + ' ' + this.state.value);
+    alert('Submitted ' + this.state.jidValue + ' ' + this.state.passValue);
     event.preventDefault();
   }
 
@@ -23,8 +28,20 @@ class NameForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          {this.props.label}
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
+          JID:
+          <input
+            type="text"
+            value={this.state.jidValue}
+            onChange={this.handleJidChange}
+          />
+        </label>
+        <label>
+          Password:
+          <input
+            type="text"
+            value={this.props.passValue}
+            onChange={this.handlePassChange}
+          />
         </label>
         <input type="submit" value="Submit" />
       </form>
@@ -36,8 +53,7 @@ class XmppLogin extends Component {
   render() {
   	return (
       <div className="Xmpp-login">
-      	<NameForm label="     JID: "/>
-      	<NameForm label="Password: "/>
+      	<JidPassLabels />
       </div>
   	);
   }
