@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+var xmpp = require('../engine/xmppLogin');
 
 class JidPassLabels extends Component {
 
@@ -20,8 +21,8 @@ class JidPassLabels extends Component {
   }
 
   handleSubmit(event) {
-    alert('Submitted ' + this.state.jidValue + ' ' + this.state.passValue);
     event.preventDefault();
+    xmpp.auth(this.state.jidValue, this.state.passValue);
   }
 
   render() {

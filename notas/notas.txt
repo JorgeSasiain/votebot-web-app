@@ -1,5 +1,6 @@
 Tecnologías
 - React
+- react-router
 - Webpack
 - Babel (compilador JS)
 
