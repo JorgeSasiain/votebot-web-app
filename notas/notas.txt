@@ -3,6 +3,7 @@ Tecnologías
 - react-router
 - Webpack
 - Babel (compilador JS)
+- strophe.js
 
 Estructura
 - package.json
@@ -14,6 +15,8 @@ Estructura
 --- AppRoutes.js (renderiza las rutas de routes.js)
 --- LoginPage.js
 --- >XmppLogin.js
+-- engine
+--- xmppLogin.js (xmpp auth utilizando strophe.js)
 -- static
 --- index.html
 --- css
