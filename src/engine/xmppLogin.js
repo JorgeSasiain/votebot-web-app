@@ -1,5 +1,4 @@
-import strophe from 'strophe.js';
-var Strophe = strophe.Strophe;
+import { Strophe } from 'strophe.js';
 
 module.exports = {
   auth: function(jid, pass) {
@@ -7,6 +6,7 @@ module.exports = {
     conn.connect(jid, pass, function (status) {
       if (status === Strophe.Status.CONNECTED) {
         alert('connected');
+        return conn;
       } else if (status === Strophe.Status.DISCONNECTED) {
         alert('disconnected');
       } else if (status === Strophe.Status.CONNECTING) {
