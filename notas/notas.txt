@@ -13,10 +13,12 @@ Estructura
 -- routes.js (módulo donde están las rutas de la app)
 -- components
 --- AppRoutes.js (renderiza las rutas de routes.js)
---- LoginPage.js
+--- LoginPage.js (página de login XMPP)
 --- >XmppLogin.js
--- engine
---- xmppLogin.js (xmpp auth utilizando strophe.js)
+--- MainMenuPage.js (página de menú principar tras login)
+--- >MainMenu.js
+-- xmpp
+--- xmpp.js (funcionalidades XMPP utilizando strophe.js)
 -- static
 --- index.html
 --- css

@@ -3,7 +3,7 @@ import x2js from 'x2js';
 
 var xmpp = {
 
-  conn: null,
+  conn: {},
 
   connect: function(jid, pass) {
     xmpp.conn = new Strophe.Connection("http://bosh.metajack.im:5280/xmpp-httpbind");

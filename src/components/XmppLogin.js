@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-var xmpp = require('../engine/xmpp');
+var xmpp = require('../xmpp/xmpp');
 
 class JidPassLabels extends Component {
 
