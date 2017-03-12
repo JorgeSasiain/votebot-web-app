@@ -10,9 +10,9 @@ Estructura
 - webpack.config.js
 - src
 -- index.js (punto de entrada)
--- routes.js (módulo donde están las rutas de la app)
 -- components
---- AppRoutes.js (renderiza las rutas de routes.js)
+--- Routes.js (Rutas de la app)
+--- Layout.js (componente principal que aplica a todas las páginas)
 --- LoginPage.js (página de login XMPP)
 --- >XmppLogin.js
 --- MainMenuPage.js (página de menú principar tras login)
