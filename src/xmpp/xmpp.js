@@ -1,15 +1,19 @@
 import { Strophe } from 'strophe.js';
 import x2js from 'x2js';
 
-var xmpp = {
+const xmpp = {
 
   conn: {},
 
   connect: function(jid, pass) {
+
+    let connected = false;
     xmpp.conn = new Strophe.Connection("http://bosh.metajack.im:5280/xmpp-httpbind");
+
     xmpp.conn.connect(jid, pass, function (status) {
       if (status === Strophe.Status.CONNECTED) {
         alert('connected');
+        connected = true;
       } else if (status === Strophe.Status.DISCONNECTED) {
         alert('disconnected');
       } else if (status === Strophe.Status.CONNECTING) {
@@ -24,10 +28,12 @@ var xmpp = {
         alert('authfail');
       }
     });
+
+    return connected;
   },
 
   getRoster: function() {
-    var iq = $iq({type: 'get'}).c('query', {xmlns:Strophe.NS.ROSTER});
+    let iq = $iq({type: 'get'}).c('query', {xmlns:Strophe.NS.ROSTER});
     xmpp.conn.sendIQ(iq, callback);
   },
 

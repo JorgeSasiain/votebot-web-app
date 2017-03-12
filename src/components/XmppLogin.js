@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-var xmpp = require('../xmpp/xmpp');
+import xmpp from '../xmpp/xmpp';
 
 class JidPassLabels extends Component {
 
@@ -21,8 +21,8 @@ class JidPassLabels extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    xmpp.connect(this.state.jidValue, this.state.passValue);
-    this.props.setLoggedIn();
+    let loggedIn = xmpp.connect(this.state.jidValue, this.state.passValue);
+    if (loggedIn) this.props.setLoggedIn();
   }
 
   render() {
@@ -51,10 +51,15 @@ class JidPassLabels extends Component {
 }
 
 class XmppLogin extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
   	return (
       <div className="Xmpp-login">
-      	<JidPassLabels />
+      	<JidPassLabels setLoggedIn={this.props.setLoggedIn} />
       </div>
   	);
   }
