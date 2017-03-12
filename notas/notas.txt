@@ -13,10 +13,9 @@ Estructura
 -- components
 --- Routes.js (Rutas de la app)
 --- Layout.js (componente principal que aplica a todas las páginas)
---- LoginPage.js (página de login XMPP)
---- >XmppLogin.js
---- MainMenuPage.js (página de menú principar tras login)
---- >MainMenu.js
+--- IndexPage.js (página principal, carga un componente u otro en función de usuario loggeado o no)
+--- >XmppLogin.js (componente para hacer login XMPP)
+--- >MainMenu.js (componente donde se muestran las opciones tras hacer login)
 -- xmpp
 --- xmpp.js (funcionalidades XMPP utilizando strophe.js)
 -- static

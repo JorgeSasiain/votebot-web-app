@@ -6,7 +6,6 @@ class JidPassLabels extends Component {
   constructor(props) {
     super(props);
     this.state = {jidValue: '', passValue: ''};
-
     this.handleJidChange = this.handleJidChange.bind(this);
     this.handlePassChange = this.handlePassChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,6 +22,7 @@ class JidPassLabels extends Component {
   handleSubmit(event) {
     event.preventDefault();
     xmpp.connect(this.state.jidValue, this.state.passValue);
+    this.props.setLoggedIn();
   }
 
   render() {
@@ -40,7 +40,7 @@ class JidPassLabels extends Component {
           Password:
           <input
             type="text"
-            value={this.props.passValue}
+            value={this.state.passValue}
             onChange={this.handlePassChange}
           />
         </label>
