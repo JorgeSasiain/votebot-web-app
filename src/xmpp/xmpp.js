@@ -8,7 +8,7 @@ const xmpp = {
   connect: function(jid, pass) {
 
     let connected = false;
-    xmpp.conn = new Strophe.Connection("http://bosh.metajack.im:5280/xmpp-httpbind");
+    xmpp.conn = new Strophe.Connection("http://localhost:5280/http-bind/");
 
     xmpp.conn.connect(jid, pass, function (status) {
       if (status === Strophe.Status.CONNECTED) {

@@ -57,11 +57,11 @@ class XmppLogin extends Component {
   }
 
   render() {
-  	return (
+    return (
       <div className="Xmpp-login">
       	<JidPassLabels setLoggedIn={this.props.setLoggedIn} />
       </div>
-  	);
+    );
   }
 }
 
