@@ -1,9 +1,10 @@
 Tecnologías
-- React
-- react-router
 - Webpack
 - Babel (compilador JS)
+- React
+- react-router
 - strophe.js
+- node-xmpp-bosh
 
 Estructura
 - package.json

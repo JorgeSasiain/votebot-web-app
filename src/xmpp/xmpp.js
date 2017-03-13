@@ -3,13 +3,13 @@ import x2js from 'x2js';
 
 const xmpp = {
 
-  conn: {},
+  createConn: function() {
+    return (new Strophe.Connection("http://localhost:5280/http-bind/"));
+  },
 
-  connect: function(jid, pass, onConnected) {
+  connect: function(conn, jid, pass, onConnected) {
 
-    xmpp.conn = new Strophe.Connection("http://localhost:5280/http-bind/");
-
-    xmpp.conn.connect(jid, pass, function (status) {
+    conn.connect(jid, pass, function (status) {
       if (status === Strophe.Status.CONNECTED) {
         alert('connected');
         onConnected();
@@ -27,11 +27,18 @@ const xmpp = {
         alert('authfail');
       }
     });
+
   },
 
-  getRoster: function() {
+  getRoster: function(conn) {
+
     let iq = $iq({type: 'get'}).c('query', {xmlns:Strophe.NS.ROSTER});
-    xmpp.conn.sendIQ(iq, callback);
+    conn.sendIQ(iq, onRoster);
+
+    function onRoster(iq) {
+      alert(JSON.stringify(x2js.xml_str2json(iq)));
+    };
+
   },
 
 };

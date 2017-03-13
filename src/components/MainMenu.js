@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import xmpp from '../xmpp/xmpp';
 
 class SubmitButton extends Component {
 
@@ -10,6 +11,7 @@ class SubmitButton extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    xmpp.getRoster(this.props.conn);
   }
 
   render() {
@@ -25,9 +27,9 @@ class MainMenu extends Component {
   render() {
     return (
       <div className="Main-menu">
-        <SubmitButton value="Create new poll" />
-        <SubmitButton value="Manage active polls" />
-        <SubmitButton value="Logout" />
+        <SubmitButton value="Create new poll" conn={this.props.conn} />
+        <SubmitButton value="Manage active polls" conn={this.props.conn} />
+        <SubmitButton value="Logout" conn={this.props.conn} />
       </div>
     );
   }

@@ -1,6 +1,5 @@
 {
-  "name": "web-app",
-  "version": "1.0.0",
+  "name": "votebot-web-app",
   "scripts": {
     "build": "cross-env NODE_ENV=production node_modules/.bin/webpack -p",
     "bosh": "node node_modules/node-xmpp-bosh/run-server.js",

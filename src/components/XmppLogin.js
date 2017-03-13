@@ -21,7 +21,9 @@ class JidPassLabels extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    xmpp.connect(this.state.jidValue, this.state.passValue, this.props.setLoggedIn);
+    let conn = xmpp.createConn();
+    this.props.setConn(conn);
+    xmpp.connect(conn, this.state.jidValue, this.state.passValue, this.props.setLoggedIn);
   }
 
   render() {
@@ -58,7 +60,7 @@ class XmppLogin extends Component {
   render() {
     return (
       <div className="Xmpp-login">
-      	<JidPassLabels setLoggedIn={this.props.setLoggedIn} />
+      	<JidPassLabels setConn={this.props.setConn} setLoggedIn={this.props.setLoggedIn} />
       </div>
     );
   }
