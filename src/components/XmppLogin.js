@@ -21,8 +21,7 @@ class JidPassLabels extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let loggedIn = xmpp.connect(this.state.jidValue, this.state.passValue);
-    if (loggedIn) this.props.setLoggedIn();
+    xmpp.connect(this.state.jidValue, this.state.passValue, this.props.setLoggedIn);
   }
 
   render() {

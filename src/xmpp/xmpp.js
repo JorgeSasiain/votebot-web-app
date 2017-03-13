@@ -5,15 +5,14 @@ const xmpp = {
 
   conn: {},
 
-  connect: function(jid, pass) {
+  connect: function(jid, pass, onConnected) {
 
-    let connected = false;
     xmpp.conn = new Strophe.Connection("http://localhost:5280/http-bind/");
 
     xmpp.conn.connect(jid, pass, function (status) {
       if (status === Strophe.Status.CONNECTED) {
         alert('connected');
-        connected = true;
+        onConnected();
       } else if (status === Strophe.Status.DISCONNECTED) {
         alert('disconnected');
       } else if (status === Strophe.Status.CONNECTING) {
@@ -28,8 +27,6 @@ const xmpp = {
         alert('authfail');
       }
     });
-
-    return connected;
   },
 
   getRoster: function() {
