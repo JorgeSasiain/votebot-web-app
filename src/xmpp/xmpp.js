@@ -30,9 +30,13 @@ const xmpp = {
 
   },
 
+  disconnect: function(conn, reason) {
+    conn.disconnect(reason);
+  },
+
   getRoster: function(conn) {
 
-    let iq = $iq({type: 'get'}).c('query', {xmlns:Strophe.NS.ROSTER});
+    let iq = $iq({type: 'get'}).c('query', {xmlns: Strophe.NS.ROSTER});
     conn.sendIQ(iq, onRoster);
 
     function onRoster(iq) {

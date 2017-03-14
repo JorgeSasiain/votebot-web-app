@@ -10,8 +10,24 @@ class SubmitButton extends Component {
   }
 
   handleSubmit(event) {
+
     event.preventDefault();
-    xmpp.getRoster(this.props.conn);
+
+    /* Create new poll */
+    if (this.props.id === '1') {
+
+    }
+
+    /* Manage active polls */
+    if (this.props.id === '2') {
+
+    }
+
+    /* Logout */
+    if (this.props.id === '3') {
+      this.props.setLoggedIn(false);
+      xmpp.disconnect(this.props.conn, "User logged out");
+    }
   }
 
   render() {
@@ -27,9 +43,9 @@ class MainMenu extends Component {
   render() {
     return (
       <div className="Main-menu">
-        <SubmitButton value="Create new poll" conn={this.props.conn} />
-        <SubmitButton value="Manage active polls" conn={this.props.conn} />
-        <SubmitButton value="Logout" conn={this.props.conn} />
+        <SubmitButton id='1' value="Create new poll" conn={this.props.conn} setLoggedIn={this.props.setLoggedIn} />
+        <SubmitButton id='2' value="Manage active polls" conn={this.props.conn} setLoggedIn={this.props.setLoggedIn} />
+        <SubmitButton id='3' value="Logout" conn={this.props.conn} setLoggedIn={this.props.setLoggedIn} />
       </div>
     );
   }

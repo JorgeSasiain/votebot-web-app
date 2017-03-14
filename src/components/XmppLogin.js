@@ -8,6 +8,7 @@ class JidPassLabels extends Component {
     this.state = {jidValue: '', passValue: ''};
     this.handleJidChange = this.handleJidChange.bind(this);
     this.handlePassChange = this.handlePassChange.bind(this);
+    this.onConnected = this.onConnected.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -19,11 +20,15 @@ class JidPassLabels extends Component {
     this.setState({passValue: event.target.value});
   }
 
+  onConnected() {
+    this.props.setLoggedIn(true);
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     let conn = xmpp.createConn();
     this.props.setConn(conn);
-    xmpp.connect(conn, this.state.jidValue, this.state.passValue, this.props.setLoggedIn);
+    xmpp.connect(conn, this.state.jidValue, this.state.passValue, this.onConnected);
   }
 
   render() {
