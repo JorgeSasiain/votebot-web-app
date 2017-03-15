@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import xmpp from '../xmpp/xmpp';
 
 class SubmitButton extends Component {
@@ -10,24 +11,9 @@ class SubmitButton extends Component {
   }
 
   handleSubmit(event) {
-
     event.preventDefault();
-
-    /* Create new poll */
-    if (this.props.id === '1') {
-
-    }
-
-    /* Manage active polls */
-    if (this.props.id === '2') {
-
-    }
-
-    /* Logout */
-    if (this.props.id === '3') {
-      this.props.setLoggedIn(false);
-      xmpp.disconnect(this.props.conn, "User logged out");
-    }
+    this.props.setLoggedIn(false);
+    xmpp.disconnect(this.props.conn, "User logged out");
   }
 
   render() {
@@ -39,13 +25,31 @@ class SubmitButton extends Component {
   }
 }
 
+class LinkButton extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <Link to={this.props.linkto}>
+        <button type="button">
+          {this.props.value}
+        </button>
+      </Link>
+    );
+  }
+}
+
 class MainMenu extends Component {
   render() {
     return (
       <div className="Main-menu">
-        <SubmitButton id='1' value="Create new poll" conn={this.props.conn} setLoggedIn={this.props.setLoggedIn} />
-        <SubmitButton id='2' value="Manage active polls" conn={this.props.conn} setLoggedIn={this.props.setLoggedIn} />
-        <SubmitButton id='3' value="Logout" conn={this.props.conn} setLoggedIn={this.props.setLoggedIn} />
+        <LinkButton value="Create new poll" linkto="/newpoll" />
+        <LinkButton value="Manage active polls" linkto="/manage" />
+        <SubmitButton value="Logout" conn={this.props.conn} setLoggedIn={this.props.setLoggedIn} />
       </div>
     );
   }
