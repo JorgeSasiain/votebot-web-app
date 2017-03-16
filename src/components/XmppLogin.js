@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import xmpp from '../xmpp/xmpp';
 
-class JidPassLabels extends Component {
+class JidPassForm extends Component {
 
   constructor(props) {
     super(props);
@@ -43,7 +43,7 @@ class JidPassLabels extends Component {
           />
         </label>
         <label>
-          Password:
+          Contraseña:
           <input
             type="text"
             value={this.state.passValue}
@@ -65,7 +65,7 @@ class XmppLogin extends Component {
   render() {
     return (
       <div className="Xmpp-login">
-      	<JidPassLabels setConn={this.props.setConn} setLoggedIn={this.props.setLoggedIn} />
+      	<JidPassForm setConn={this.props.setConn} setLoggedIn={this.props.setLoggedIn} />
       </div>
     );
   }

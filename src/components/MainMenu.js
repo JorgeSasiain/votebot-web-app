@@ -47,9 +47,9 @@ class MainMenu extends Component {
   render() {
     return (
       <div className="Main-menu">
-        <LinkButton value="Create new poll" linkto="/newpoll" />
-        <LinkButton value="Manage active polls" linkto="/manage" />
-        <SubmitButton value="Logout" conn={this.props.conn} setLoggedIn={this.props.setLoggedIn} />
+        <LinkButton value="Crear nueva encuesta" linkto="/newpoll" />
+        <LinkButton value="Gestionar encuestas activas" linkto="/manage" />
+        <SubmitButton value="Salir" conn={this.props.conn} setLoggedIn={this.props.setLoggedIn} />
       </div>
     );
   }
