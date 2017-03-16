@@ -1,20 +1,23 @@
 import { Strophe } from 'strophe.js';
 import x2js from 'x2js';
 
-let conn = {};
+const XMPP = {
 
-const xmpp = {
+  conn: {},
+
+  jid: "",
 
   createConn: function() {
 
-    conn = new Strophe.Connection("http://10.0.2.15:5280/http-bind/");
+    XMPP.conn = new Strophe.Connection("http://10.0.2.15:5280/http-bind/");
   },
 
   connect: function(jid, pass, onConnected) {
 
-    conn.connect(jid, pass, function (status) {
+    XMPP.conn.connect(jid, pass, function (status) {
       if (status === Strophe.Status.CONNECTED) {
         alert('connected');
+        XMPP.jid = jid;
         onConnected();
       } else if (status === Strophe.Status.DISCONNECTED) {
         alert('disconnected');
@@ -34,20 +37,30 @@ const xmpp = {
   },
 
   disconnect: function(reason) {
-    conn.disconnect(reason);
+    XMPP.conn.disconnect(reason);
   },
 
   getRoster: function() {
 
-    let iq = $iq({type: 'get'}).c('query', {xmlns: Strophe.NS.ROSTER});
-    conn.sendIQ(iq, onRoster);
+    let iq_str = "<iq type='get' id='roster1'><query xmlns='jabber:iq:roster'/></iq>"
+    let iq = new DOMParser().parseFromString(iq_str, "text/xml");
+    alert(iq);
+    alert(iq_str);
+    XMPP.conn.sendIQ(iq, onRoster, onError);
+    alert("bbb");
 
     function onRoster(iq) {
+      alert("aaa");
+      alert(iq);
       alert(JSON.stringify(x2js.xml_str2json(iq)));
     };
+
+    function onError() {
+      alert("error");
+    }
 
   },
 
 };
 
-module.exports = xmpp;
+module.exports = XMPP;
