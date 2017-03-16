@@ -13,7 +13,7 @@ class SubmitButton extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.setLoggedIn(false);
-    xmpp.disconnect(this.props.conn, "User logged out");
+    xmpp.disconnect("User logged out");
   }
 
   render() {
@@ -49,7 +49,7 @@ class MainMenu extends Component {
       <div className="Main-menu">
         <LinkButton value="Crear nueva encuesta" linkto="/newpoll" />
         <LinkButton value="Gestionar encuestas activas" linkto="/manage" />
-        <SubmitButton value="Salir" conn={this.props.conn} setLoggedIn={this.props.setLoggedIn} />
+        <SubmitButton value="Salir" setLoggedIn={this.props.setLoggedIn} />
       </div>
     );
   }

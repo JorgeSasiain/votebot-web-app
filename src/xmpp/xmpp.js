@@ -1,13 +1,16 @@
 import { Strophe } from 'strophe.js';
 import x2js from 'x2js';
 
+let conn = {};
+
 const xmpp = {
 
   createConn: function() {
-    return (new Strophe.Connection("http://localhost:5280/http-bind/"));
+
+    conn = new Strophe.Connection("http://10.0.2.15:5280/http-bind/");
   },
 
-  connect: function(conn, jid, pass, onConnected) {
+  connect: function(jid, pass, onConnected) {
 
     conn.connect(jid, pass, function (status) {
       if (status === Strophe.Status.CONNECTED) {
@@ -30,11 +33,11 @@ const xmpp = {
 
   },
 
-  disconnect: function(conn, reason) {
+  disconnect: function(reason) {
     conn.disconnect(reason);
   },
 
-  getRoster: function(conn) {
+  getRoster: function() {
 
     let iq = $iq({type: 'get'}).c('query', {xmlns: Strophe.NS.ROSTER});
     conn.sendIQ(iq, onRoster);

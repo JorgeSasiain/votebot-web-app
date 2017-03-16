@@ -7,12 +7,7 @@ class IndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {conn: {}, isLoggedIn: false};
-    this.setConn = this.setConn.bind(this);
     this.setLoggedIn = this.setLoggedIn.bind(this);
-  }
-
-  setConn(conn) {
-    this.setState({conn: conn});
   }
 
   setLoggedIn(bool) {
@@ -24,8 +19,8 @@ class IndexPage extends Component {
       <div className="Index-page">
         {
           this.state.isLoggedIn
-          ? <MainMenu conn={this.state.conn} setLoggedIn={this.setLoggedIn} />
-          : <XmppLogin setConn={this.setConn} setLoggedIn={this.setLoggedIn} />
+          ? <MainMenu setLoggedIn={this.setLoggedIn} />
+          : <XmppLogin setLoggedIn={this.setLoggedIn} />
         }
       </div>
     );

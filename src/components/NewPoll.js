@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import xmpp from '../xmpp/xmpp';
 
 class NewPollLabel extends Component {
 
@@ -51,6 +52,7 @@ class NewPollForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    xmpp.getRoster();
   }
 
   render() {
