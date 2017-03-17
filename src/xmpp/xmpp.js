@@ -40,22 +40,32 @@ const XMPP = {
     XMPP.conn.disconnect(reason);
   },
 
-  getRoster: function() {
+  getRoster: function(callback) {
 
     let iq_str = "<iq type='get' id='roster1'><query xmlns='jabber:iq:roster'/></iq>";
     let parser = new DOMParser();
     let iq = parser.parseFromString(iq_str, "text/xml").getElementsByTagName("iq")[0];
-    let serializer = new XMLSerializer();
-    let iq_ser = serializer.serializeToString(iq);
-    alert(iq_ser);
-    XMPP.conn.sendIQ(iq, onRoster);
-
-    function onRoster(iq) {
-      alert(serializer.serializeToString(iq));
-      let iq_items = iq.getElementsByTagName("iq");
-    };
+    XMPP.conn.sendIQ(iq, callback);
 
   },
+
+  getVotebotsInRoster: function() {
+
+    let onRoster = function(iq) {
+      alert("ok");
+      let bots = [];
+      let items = iq.getElementsByTagName("item");
+      for (let i = 0 ; i < items.length ; i ++) {
+        let curAttr = items[i].getAttribute("jid");
+        if (curAttr.startsWith("votebot"))
+          bots.push(curAttr);
+      }
+      alert(bots);
+    };
+
+    XMPP.getRoster(onRoster);
+
+  }
 
 };
 

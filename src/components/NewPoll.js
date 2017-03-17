@@ -52,7 +52,7 @@ class NewPollForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    xmpp.getRoster();
+    xmpp.getVotebotsInRoster();
   }
 
   render() {
