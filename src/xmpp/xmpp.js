@@ -42,22 +42,18 @@ const XMPP = {
 
   getRoster: function() {
 
-    let iq_str = "<iq type='get' id='roster1'><query xmlns='jabber:iq:roster'/></iq>"
-    let iq = new DOMParser().parseFromString(iq_str, "text/xml");
-    alert(iq);
-    alert(iq_str);
-    XMPP.conn.sendIQ(iq, onRoster, onError);
-    alert("bbb");
+    let iq_str = "<iq type='get' id='roster1'><query xmlns='jabber:iq:roster'/></iq>";
+    let parser = new DOMParser();
+    let iq = parser.parseFromString(iq_str, "text/xml").getElementsByTagName("iq")[0];
+    let serializer = new XMLSerializer();
+    let iq_ser = serializer.serializeToString(iq);
+    alert(iq_ser);
+    XMPP.conn.sendIQ(iq, onRoster);
 
     function onRoster(iq) {
-      alert("aaa");
-      alert(iq);
-      alert(JSON.stringify(x2js.xml_str2json(iq)));
+      alert(serializer.serializeToString(iq));
+      let iq_items = iq.getElementsByTagName("iq");
     };
-
-    function onError() {
-      alert("error");
-    }
 
   },
 

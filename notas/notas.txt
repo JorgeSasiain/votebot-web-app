@@ -17,6 +17,8 @@ Estructura
 --- IndexPage.js (página principal, carga un componente u otro en función de usuario loggeado o no)
 --- >XmppLogin.js (componente para hacer login XMPP)
 --- >MainMenu.js (componente donde se muestran las opciones tras hacer login)
+--- >>NewPoll.js (componente donde un usuario puede enviar una nueva encuesta)
+--- >>ManagePolls.js (componente donde un usuario puede gestionar sus encuestas activas)
 -- xmpp
 --- xmpp.js (funcionalidades XMPP utilizando strophe.js)
 -- static
