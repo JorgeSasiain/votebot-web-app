@@ -3,12 +3,15 @@ import x2js from 'x2js';
 
 const XMPP = {
 
-  conn: {},
+  stanzas: {
+    ROSTER: "<iq type='get' id='roster1'><query xmlns='jabber:iq:roster'/></iq>"
+  },
 
-  jid: "",
+  conn: {}, /* connection object */
+  jid: "",  /* user's JID */
+  bots: [], /* user's bot contacts in roster */
 
   createConn: function() {
-
     XMPP.conn = new Strophe.Connection("http://10.0.2.15:5280/http-bind/");
   },
 
@@ -40,30 +43,25 @@ const XMPP = {
     XMPP.conn.disconnect(reason);
   },
 
-  getRoster: function(callback) {
-
-    let iq_str = "<iq type='get' id='roster1'><query xmlns='jabber:iq:roster'/></iq>";
+  requestRoster: function(callback) {
     let parser = new DOMParser();
-    let iq = parser.parseFromString(iq_str, "text/xml").getElementsByTagName("iq")[0];
+    let iq = parser.parseFromString(XMPP.stanzas.ROSTER, "text/xml").getElementsByTagName("iq")[0];
     XMPP.conn.sendIQ(iq, callback);
-
   },
 
   getVotebotsInRoster: function() {
 
     let onRoster = function(iq) {
-      alert("ok");
-      let bots = [];
       let items = iq.getElementsByTagName("item");
       for (let i = 0 ; i < items.length ; i ++) {
         let curAttr = items[i].getAttribute("jid");
         if (curAttr.startsWith("votebot"))
-          bots.push(curAttr);
+          XMPP.bots.push(curAttr);
       }
-      alert(bots);
+      alert(XMPP.bots);
     };
 
-    XMPP.getRoster(onRoster);
+    XMPP.requestRoster(onRoster);
 
   }
 
