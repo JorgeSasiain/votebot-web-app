@@ -53,6 +53,7 @@ class NewPollForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     xmpp.getVotebotsInRoster();
+    setTimeout(function(){ xmpp.sendTestMessage(); }, 5000);
   }
 
   render() {

@@ -3,13 +3,14 @@ import x2js from 'x2js';
 
 const XMPP = {
 
-  stanzas: {
-    ROSTER: "<iq type='get' id='roster1'><query xmlns='jabber:iq:roster'/></iq>"
-  },
-
   conn: {}, /* connection object */
   jid: "",  /* user's JID */
   bots: [], /* user's bot contacts in roster */
+
+  stanzas: {
+    ROSTER: "<iq type='get' id='roster1'><query xmlns='jabber:iq:roster'/></iq>",
+    //TEST_MSG: "<message to=" + XMPP.bots[1] + " type='chat'><body>test</body></message>"
+  },
 
   createConn: function() {
     XMPP.conn = new Strophe.Connection("http://10.0.2.15:5280/http-bind/");
@@ -63,6 +64,17 @@ const XMPP = {
 
     XMPP.requestRoster(onRoster);
 
+  },
+
+  sendTestMessage: function() {
+    let parser = new DOMParser();
+    let testMsg = parser.parseFromString (
+        "<message to='" + XMPP.bots[1] + "' type='chat'><body>test</body></message>", "text/xml"
+      )
+      .getElementsByTagName("message")[0];
+    alert(XMPP.bots[1]);
+    alert(testMsg);
+    XMPP.conn.send(testMsg);
   }
 
 };
