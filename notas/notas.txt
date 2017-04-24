@@ -3,6 +3,7 @@ Tecnologías
 - Babel (compilador JS)
 - React
 - react-router
+- react-select
 - strophe.js
 - node-xmpp-bosh
 

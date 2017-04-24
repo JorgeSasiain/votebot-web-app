@@ -6,7 +6,7 @@ class IndexPage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {conn: {}, isLoggedIn: false};
+    this.state = {isLoggedIn: false};
     this.setLoggedIn = this.setLoggedIn.bind(this);
   }
 

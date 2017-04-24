@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Select from 'react-select';
 import xmpp from '../xmpp/xmpp';
 
 class NewPollLabel extends Component {
@@ -53,7 +54,11 @@ class NewPollForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     xmpp.getVotebotsInRoster();
-    setTimeout(function(){ xmpp.sendTestMessage(); }, 5000);
+
+    let that = this;
+    setTimeout(function() {
+      that.props.setSubmitted(true);
+    }, 4000);
   }
 
   render() {
@@ -69,11 +74,98 @@ class NewPollForm extends Component {
   }
 }
 
+let options = [];
+
+class BotsSelectMenu extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {bots: []};
+    this.setUpOptions = this.setUpOptions.bind(this);
+    this.addBot = this.addBot.bind(this);
+    this.removeBot = this.removeBot.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.setUpOptions();
+  }
+
+  setUpOptions() {
+    let bots = xmpp.bots;
+    for (let i = 0; i < bots.length; i ++) {
+      options.push({value: bots[i], label: bots[i]});
+    }
+  }
+
+  addBot(value) {
+    this.setState({
+      bots: this.state.bots.concat([value])
+    });
+  }
+
+  removeBot(value) {
+    this.setState({
+      bots: this.state.bots.filter(function(bot) {
+        return bot !== value
+      })
+    });
+  }
+
+  handleSelectChange(value) {
+    let index = this.state.bots.indexOf(value);
+    if (index == -1) {
+      this.addBot(value);
+    } else {
+      this.removeBot(value);
+    }
+    alert("bots hasta ahora: " + this.state.bots);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+
+    let that = this;
+    setTimeout(function() {
+      xmpp.sendMessage(that.state.bots, "test");
+    }, 4000);
+  }
+
+  render() {
+    return (
+      <div>
+        <Select
+          name="form-field-name"
+          options={options}
+          multi={true}
+          onChange={this.handleSelectChange}
+        />
+        <form onSubmit={this.handleSubmit}>
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+    );
+  }
+}
+
 class NewPoll extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {submitted: false};
+    this.setSubmitted = this.setSubmitted.bind(this);
+  }
+
+  setSubmitted(bool) {
+    this.setState({submitted: bool});
+  }
+
   render() {
     return (
       <div className="New-poll">
-        <NewPollForm />
+      {
+        this.state.submitted
+        ? <BotsSelectMenu />
+        : <NewPollForm setSubmitted={this.setSubmitted}/>
+      }
       </div>
     );
   }

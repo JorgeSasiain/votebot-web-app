@@ -53,28 +53,31 @@ const XMPP = {
   getVotebotsInRoster: function() {
 
     let onRoster = function(iq) {
+      XMPP.bots = [];
       let items = iq.getElementsByTagName("item");
-      for (let i = 0 ; i < items.length ; i ++) {
+      for (let i = 0; i < items.length; i ++) {
         let curAttr = items[i].getAttribute("jid");
         if (curAttr.startsWith("votebot"))
           XMPP.bots.push(curAttr);
       }
-      alert(XMPP.bots);
+      alert("los bots del roster son: " + XMPP.bots);
     };
 
     XMPP.requestRoster(onRoster);
 
   },
 
-  sendTestMessage: function() {
+  sendMessage: function(dests, msg) {
     let parser = new DOMParser();
-    let testMsg = parser.parseFromString (
-        "<message to='" + XMPP.bots[1] + "' type='chat'><body>test</body></message>", "text/xml"
+    let message = "";
+    for (let i = 0; i < dests.length; i ++) {
+      message = parser.parseFromString (
+        "<message to='" + dests[i] + "' type='chat'><body>" + msg + "</body></message>", "text/xml"
       )
       .getElementsByTagName("message")[0];
-    alert(XMPP.bots[1]);
-    alert(testMsg);
-    XMPP.conn.send(testMsg);
+      XMPP.conn.send(message);
+      alert("mensaje enviado a " + dests[i]);
+    }
   }
 
 };
