@@ -1,4 +1,4 @@
-import { Strophe } from 'strophe.js';
+import { Strophe, $iq, $msg } from 'strophe.js';
 import x2js from 'x2js';
 
 const XMPP = {
@@ -6,11 +6,6 @@ const XMPP = {
   conn: {}, /* connection object */
   jid: "",  /* user's JID */
   bots: [], /* user's bot contacts in roster */
-
-  stanzas: {
-    ROSTER: "<iq type='get' id='roster1'><query xmlns='jabber:iq:roster'/></iq>",
-    //TEST_MSG: "<message to=" + XMPP.bots[1] + " type='chat'><body>test</body></message>"
-  },
 
   createConn: function() {
     XMPP.conn = new Strophe.Connection("http://10.0.2.15:5280/http-bind/");
@@ -45,8 +40,7 @@ const XMPP = {
   },
 
   requestRoster: function(callback) {
-    let parser = new DOMParser();
-    let iq = parser.parseFromString(XMPP.stanzas.ROSTER, "text/xml").getElementsByTagName("iq")[0];
+    let iq = $iq({'type':'get', 'id':'roster1'}).c('query', {'xmlns':'jabber:iq:roster'});
     XMPP.conn.sendIQ(iq, callback);
   },
 
@@ -68,13 +62,8 @@ const XMPP = {
   },
 
   sendMessage: function(dests, msg) {
-    let parser = new DOMParser();
-    let message = "";
     for (let i = 0; i < dests.length; i ++) {
-      message = parser.parseFromString (
-        "<message to='" + dests[i] + "' type='chat'><body>" + msg + "</body></message>", "text/xml"
-      )
-      .getElementsByTagName("message")[0];
+      let message = $msg({'to': dests[i]}).c('body').t(msg);
       XMPP.conn.send(message);
       alert("mensaje enviado a " + dests[i]);
     }

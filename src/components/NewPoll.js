@@ -57,7 +57,7 @@ class NewPollForm extends Component {
 
     let that = this;
     setTimeout(function() {
-      that.props.setSubmitted(true);
+      that.props.setPollSubmitted(true);
     }, 4000);
   }
 
@@ -151,10 +151,10 @@ class NewPoll extends Component {
   constructor(props) {
     super(props);
     this.state = {submitted: false};
-    this.setSubmitted = this.setSubmitted.bind(this);
+    this.setPollSubmitted = this.setPollSubmitted.bind(this);
   }
 
-  setSubmitted(bool) {
+  setPollSubmitted(bool) {
     this.setState({submitted: bool});
   }
 
@@ -164,7 +164,7 @@ class NewPoll extends Component {
       {
         this.state.submitted
         ? <BotsSelectMenu />
-        : <NewPollForm setSubmitted={this.setSubmitted}/>
+        : <NewPollForm setPollSubmitted={this.setPollSubmitted}/>
       }
       </div>
     );
