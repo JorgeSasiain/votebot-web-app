@@ -3,6 +3,8 @@ import x2js from 'x2js';
 
 const XMPP = {
 
+  votebot: 'votebot@xmpp.jp',  /* bot JID */
+
   conn: {},     /* connection object */
   jid: "",      /* user's JID */
   server: "",   /* user's server */
@@ -88,7 +90,6 @@ const XMPP = {
       if (features.length > 0) {
         for (let i = 0; i < features.length; i ++) {
           let curFeature = features[i].getAttribute("var");
-          alert(curFeature);
           if (curFeature === XMPP.NS.MUC_ROOMS) {
             mucSupport = true;
             break;
@@ -113,9 +114,9 @@ const XMPP = {
 
   sendMessage: function(dests, type, text) {
     for (let i = 0; i < dests.length; i ++) {
-      let message = $msg({'to': dests[i]}, 'type':type).c('body').t(text);
+      let message = $msg({'to':dests[i], 'type':type, 'id':'msg'+i}).c('body').t(text);
       XMPP.conn.send(message);
-      alert("mensaje enviado a " + dests[i]);
+      alert("mensaje\n" + message + "\nenviado a " + dests[i]);
     }
   }
 
