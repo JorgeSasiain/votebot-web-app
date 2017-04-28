@@ -32,7 +32,7 @@ class NewPollForm extends Component {
     this.handleChoice1Change = this.handleChoice1Change.bind(this);
     this.handleChoice2Change = this.handleChoice2Change.bind(this);
     this.handleChoice3Change = this.handleChoice3Change.bind(this);
-    this.onGotVotebots = this.onGotVotebots.bind(this);
+    this.onGotRosterAndMUCs = this.onGotRosterAndMUCs.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -52,13 +52,13 @@ class NewPollForm extends Component {
     this.setState({choice3: event.target.value});
   }
 
-  onGotVotebots() {
-    this.props.setBotsSelectMenu(true);
+  onGotRosterAndMUCs() {
+    this.props.setContactsSelectMenu(true);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    xmpp.getVotebotsInRoster(this.onGotVotebots);
+    xmpp.getRosterAndMUCs(this.onGotRosterAndMUCs);
   }
 
   render() {
@@ -74,15 +74,15 @@ class NewPollForm extends Component {
   }
 }
 
-class BotsSelectMenu extends Component {
+class ContactsSelectMenu extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {bots: [], options: []};
+    this.state = {mucs: [], contacts: [], options: []};
     this.setUpOptions = this.setUpOptions.bind(this);
-    this.addBot = this.addBot.bind(this);
-    this.removeBot = this.removeBot.bind(this);
-    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.selectContact = this.selectContact.bind(this);
+    this.deselectContact = this.deselectContact.bind(this);
+    this.handleContactChange = this.handleContactChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -92,45 +92,42 @@ class BotsSelectMenu extends Component {
 
   setUpOptions() {
 
-    let bots = xmpp.bots;
-    let pushBot = function(options, bot) {
-      options.push({ value: bot, label: bot });
+    let contacts = xmpp.contacts;
+    let pushContact = function(options, contact) {
+      options.push({ value: contact, label: contact });
       return options
     }
 
-    let options = bots.reduce(pushBot,[]);
+    let options = contacts.reduce(pushContact,[]);
     this.setState({ options: options });
 
   }
 
-
-  addBot(value) {
+  selectContact(value) {
     this.setState({
-      bots: this.state.bots.concat([value])
+      contacts: this.state.contacts.concat([value])
     });
   }
 
-  removeBot(value) {
+  deselectContact(value) {
     this.setState({
-      bots: this.state.bots.filter(function(bot) {
-        return bot !== value
+      contacts: this.state.contacts.filter(function(contact) {
+        return contact !== value
       })
     });
   }
 
-  handleSelectChange(value) {
-    let index = this.state.bots.indexOf(value);
+  handleContactChange(value) {
+    let index = this.state.contacts.indexOf(value);
     if (index == -1) {
-      this.addBot(value);
+      this.selectContact(value);
     } else {
-      this.removeBot(value);
+      this.deselectContact(value);
     }
-    alert("bots hasta ahora: " + this.state.bots);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    xmpp.sendMessage(this.state.bots, "test");
   }
 
   render() {
@@ -154,21 +151,21 @@ class NewPoll extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {loadBotsSelectMenu: false};
-    this.setBotsSelectMenu = this.setBotsSelectMenu.bind(this);
+    this.state = {loadContactsSelectMenu: false};
+    this.setContactsSelectMenu = this.setContactsSelectMenu.bind(this);
   }
 
-  setBotsSelectMenu(bool) {
-    this.setState({loadBotsSelectMenu: bool});
+  setContactsSelectMenu(bool) {
+    this.setState({loadContactsSelectMenu: bool});
   }
 
   render() {
     return (
       <div className="New-poll">
       {
-        this.state.loadBotsSelectMenu
-        ? <BotsSelectMenu />
-        : <NewPollForm setBotsSelectMenu={this.setBotsSelectMenu}/>
+        this.state.loadContactsSelectMenu
+        ? <ContactsSelectMenu />
+        : <NewPollForm setContactsSelectMenu={this.setContactsSelectMenu}/>
       }
       </div>
     );

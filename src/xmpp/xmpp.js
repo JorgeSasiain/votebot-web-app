@@ -5,7 +5,8 @@ const XMPP = {
 
   conn: {}, /* connection object */
   jid: "",  /* user's JID */
-  bots: [], /* user's bot contacts in roster */
+  contacts: [], /* user's contacts in roster */
+  mucs: [], /* MUCs user belongs to */
 
   createConn: function() {
     XMPP.conn = new Strophe.Connection("http://10.0.2.15:5280/http-bind/");
@@ -39,10 +40,36 @@ const XMPP = {
     XMPP.conn.disconnect(reason);
   },
 
-  requestRoster: function(callback) {
-    let iq = $iq({'type':'get', 'id':'roster1'}).c('query', {'xmlns':'jabber:iq:roster'});
+  getRoster: function(callback) {
+    let iq = $iq({'type':'get', 'id':'roster1'}).c('query', {'xmlns':Strophe.NS.ROSTER});
     XMPP.conn.sendIQ(iq, callback);
   },
+
+  getMUCs: function(callback) {
+
+  },
+
+  getRosterAndMUCs: function(callback) {
+
+    let onRoster = function(iq) {
+      XMPP.contacts = [];
+      let items = iq.getElementsByTagName("item");
+      for (let i = 0; i < items.length; i ++) {
+        let curJID = items[i].getAttribute("jid");
+        XMPP.contacts.push(curJID);
+      }
+    }
+
+
+    let onMUCs = function(iq) {
+
+    }
+
+    XMPP.getRoster(onRoster);
+    XMPP.getMUCs(onMUCs);
+  },
+
+  /*
 
   getVotebotsInRoster: function(onGotVotebots) {
 
@@ -61,6 +88,20 @@ const XMPP = {
     XMPP.requestRoster(onRoster);
 
   },
+
+  getVotebotsInRoster: function(onGotVotebots) {
+
+    let onRoster = function(iq) {
+      let items = iq.getElementsByTagName("item");
+      var oSerializer = new XMLSerializer();
+      var sXML = oSerializer.serializeToString(iq);
+      alert("iq " + sXML);
+    };
+
+    XMPP.requestRoster(onRoster);
+
+  },
+  */
 
   sendMessage: function(dests, msg) {
     for (let i = 0; i < dests.length; i ++) {
