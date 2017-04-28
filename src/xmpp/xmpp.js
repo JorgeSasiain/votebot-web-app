@@ -3,10 +3,15 @@ import x2js from 'x2js';
 
 const XMPP = {
 
-  conn: {}, /* connection object */
-  jid: "",  /* user's JID */
+  conn: {},     /* connection object */
+  jid: "",      /* user's JID */
+  server: "",   /* user's server */
   contacts: [], /* user's contacts in roster */
-  mucs: [], /* MUCs user belongs to */
+  mucs: [],     /* MUCs user belongs to */
+
+  NS: {
+    MUC_ROOMS: "http://jabber.org/protocol/muc#rooms"
+  },
 
   createConn: function() {
     XMPP.conn = new Strophe.Connection("http://10.0.2.15:5280/http-bind/");
@@ -18,6 +23,7 @@ const XMPP = {
       if (status === Strophe.Status.CONNECTED) {
         alert('connected');
         XMPP.jid = jid;
+        XMPP.server = jid.substr(jid.indexOf("@") + 1);
         onConnected();
       } else if (status === Strophe.Status.DISCONNECTED) {
         alert('disconnected');
@@ -46,62 +52,39 @@ const XMPP = {
   },
 
   getMUCs: function(callback) {
+    let iq = $iq({'type':'get', 'id':'rooms1'}).c('query', {'xmlns':Strophe.NS.DISCO_ITEMS, 'node':XMPP.NS.MUC_ROOMS});
+    XMPP.conn.sendIQ(iq, callback);
+  },
 
+  extractJIDsFromIQResult: function(iq) {
+
+    let jids = [];
+    let items = iq.getElementsByTagName("item");
+
+    if (items.length > 0) {
+      for (let i = 0; i < items.length; i ++) {
+        let curJID = items[i].getAttribute("jid");
+        jids.push(curJID);
+      }
+    }
+
+    return jids;
   },
 
   getRosterAndMUCs: function(callback) {
 
     let onRoster = function(iq) {
-      XMPP.contacts = [];
-      let items = iq.getElementsByTagName("item");
-      for (let i = 0; i < items.length; i ++) {
-        let curJID = items[i].getAttribute("jid");
-        XMPP.contacts.push(curJID);
-      }
+      XMPP.contacts = XMPP.extractJIDsFromIQResult(iq);
     }
 
-
     let onMUCs = function(iq) {
-
+      XMPP.mucs = XMPP.extractJIDsFromIQResult(iq);
+      callback();
     }
 
     XMPP.getRoster(onRoster);
     XMPP.getMUCs(onMUCs);
   },
-
-  /*
-
-  getVotebotsInRoster: function(onGotVotebots) {
-
-    let onRoster = function(iq) {
-      XMPP.bots = [];
-      let items = iq.getElementsByTagName("item");
-      for (let i = 0; i < items.length; i ++) {
-        let curAttr = items[i].getAttribute("jid");
-        if (curAttr.startsWith("votebot"))
-          XMPP.bots.push(curAttr);
-      }
-      alert("los bots del roster son: " + XMPP.bots);
-      onGotVotebots();
-    };
-
-    XMPP.requestRoster(onRoster);
-
-  },
-
-  getVotebotsInRoster: function(onGotVotebots) {
-
-    let onRoster = function(iq) {
-      let items = iq.getElementsByTagName("item");
-      var oSerializer = new XMLSerializer();
-      var sXML = oSerializer.serializeToString(iq);
-      alert("iq " + sXML);
-    };
-
-    XMPP.requestRoster(onRoster);
-
-  },
-  */
 
   sendMessage: function(dests, msg) {
     for (let i = 0; i < dests.length; i ++) {

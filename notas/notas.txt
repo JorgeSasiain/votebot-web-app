@@ -28,7 +28,8 @@ Estructura
 --- css
 --- js (donde webpack genera bundle.js)
 
-//decubrir mucs asociadas al usuario con iq get disco_items al servidor del usuario y mostrarlas
+//decubrir items del servidor con iq get disco_items al servidor del usuario
+//para ver si un item es un muc, identity category="conference"
 //descubrir usuarios en cada muc con iq get disco_items al muc, y mostrarlos al lado de cada muc si el usuario pulsa un boton
 //enviar encuesta a las mucs que el usuario seleccione
 

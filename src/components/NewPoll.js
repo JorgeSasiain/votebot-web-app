@@ -78,11 +78,14 @@ class ContactsSelectMenu extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {mucs: [], contacts: [], options: []};
+    this.state = {mucs: [], contacts: [], options: {} };
     this.setUpOptions = this.setUpOptions.bind(this);
     this.selectContact = this.selectContact.bind(this);
     this.deselectContact = this.deselectContact.bind(this);
+    this.selectMuc = this.selectMuc.bind(this);
+    this.deselectMuc = this.deselectMuc.bind(this);
     this.handleContactChange = this.handleContactChange.bind(this);
+    this.handleMucChange = this.handleMucChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -93,13 +96,16 @@ class ContactsSelectMenu extends Component {
   setUpOptions() {
 
     let contacts = xmpp.contacts;
-    let pushContact = function(options, contact) {
-      options.push({ value: contact, label: contact });
-      return options
+    let mucs = xmpp.mucs;
+
+    let pushItem = function(items, item) {
+      items.push({ value: item, label: item });
+      return items;
     }
 
-    let options = contacts.reduce(pushContact,[]);
-    this.setState({ options: options });
+    let _contacts = contacts.reduce(pushItem, []);
+    let _mucs = mucs.reduce(pushItem, []);
+    this.setState({ options: {mucs: _mucs, contacts: _contacts} });
 
   }
 
@@ -112,7 +118,21 @@ class ContactsSelectMenu extends Component {
   deselectContact(value) {
     this.setState({
       contacts: this.state.contacts.filter(function(contact) {
-        return contact !== value
+        return contact !== value;
+      })
+    });
+  }
+
+  selectMuc(value) {
+    this.setState({
+      mucs: this.state.mucs.concat([value])
+    });
+  }
+
+  deselectMuc(value) {
+    this.setState({
+      mucs: this.state.mucs.filter(function(contact) {
+        return contact !== value;
       })
     });
   }
@@ -126,18 +146,35 @@ class ContactsSelectMenu extends Component {
     }
   }
 
+  handleMucChange(value) {
+    let index = this.state.mucs.indexOf(value);
+    if (index == -1) {
+      this.selectMuc(value);
+    } else {
+      this.deselectMuc(value);
+    }
+  }
+
   handleSubmit(event) {
     event.preventDefault();
+    xmpp.sendMessage(this.state.mucs, "test_muc");
+    xmpp.sendMessage(this.state.contacts, "test");
   }
 
   render() {
     return (
       <div>
         <Select
-          name="form-field-name"
-          options={this.state.options}
+          name="mucs-select"
+          options={this.state.options.mucs}
           multi={true}
-          onChange={this.handleSelectChange}
+          onChange={this.handleMucChange}
+        />
+        <Select
+          name="contacts-select"
+          options={this.state.options.contacts}
+          multi={true}
+          onChange={this.handleContactChange}
         />
         <form onSubmit={this.handleSubmit}>
           <input type="submit" value="Submit" />
