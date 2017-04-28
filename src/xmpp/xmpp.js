@@ -44,7 +44,7 @@ const XMPP = {
     XMPP.conn.sendIQ(iq, callback);
   },
 
-  getVotebotsInRoster: function() {
+  getVotebotsInRoster: function(onGotVotebots) {
 
     let onRoster = function(iq) {
       XMPP.bots = [];
@@ -55,6 +55,7 @@ const XMPP = {
           XMPP.bots.push(curAttr);
       }
       alert("los bots del roster son: " + XMPP.bots);
+      onGotVotebots();
     };
 
     XMPP.requestRoster(onRoster);

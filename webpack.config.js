@@ -30,6 +30,11 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
+  ]
+};
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports.plugins.push(
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
@@ -38,6 +43,6 @@ module.exports = {
       sourcemap: false,
       beautify: false,
       dead_code: true
-    }),
-  ]
-};
+    })
+  )
+}

@@ -32,6 +32,7 @@ class NewPollForm extends Component {
     this.handleChoice1Change = this.handleChoice1Change.bind(this);
     this.handleChoice2Change = this.handleChoice2Change.bind(this);
     this.handleChoice3Change = this.handleChoice3Change.bind(this);
+    this.onGotVotebots = this.onGotVotebots.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -51,14 +52,13 @@ class NewPollForm extends Component {
     this.setState({choice3: event.target.value});
   }
 
+  onGotVotebots() {
+    this.props.setBotsSelectMenu(true);
+  }
+
   handleSubmit(event) {
     event.preventDefault();
-    xmpp.getVotebotsInRoster();
-
-    let that = this;
-    setTimeout(function() {
-      that.props.setPollSubmitted(true);
-    }, 4000);
+    xmpp.getVotebotsInRoster(this.onGotVotebots);
   }
 
   render() {
@@ -74,27 +74,35 @@ class NewPollForm extends Component {
   }
 }
 
-let options = [];
-
 class BotsSelectMenu extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {bots: []};
+    this.state = {bots: [], options: []};
     this.setUpOptions = this.setUpOptions.bind(this);
     this.addBot = this.addBot.bind(this);
     this.removeBot = this.removeBot.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillMount() {
     this.setUpOptions();
   }
 
   setUpOptions() {
+
     let bots = xmpp.bots;
-    for (let i = 0; i < bots.length; i ++) {
-      options.push({value: bots[i], label: bots[i]});
+    let pushBot = function(options, bot) {
+      options.push({ value: bot, label: bot });
+      return options
     }
+
+    let options = bots.reduce(pushBot,[]);
+    this.setState({ options: options });
+
   }
+
 
   addBot(value) {
     this.setState({
@@ -122,11 +130,7 @@ class BotsSelectMenu extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
-    let that = this;
-    setTimeout(function() {
-      xmpp.sendMessage(that.state.bots, "test");
-    }, 4000);
+    xmpp.sendMessage(this.state.bots, "test");
   }
 
   render() {
@@ -134,7 +138,7 @@ class BotsSelectMenu extends Component {
       <div>
         <Select
           name="form-field-name"
-          options={options}
+          options={this.state.options}
           multi={true}
           onChange={this.handleSelectChange}
         />
@@ -150,21 +154,21 @@ class NewPoll extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {submitted: false};
-    this.setPollSubmitted = this.setPollSubmitted.bind(this);
+    this.state = {loadBotsSelectMenu: false};
+    this.setBotsSelectMenu = this.setBotsSelectMenu.bind(this);
   }
 
-  setPollSubmitted(bool) {
-    this.setState({submitted: bool});
+  setBotsSelectMenu(bool) {
+    this.setState({loadBotsSelectMenu: bool});
   }
 
   render() {
     return (
       <div className="New-poll">
       {
-        this.state.submitted
+        this.state.loadBotsSelectMenu
         ? <BotsSelectMenu />
-        : <NewPollForm setPollSubmitted={this.setPollSubmitted}/>
+        : <NewPollForm setBotsSelectMenu={this.setBotsSelectMenu}/>
       }
       </div>
     );

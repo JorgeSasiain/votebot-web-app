@@ -1,6 +1,7 @@
 Tecnologías
 - Webpack
 - Babel (compilador JS)
+- http-server
 - React
 - react-router
 - react-select

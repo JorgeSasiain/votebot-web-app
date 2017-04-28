@@ -2,8 +2,9 @@
   "name": "votebot-web-app",
   "scripts": {
     "build": "cross-env NODE_ENV=production node_modules/.bin/webpack -p",
-    "bosh": "node node_modules/node-xmpp-bosh/run-server.js",
-    "start": "node_modules/.bin/http-server src/static"
+    "build:dev": "cross-env NODE_ENV=development node_modules/.bin/webpack -d",
+    "start": "node_modules/.bin/http-server src/static",
+    "bosh": "node node_modules/node-xmpp-bosh/run-server.js"
   },
   "dependencies": {
     "babel-cli": "^6.11.4",
@@ -14,6 +15,7 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-react-hmre": "^1.1.1",
     "cross-env": "^3.1.4",
+    "node-xmpp-bosh": "dhruvbird/node-xmpp-bosh",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-router": "^2.6.1",
@@ -22,9 +24,7 @@
     "x2js": "^3.1.0"
   },
   "devDependencies": {
-    "babel-loader": "^6.2.10",
     "http-server": "^0.9.0",
-    "node-xmpp-bosh": "dhruvbird/node-xmpp-bosh",
     "react-hot-loader": "^1.3.0",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.14.1"
