@@ -58,7 +58,7 @@ class NewPollForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    xmpp.getRosterAndMUCs(this.onGotRosterAndMUCs);
+    xmpp.getRosterAndMUCsIfSupported(this.onGotRosterAndMUCs);
   }
 
   render() {
@@ -157,8 +157,8 @@ class ContactsSelectMenu extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    xmpp.sendMessage(this.state.mucs, "test_muc");
-    xmpp.sendMessage(this.state.contacts, "test");
+    xmpp.sendMessage(this.state.mucs, "groupchat", "test_muc");
+    xmpp.sendMessage(this.state.contacts, "chat", "test");
   }
 
   render() {

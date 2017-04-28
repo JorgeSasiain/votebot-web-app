@@ -51,8 +51,13 @@ const XMPP = {
     XMPP.conn.sendIQ(iq, callback);
   },
 
+  getMUCSupport: function(callback) {
+    let iq = $iq({'type':'get', 'to':XMPP.jid, 'id':'rooms1'}).c('query', {'xmlns':Strophe.NS.DISCO_INFO});
+    XMPP.conn.sendIQ(iq, callback);
+  },
+
   getMUCs: function(callback) {
-    let iq = $iq({'type':'get', 'id':'rooms1'}).c('query', {'xmlns':Strophe.NS.DISCO_ITEMS, 'node':XMPP.NS.MUC_ROOMS});
+    let iq = $iq({'type':'get', 'to':XMPP.jid, 'id':'rooms2'}).c('query', {'xmlns':Strophe.NS.DISCO_ITEMS, 'node':XMPP.NS.MUC_ROOMS});
     XMPP.conn.sendIQ(iq, callback);
   },
 
@@ -71,10 +76,30 @@ const XMPP = {
     return jids;
   },
 
-  getRosterAndMUCs: function(callback) {
+  getRosterAndMUCsIfSupported: function(callback) {
 
     let onRoster = function(iq) {
       XMPP.contacts = XMPP.extractJIDsFromIQResult(iq);
+    }
+
+    let onFeatures = function(iq) {
+      let mucSupport = false;
+      let features = iq.getElementsByTagName("feature");
+      if (features.length > 0) {
+        for (let i = 0; i < features.length; i ++) {
+          let curFeature = features[i].getAttribute("var");
+          alert(curFeature);
+          if (curFeature === XMPP.NS.MUC_ROOMS) {
+            mucSupport = true;
+            break;
+          }
+        }
+      }
+      if (mucSupport) {
+        XMPP.getMUCs(onMUCs);
+      } else {
+        callback();
+      }
     }
 
     let onMUCs = function(iq) {
@@ -83,12 +108,12 @@ const XMPP = {
     }
 
     XMPP.getRoster(onRoster);
-    XMPP.getMUCs(onMUCs);
+    XMPP.getMUCSupport(onFeatures);
   },
 
-  sendMessage: function(dests, msg) {
+  sendMessage: function(dests, type, text) {
     for (let i = 0; i < dests.length; i ++) {
-      let message = $msg({'to': dests[i]}).c('body').t(msg);
+      let message = $msg({'to': dests[i]}, 'type':type).c('body').t(text);
       XMPP.conn.send(message);
       alert("mensaje enviado a " + dests[i]);
     }
