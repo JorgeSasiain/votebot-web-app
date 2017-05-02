@@ -78,14 +78,17 @@ class ContactsSelectMenu extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {mucs: [], contacts: [], options: {} };
+    this.state = {mucs: [], groups: [], contacts: [], options: {} };
     this.setUpOptions = this.setUpOptions.bind(this);
     this.selectContact = this.selectContact.bind(this);
     this.deselectContact = this.deselectContact.bind(this);
     this.selectMuc = this.selectMuc.bind(this);
     this.deselectMuc = this.deselectMuc.bind(this);
+    this.selectGroup = this.selectGroup.bind(this);
+    this.deselectGroup = this.deselectGroup.bind(this);
     this.handleContactChange = this.handleContactChange.bind(this);
     this.handleMucChange = this.handleMucChange.bind(this);
+    this.handleGroupChange = this.handleGroupChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -97,6 +100,7 @@ class ContactsSelectMenu extends Component {
 
     let contacts = xmpp.contacts;
     let mucs = xmpp.mucs;
+    let groups = xmpp.groups;
 
     let pushItem = function(items, item) {
       items.push({ value: item, label: item });
@@ -105,7 +109,8 @@ class ContactsSelectMenu extends Component {
 
     let _contacts = contacts.reduce(pushItem, []);
     let _mucs = mucs.reduce(pushItem, []);
-    this.setState({ options: {mucs: _mucs, contacts: _contacts} });
+    let _groups = groups.reduce(pushItem, []);
+    this.setState({ options: {mucs: _mucs, groups: _groups, contacts: _contacts} });
 
   }
 
@@ -131,8 +136,22 @@ class ContactsSelectMenu extends Component {
 
   deselectMuc(value) {
     this.setState({
-      mucs: this.state.mucs.filter(function(contact) {
-        return contact !== value;
+      mucs: this.state.mucs.filter(function(muc) {
+        return muc !== value;
+      })
+    });
+  }
+
+  selectGroup(value) {
+    this.setState({
+      groups: this.state.groups.concat([value])
+    });
+  }
+
+  deselectGroup(value) {
+    this.setState({
+      groups: this.state.groups.filter(function(group) {
+        return group !== value;
       })
     });
   }
@@ -155,6 +174,15 @@ class ContactsSelectMenu extends Component {
     }
   }
 
+  handleGroupChange(value) {
+    let index = this.state.groups.indexOf(value);
+    if (index == -1) {
+      this.selectGroup(value);
+    } else {
+      this.deselectGroup(value);
+    }
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     xmpp.sendMessage(this.state.mucs, "groupchat", "test_muc");
@@ -169,6 +197,12 @@ class ContactsSelectMenu extends Component {
           options={this.state.options.mucs}
           multi={true}
           onChange={this.handleMucChange}
+        />
+        <Select
+          name="groups-select"
+          options={this.state.options.groups}
+          multi={true}
+          onChange={this.handleGroupChange}
         />
         <Select
           name="contacts-select"

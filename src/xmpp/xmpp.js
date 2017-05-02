@@ -5,11 +5,13 @@ const XMPP = {
 
   votebot: 'votebot@xmpp.jp',  /* bot JID */
 
-  conn: {},     /* connection object */
-  jid: "",      /* user's JID */
-  server: "",   /* user's server */
-  contacts: [], /* user's contacts in roster */
-  mucs: [],     /* MUCs user belongs to */
+  conn: {},       /* connection object */
+  jid: "",        /* user's JID */
+  server: "",     /* user's server */
+  contacts: [],   /* user's contacts in roster */
+  groups: [],     /* groups among user's contacts */
+  groupUsers: {}, /* user's ontacts arranged by group */
+  mucs: [],       /* MUCs user belongs to */
 
   NS: {
     MUC_ROOMS: "http://jabber.org/protocol/muc#rooms"
@@ -63,33 +65,33 @@ const XMPP = {
     XMPP.conn.sendIQ(iq, callback);
   },
 
-  extractJIDsFromIQResult: function(iq) {
-
-    let jids = [];
-    let items = iq.getElementsByTagName("item");
-
-    if (items.length > 0) {
-      for (let i = 0; i < items.length; i ++) {
-        let curJID = items[i].getAttribute("jid");
-        jids.push(curJID);
-      }
-    }
-
-    return jids;
-  },
-
   getRosterAndMUCsIfSupported: function(callback) {
 
     let onRoster = function(iq) {
-      XMPP.contacts = XMPP.extractJIDsFromIQResult(iq);
+      let items = iq.getElementsByTagName("item");
+      if (items.length > 0) {
+        for (let item of items) {
+          let curContact = item.getAttribute("jid");
+          XMPP.contacts.push(curContact);
+          let groupItems = item.getElementsByTagName("group");
+          if (groupItems.length > 0) {
+            for (let groupItem of groupItems) {
+              let curGroup = groupItem.textContent;
+              if (XMPP.groups.indexOf(curGroup) === -1) XMPP.groups.push(curGroup);
+              //XMPP.groupUsers.curGroup.push(curContact);
+              alert(XMPP.groups);
+            }
+          }
+        }
+      }
     }
 
     let onFeatures = function(iq) {
       let mucSupport = false;
       let features = iq.getElementsByTagName("feature");
       if (features.length > 0) {
-        for (let i = 0; i < features.length; i ++) {
-          let curFeature = features[i].getAttribute("var");
+        for (let feature of features) {
+          let curFeature = feature.getAttribute("var");
           if (curFeature === XMPP.NS.MUC_ROOMS) {
             mucSupport = true;
             break;
@@ -104,7 +106,13 @@ const XMPP = {
     }
 
     let onMUCs = function(iq) {
-      XMPP.mucs = XMPP.extractJIDsFromIQResult(iq);
+      let items = iq.getElementsByTagName("item");
+      if (items.length > 0) {
+        for (let item of items) {
+          let curMUC = item.getAttribute("jid");
+          XMPP.mucs.push(curMUC);
+        }
+      }
       callback();
     }
 
