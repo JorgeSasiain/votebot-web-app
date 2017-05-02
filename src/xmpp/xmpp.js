@@ -78,12 +78,13 @@ const XMPP = {
             for (let groupItem of groupItems) {
               let curGroup = groupItem.textContent;
               if (XMPP.groups.indexOf(curGroup) === -1) XMPP.groups.push(curGroup);
-              //XMPP.groupUsers.curGroup.push(curContact);
-              alert(XMPP.groups);
+              if (!XMPP.groupUsers.hasOwnProperty(curGroup)) XMPP.groupUsers[curGroup] = [];
+              XMPP.groupUsers[curGroup].push(curContact);
             }
           }
         }
       }
+      alert(JSON.stringify(XMPP.groupUsers));
     }
 
     let onFeatures = function(iq) {
