@@ -185,8 +185,22 @@ class ContactsSelectMenu extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    xmpp.sendMessage(this.state.mucs, "groupchat", "test_muc");
-    xmpp.sendMessage(this.state.contacts, "chat", "test");
+
+    let that = this;
+    let getUniqueContacts = function(group, index, groups) {
+
+      let _getUniqueContacts = function(user, index, users) {
+        if (that.state.contacts.indexOf(user) === -1)
+          that.state.contacts.push(user);
+      }
+
+      xmpp.groupUsers[group].forEach(_getUniqueContacts);
+    }
+
+    this.state.groups.forEach(getUniqueContacts);
+    let _botMessage = { poll: {}, mucs: this.state.mucs, contacts: this.state.contacts };
+    let botMessage = JSON.stringify(_botMessage);
+    xmpp.sendMessageToBot(botMessage);
   }
 
   render() {

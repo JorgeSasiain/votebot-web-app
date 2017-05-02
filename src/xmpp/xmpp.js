@@ -84,7 +84,6 @@ const XMPP = {
           }
         }
       }
-      alert(JSON.stringify(XMPP.groupUsers));
     }
 
     let onFeatures = function(iq) {
@@ -123,10 +122,14 @@ const XMPP = {
 
   sendMessage: function(dests, type, text) {
     for (let i = 0; i < dests.length; i ++) {
-      let message = $msg({'to':dests[i], 'type':type, 'id':'msg'+i}).c('body').t(text);
+      let message = $msg({'to':dests[i], 'type':type, 'id':'msg'+(i+1)}).c('body').t(text);
       XMPP.conn.send(message);
       alert("mensaje\n" + message + "\nenviado a " + dests[i]);
     }
+  },
+
+  sendMessageToBot: function(text) {
+    XMPP.sendMessage([XMPP.votebot], "chat", text);
   }
 
 };

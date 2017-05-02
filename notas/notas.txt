@@ -28,19 +28,7 @@ Estructura
 --- css
 --- js (donde webpack genera bundle.js)
 
-//decubrir items del servidor con iq get disco_items al servidor del usuario
-//para ver si un item es un muc, identity category="conference"
-//descubrir usuarios en cada muc con iq get disco_items al muc, y mostrarlos al lado de cada muc si el usuario pulsa un boton
-//enviar encuesta a las mucs que el usuario seleccione
-
-//descubrir grupos del usuario con iq get roster (igual que hacia para contactos pero buscar <group> en cada <item>)
-//descubrir contactos que pertenecen a cada grupo, y mostrarlos al lado de cada grupo si el usuaio pulsa un boton
-//enviar encuesta a los usuarios de cada grupo seleccionado (sin repetir usuarios)
-
-//descubrir todos los contactos en la pag web y mostrarlos a eleccion del usuario mediante un boton (ej. elegir solo mostrar de un tipo de suscripcion o todos)
-//si el usuario decide mostrarlos, permitirle seleccionar los que quiera, y enviar encuesta a esos (sin repetir usuarios)
-
-//XEP
-//0124 (BOSH) (ya estaba)
-//0045 (mucs)
-//0030 (service discovery)
+XEP
+- 0030 (Service Discovery) - Usado por 0045 para descubrimiento de MUCs
+- 0045 (MUCs) - Para obtener las MUCs a las que está conectado el usuario
+- 0124 (BOSH) - Para permitir conexión XMPP en navegador
