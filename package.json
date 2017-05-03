@@ -1,5 +1,7 @@
 {
   "name": "votebot-web-app",
+  "repository": "https://github.com/JorgeSasiain/votebot-web-app",
+  "homepage": "http://votebot-web-app.surge.sh/src/static",
   "scripts": {
     "build": "cross-env NODE_ENV=production node_modules/.bin/webpack -p",
     "build:dev": "cross-env NODE_ENV=development node_modules/.bin/webpack -d",
@@ -19,9 +21,9 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-router": "^2.6.1",
+    "react-scripts": "^0.9.5",
     "react-select": "^0.9.1",
-    "strophe.js": "^1.2.13",
-    "x2js": "^3.1.0"
+    "strophe.js": "^1.2.13"
   },
   "devDependencies": {
     "http-server": "^0.9.0",

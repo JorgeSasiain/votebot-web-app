@@ -1,5 +1,4 @@
 import { Strophe, $iq, $msg } from 'strophe.js';
-import x2js from 'x2js';
 
 const XMPP = {
 
@@ -17,8 +16,11 @@ const XMPP = {
     MUC_ROOMS: "http://jabber.org/protocol/muc#rooms"
   },
 
+  URL_BOSH: "http://10.0.2.15:5280/http-bind/",
+  URL_WS: "ws://10.0.2.15:5280",
+
   createConn: function() {
-    XMPP.conn = new Strophe.Connection("http://10.0.2.15:5280/http-bind/");
+    XMPP.conn = new Strophe.Connection(XMPP.URL_BOSH);
   },
 
   connect: function(jid, pass, onConnected) {
