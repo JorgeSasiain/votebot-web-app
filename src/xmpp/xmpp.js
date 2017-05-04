@@ -23,7 +23,7 @@ const XMPP = {
     XMPP.conn = new Strophe.Connection(XMPP.URL_BOSH);
   },
 
-  connect: function(jid, pass, onConnected) {
+  connect: function(jid, pass, onConnected, onDisconnected) {
 
     XMPP.conn.connect(jid, pass, function (status) {
       if (status === Strophe.Status.CONNECTED) {
@@ -33,6 +33,7 @@ const XMPP = {
         onConnected();
       } else if (status === Strophe.Status.DISCONNECTED) {
         alert('disconnected');
+        onDisconnected();
       } else if (status === Strophe.Status.CONNECTING) {
         alert('connecting');
       } else if (status === Strophe.Status.DISCONNECTING) {
@@ -41,8 +42,10 @@ const XMPP = {
         alert('authenticating');
       } else if (status === Strophe.Status.CONNFAIL) {
         alert('connfail');
+        onDisconnected();
       } else if (status === Strophe.Status.AUTHFAIL) {
         alert('authfail');
+        onDisconnected();
       }
     });
 

@@ -9,6 +9,7 @@ class JidPassForm extends Component {
     this.handleJidChange = this.handleJidChange.bind(this);
     this.handlePassChange = this.handlePassChange.bind(this);
     this.onConnected = this.onConnected.bind(this);
+    this.onDisconnected = this.onDisconnected.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -24,10 +25,14 @@ class JidPassForm extends Component {
     this.props.setLoggedIn(true);
   }
 
+  onDisconnected() {
+    this.props.setLoggedIn(false);
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     xmpp.createConn();
-    xmpp.connect(this.state.jidValue, this.state.passValue, this.onConnected);
+    xmpp.connect(this.state.jidValue, this.state.passValue, this.onConnected, this.onDisconnected);
   }
 
   render() {
@@ -41,6 +46,7 @@ class JidPassForm extends Component {
             onChange={this.handleJidChange}
           />
         </label>
+        <br />
         <label>
           Contraseña:
           <input
@@ -49,7 +55,8 @@ class JidPassForm extends Component {
             onChange={this.handlePassChange}
           />
         </label>
-        <input type="submit" value="Submit" />
+        <br />
+        <input type="submit" value="Identificarse" />
       </form>
     );
   }

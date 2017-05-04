@@ -27,13 +27,28 @@ class NewPollForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {question: '', choice1: '', choice2: '', choice3: ''};
+    this.state = {numChoices: 2, question: '', choice1: '', choice2: '', choice3: '', choice4: ''};
+    this.addChoice = this.addChoice.bind(this);
+    this.removeChoice = this.removeChoice.bind(this);
     this.handleQuestionChange = this.handleQuestionChange.bind(this);
     this.handleChoice1Change = this.handleChoice1Change.bind(this);
     this.handleChoice2Change = this.handleChoice2Change.bind(this);
     this.handleChoice3Change = this.handleChoice3Change.bind(this);
+    this.handleChoice4Change = this.handleChoice4Change.bind(this);
     this.onGotRosterAndMUCs = this.onGotRosterAndMUCs.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  addChoice() {
+    this.setState({numChoices: this.state.numChoices + 1});
+  }
+
+  removeChoice() {
+    if (this.state.numChoices === 4)
+      this.setState({choice4: ''});
+    else
+      this.setState({choice3: ''});
+    this.setState({numChoices: this.state.numChoices - 1});
   }
 
   handleQuestionChange(event) {
@@ -52,6 +67,10 @@ class NewPollForm extends Component {
     this.setState({choice3: event.target.value});
   }
 
+  handleChoice4Change(event) {
+    this.setState({choice4: event.target.value});
+  }
+
   onGotRosterAndMUCs() {
     this.props.setContactsSelectMenu(true);
   }
@@ -63,13 +82,30 @@ class NewPollForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <NewPollLabel label="Pregunta:" value={this.state.question} onChange={this.handleQuestionChange} />
-        <NewPollLabel label="Opción 1:" value={this.state.choice1} onChange={this.handleChoice1Change} />
-        <NewPollLabel label="Opción 2:" value={this.state.choice2} onChange={this.handleChoice2Change} />
-        <NewPollLabel label="Opción 3:" value={this.state.choice3} onChange={this.handleChoice3Change} />
-        <input type="submit" value="Submit" />
-      </form>
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <NewPollLabel label="Pregunta:" value={this.state.question} onChange={this.handleQuestionChange} />
+          <NewPollLabel label="Opción 1:" value={this.state.choice1} onChange={this.handleChoice1Change} />
+          <NewPollLabel label="Opción 2:" value={this.state.choice2} onChange={this.handleChoice2Change} />
+          {
+            this.state.numChoices >= 3 &&
+            <NewPollLabel label="Opción 3:" value={this.state.choice3} onChange={this.handleChoice3Change} />
+          }
+          {
+            this.state.numChoices >= 4 &&
+            <NewPollLabel label="Opción 4:" value={this.state.choice4} onChange={this.handleChoice4Change} />
+          }
+          <input type="submit" value="Confirmar encuesta" />
+        </form>
+        {
+          this.state.numChoices !== 4 &&
+          <button type="button" onClick={this.addChoice}>Añadir una opción</button>
+        }
+        {
+          this.state.numChoices !== 2 &&
+          <button type="button" onClick={this.removeChoice}>Eliminar una opción</button>
+        }
+      </div>
     );
   }
 }
@@ -225,7 +261,7 @@ class ContactsSelectMenu extends Component {
           onChange={this.handleContactChange}
         />
         <form onSubmit={this.handleSubmit}>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Enviar" />
         </form>
       </div>
     );
@@ -236,19 +272,19 @@ class NewPoll extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {loadContactsSelectMenu: false};
+    this.state = {renderContactsSelectMenu: false};
     this.setContactsSelectMenu = this.setContactsSelectMenu.bind(this);
   }
 
   setContactsSelectMenu(bool) {
-    this.setState({loadContactsSelectMenu: bool});
+    this.setState({renderContactsSelectMenu: bool});
   }
 
   render() {
     return (
       <div className="New-poll">
       {
-        this.state.loadContactsSelectMenu
+        this.state.renderContactsSelectMenu
         ? <ContactsSelectMenu />
         : <NewPollForm setContactsSelectMenu={this.setContactsSelectMenu}/>
       }
