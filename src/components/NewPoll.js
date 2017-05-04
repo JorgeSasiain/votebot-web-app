@@ -77,12 +77,15 @@ class NewPollForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    this.props.submitPollInformation(this.state);
     xmpp.getRosterAndMUCsIfSupported(this.onGotRosterAndMUCs);
   }
 
   render() {
     return (
       <div>
+        Introduzca la información de la encuesta:
+        <br />
         <form onSubmit={this.handleSubmit}>
           <NewPollLabel label="Pregunta:" value={this.state.question} onChange={this.handleQuestionChange} />
           <NewPollLabel label="Opción 1:" value={this.state.choice1} onChange={this.handleChoice1Change} />
@@ -234,7 +237,9 @@ class ContactsSelectMenu extends Component {
     }
 
     this.state.groups.forEach(getUniqueContacts);
-    let _botMessage = { poll: {}, mucs: this.state.mucs, contacts: this.state.contacts };
+    let _botMessage = {
+      poll: this.props.poll, mucs: this.state.mucs, contacts: this.state.contacts
+    };
     let botMessage = JSON.stringify(_botMessage);
     xmpp.sendMessageToBot(botMessage);
   }
@@ -242,6 +247,13 @@ class ContactsSelectMenu extends Component {
   render() {
     return (
       <div>
+        Información de la encuesta:
+        <br /> Pregunta: {this.props.poll.question}
+        <br /> Opciones: {this.props.poll.choices}
+        <br />
+        <br />
+        Seleccione con quien compartir la encuesta:
+        <br />
         <Select
           name="mucs-select"
           options={this.state.options.mucs}
@@ -272,8 +284,23 @@ class NewPoll extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {renderContactsSelectMenu: false};
+    this.state = { renderContactsSelectMenu: false, poll: {} };
     this.setContactsSelectMenu = this.setContactsSelectMenu.bind(this);
+    this.submitPollInformation = this.submitPollInformation.bind(this);
+  }
+
+  submitPollInformation(pollInfo) {
+
+    let choices = [pollInfo.choice1, pollInfo.choice2];
+    if (pollInfo.choice3 !== '') choices.push(pollInfo.choice3);
+    if (pollInfo.choice4 !== '') choices.push(pollInfo.choice4);
+
+    let poll = {
+      question: pollInfo.question,
+      choices: choices
+    };
+    this.setState({poll: poll});
+
   }
 
   setContactsSelectMenu(bool) {
@@ -285,8 +312,11 @@ class NewPoll extends Component {
       <div className="New-poll">
       {
         this.state.renderContactsSelectMenu
-        ? <ContactsSelectMenu />
-        : <NewPollForm setContactsSelectMenu={this.setContactsSelectMenu}/>
+        ? <ContactsSelectMenu poll={this.state.poll} />
+        : <NewPollForm
+            setContactsSelectMenu={this.setContactsSelectMenu}
+            submitPollInformation={this.submitPollInformation}
+          />
       }
       </div>
     );
