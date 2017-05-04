@@ -70,7 +70,7 @@ const XMPP = {
     XMPP.conn.sendIQ(iq, callback);
   },
 
-  getRosterAndMUCsIfSupported: function(callback) {
+  getContactsAndGroups: function(callback) {
 
     let onRoster = function(iq) {
       let items = iq.getElementsByTagName("item");
@@ -82,14 +82,23 @@ const XMPP = {
           if (groupItems.length > 0) {
             for (let groupItem of groupItems) {
               let curGroup = groupItem.textContent;
-              if (XMPP.groups.indexOf(curGroup) === -1) XMPP.groups.push(curGroup);
-              if (!XMPP.groupUsers.hasOwnProperty(curGroup)) XMPP.groupUsers[curGroup] = [];
+              if (XMPP.groups.indexOf(curGroup) === -1)
+                XMPP.groups.push(curGroup);
+              if (!XMPP.groupUsers.hasOwnProperty(curGroup))
+                XMPP.groupUsers[curGroup] = [];
               XMPP.groupUsers[curGroup].push(curContact);
             }
           }
         }
       }
+      callback();
     }
+
+    XMPP.getRoster(onRoster);
+
+  },
+
+  getMUCsIfSupported: function(callback) {
 
     let onFeatures = function(iq) {
       let mucSupport = false;
@@ -121,7 +130,6 @@ const XMPP = {
       callback();
     }
 
-    XMPP.getRoster(onRoster);
     XMPP.getMUCSupport(onFeatures);
   },
 

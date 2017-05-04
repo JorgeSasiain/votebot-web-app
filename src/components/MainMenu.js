@@ -1,55 +1,73 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-import xmpp from '../xmpp/xmpp';
+import { VIEWS } from './IndexPage';
+import XMPP from '../xmpp/xmpp';
 
 class SubmitButton extends Component {
 
   constructor(props) {
     super(props);
     this.state = {};
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    this.props.setLoggedIn(false);
-    xmpp.disconnect("User logged out");
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.props.onSubmit}>
         <input type="submit" value={this.props.value} />
       </form>
     );
   }
 }
 
-class LinkButton extends Component {
+class MainMenu extends Component {
 
   constructor(props) {
     super(props);
     this.state = {};
+    this.toNewVote = this.toNewVote.bind(this);
+    this.toNewPoll = this.toNewPoll.bind(this);
+    this.toManagePolls = this.toManagePolls.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
-  render() {
-    return (
-      <Link to={this.props.linkto}>
-        <button type="button">
-          {this.props.value}
-        </button>
-      </Link>
-    );
+  toNewVote() {
+    event.preventDefault();
+    this.props.setView(VIEWS.NEW_VOTE);
   }
-}
 
-class MainMenu extends Component {
+  toNewPoll() {
+    event.preventDefault();
+    this.props.setView(VIEWS.NEW_POLL);
+  }
+
+  toManagePolls() {
+    event.preventDefault();
+    this.props.setView(VIEWS.MANAGE_POLLS);
+  }
+
+  logout(event) {
+    event.preventDefault();
+    XMPP.disconnect("logout");
+  }
+
   render() {
     return (
       <div className="Main-menu">
-        <LinkButton value="Crear nueva encuesta" linkto="/newpoll" />
-        <LinkButton value="Gestionar encuestas activas" linkto="/manage" />
-        <SubmitButton value="Salir" setLoggedIn={this.props.setLoggedIn} />
+        <SubmitButton
+          value="Crear nueva votación de grupo"
+          onSubmit={this.toNewVote}
+        />
+        <SubmitButton
+          value="Crear nueva encuesta privada"
+          onSubmit={this.toNewPoll}
+        />
+        <SubmitButton
+          value="Gestionar encuestas activas"
+          onSubmit={this.toManagePolls}
+        />
+        <SubmitButton
+          value="Salir"
+          onSubmit={this.logout}
+        />
       </div>
     );
   }

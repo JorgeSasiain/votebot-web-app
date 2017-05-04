@@ -23,7 +23,7 @@ class Label extends Component {
   }
 }
 
-class NewPoll extends Component {
+class NewVote extends Component {
 
   constructor(props) {
 
@@ -46,7 +46,7 @@ class NewPoll extends Component {
     this.handleChoice2Change = this.handleChoice2Change.bind(this);
     this.handleChoice3Change = this.handleChoice3Change.bind(this);
     this.handleChoice4Change = this.handleChoice4Change.bind(this);
-    this.onGotRoster = this.onGotRoster.bind(this);
+    this.onGotMUCs = this.onGotMUCs.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toMainMenu = this.toMainMenu.bind(this);
 
@@ -98,14 +98,14 @@ class NewPoll extends Component {
     this.handleChoiceChange(3, event.target.value);
   }
 
-  onGotRoster() {
-    this.props.setView(VIEWS.NEW_POLL_CONTACTS);
+  onGotMUCs() {
+    this.props.setView(VIEWS.NEW_VOTE_MUCS);
   }
 
   handleSubmit() {
     event.preventDefault();
-    this.props.onNewPoll(this.state);
-    XMPP.getContactsAndGroups(this.onGotRoster);
+    this.props.onNewVote(this.state);
+    XMPP.getMUCsIfSupported(this.onGotMUCs);
   }
 
   toMainMenu() {
@@ -114,8 +114,8 @@ class NewPoll extends Component {
 
   render() {
     return (
-      <div className="New-poll">
-        Introduzca la información de la encuesta:
+      <div className="New-vote">
+        Introduzca la información de la votación:
         <br />
         <form onSubmit={this.handleSubmit}>
           <Label
@@ -180,4 +180,4 @@ class NewPoll extends Component {
   }
 }
 
-export default NewPoll;
+export default NewVote;

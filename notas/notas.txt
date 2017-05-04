@@ -1,12 +1,12 @@
 Tecnologías
 - Webpack
 - Babel (compilador JS)
-- http-server
+- http-server (solo testeo local)
 - React
 - react-router
 - react-select
 - strophe.js
-- node-xmpp-bosh
+- node-xmpp-bosh (?)
 
 Estructura
 - package.json
@@ -16,10 +16,11 @@ Estructura
 -- components
 --- Routes.js (Rutas de la app)
 --- Layout.js (componente principal que aplica a todas las páginas)
---- IndexPage.js (página principal, carga un componente u otro en función de usuario loggeado o no)
---- >XmppLogin.js (componente para hacer login XMPP)
+--- IndexPage.js (página principal, carga un componente u otro en función del estado)
+--- >Login.js (componente para hacer login XMPP)
 --- >MainMenu.js (componente donde se muestran las opciones tras hacer login)
---- >>NewPoll.js (componente donde un usuario puede enviar una nueva encuesta)
+--- >>NewVote.js (componente donde un usuario puede crear una nueva votación pública)
+--- >>NewPoll.js (componente donde un usuario puede enviar una nueva encuesta privada)
 --- >>ManagePolls.js (componente donde un usuario puede gestionar sus encuestas activas)
 -- xmpp
 --- xmpp.js (funcionalidades XMPP utilizando strophe.js)
@@ -31,12 +32,12 @@ Estructura
 XEPs
 - 0030 (Service Discovery) - Usado por 0045 para descubrimiento de MUCs
 - 0045 (MUCs) - Para obtener las MUCs a las que está conectado el usuario
-- 0124/0206 (BOSH) - Para permitir conexión XMPP en navegador
+- 0124/0206 (BOSH) - Para permitir conexión XMPP en navegador (si se usa BOSH)
 
 TODO
-- Separar opciones de la encuesta al mostralas en el formulario de selección de contactos/MUCs
-- Botones de volver al menu principal
-- Boton de volver a hacer encuesta en el formulario de selección de contactos/MUCs
-- Opción de vigencia de la encuesta
+- Permitir hasta 10 perguntas por encuesta en las que se comparten con contactos
+- Ver que pasa al pedir las MUCs del usuario
+- Comprobar campos no vacíos y con formato correcto antes de envíar
+- Opciones de resultado oculto, y elección múltiple por cada pregunta
 - Servicio BOSH/WebSocket sin node-xmpp-bosh desde local
 - Base de datos
