@@ -6,6 +6,7 @@ import NewVote_SelectMucs from './NewVote_SelectMucs';
 import NewPoll from './NewPoll';
 import NewPoll_SelectContacts from './NewPoll_SelectContacts';
 import ManagePolls from './ManagePolls';
+import PollSubmitted from './PollSubmitted';
 import XMPP from '../xmpp/xmpp';
 
 export const VIEWS = {
@@ -15,7 +16,8 @@ export const VIEWS = {
   NEW_VOTE_MUCS: 3,
   NEW_POLL: 4,
   NEW_POLL_CONTACTS: 5,
-  MANAGE_POLLS: 6
+  MANAGE_POLLS: 6,
+  POLL_SUMBITTED: 7
 };
 
 class IndexPage extends Component {
@@ -121,7 +123,8 @@ class IndexPage extends Component {
               setView={this.setView}
               onReadyToSend={this.onReadyToSend}
             />,
-            6: <ManagePolls setView={this.setView} />
+            6: <ManagePolls setView={this.setView} />,
+            7: <PollSubmitted setView={this.setView} />
           }[this.state.view]
         }
       </div>

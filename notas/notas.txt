@@ -35,9 +35,9 @@ XEPs
 - 0124/0206 (BOSH) - Para permitir conexión XMPP en navegador (si se usa BOSH)
 
 TODO
-- Permitir hasta 10 perguntas por encuesta en las que se comparten con contactos
 - Ver que pasa al pedir las MUCs del usuario
 - Comprobar campos no vacíos y con formato correcto antes de envíar
+- Al volver a "rehacer encuesta", que no se pierda lo que se había introducido ya
 - Opciones de resultado oculto, y elección múltiple por cada pregunta
 - Servicio BOSH/WebSocket sin node-xmpp-bosh desde local
 - Base de datos

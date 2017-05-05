@@ -16,7 +16,7 @@ class NewPoll_SelectContacts extends Component {
     this.handleContactChange = this.handleContactChange.bind(this);
     this.handleGroupChange = this.handleGroupChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.toMainMenu = this.toMainMenu.bind(this);
+    this.toPollSubmitted = this.toPollSubmitted.bind(this);
     this.redoPoll = this.redoPoll.bind(this);
   }
 
@@ -103,12 +103,12 @@ class NewPoll_SelectContacts extends Component {
 
     this.state.groups.forEach(getUniqueContacts);
     this.props.onReadyToSend(this.state.contacts, []);
-    this.toMainMenu();
+    this.toPollSubmitted();
 
   }
 
-  toMainMenu() {
-    this.props.setView(VIEWS.MAIN_MENU);
+  toPollSubmitted() {
+    this.props.setView(VIEWS.POLL_SUMBITTED);
   }
 
   redoPoll() {
@@ -139,7 +139,7 @@ class NewPoll_SelectContacts extends Component {
         <button type="button" onClick={this.redoPoll}>
           Rehacer encuesta
         </button>
-        <button type="button" onClick={this.toMainMenu}>
+        <button type="button" onClick={this.toPollSubmitted}>
           Volver al menú principal
         </button>
       </div>
