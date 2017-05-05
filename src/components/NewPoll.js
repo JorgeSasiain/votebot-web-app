@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { VIEWS } from './IndexPage';
 import XMPP from '../xmpp/xmpp';
 
-class Label extends Component {
+class TextField extends Component {
 
   constructor(props) {
     super(props);
@@ -16,6 +16,7 @@ class Label extends Component {
         <input
           type="text"
           value={this.props.value}
+          required
           onChange={this.props.onChange}
         />
       </label>
@@ -80,7 +81,7 @@ class PollQuestion extends Component {
   render() {
     return (
       <div>
-        <Label
+        <TextField
           label="Pregunta:"
           value={this.props.c().getQuestion(this.props.qid)}
           onChange={this.handleQuestionChange}
@@ -90,19 +91,19 @@ class PollQuestion extends Component {
           <button type="button" onClick={this.removeQuestion}>-</button>
         }
         <br />
-        <Label
+        <TextField
           label="Opción 1:"
           value={this.props.c().getChoice(this.props.qid, 0)}
           onChange={this.handleChoice1Change}
         />
-        <Label
+        <TextField
           label="Opción 2:"
           value={this.props.c().getChoice(this.props.qid, 1)}
           onChange={this.handleChoice2Change}
         />
         {
           this.props.c().numChoices(this.props.qid) >= 3 &&
-          <Label
+          <TextField
             label="Opción 3:"
             value={this.props.c().getChoice(this.props.qid, 2)}
             onChange={this.handleChoice3Change}
@@ -110,7 +111,7 @@ class PollQuestion extends Component {
         }
         {
           this.props.c().numChoices(this.props.qid) >= 4 &&
-          <Label
+          <TextField
             label="Opción 4:"
             value={this.props.c().getChoice(this.props.qid, 3)}
             onChange={this.handleChoice4Change}
@@ -139,7 +140,7 @@ class NewPoll extends Component {
 
     this.state = {
       title: '',
-      duration: '',
+      duration: 1440,
       questions: [
         {
           question: '',
@@ -242,17 +243,22 @@ class NewPoll extends Component {
         Introduzca la información de la encuesta:
         <br />
         <form onSubmit={this.handleSubmit}>
-          <Label
+          <TextField
             label="Título:"
             value={this.state.title}
             onChange={this.handleTitleChange}
           />
           <br />
-          <Label
-            label="Vigencia:"
-            value={this.state.duration}
-            onChange={this.handleDurationChange}
-          />
+          <label>
+            Vigencia:
+            <input
+              type="number"
+              min="0" max="10080" step="60"
+              value={this.state.duration}
+              required
+              onChange={this.handleDurationChange}
+            />
+          </label>
           <br />
           <PollQuestion qid={0} c={this.callbacks} />
           { this.state.questions.length > 1 && <PollQuestion qid={1} c={this.callbacks} /> }

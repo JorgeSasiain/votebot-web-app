@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { VIEWS } from './IndexPage';
 import XMPP from '../xmpp/xmpp';
 
-class Label extends Component {
+class TextField extends Component {
 
   constructor(props) {
     super(props);
@@ -16,6 +16,7 @@ class Label extends Component {
         <input
           type="text"
           value={this.props.value}
+          required
           onChange={this.props.onChange}
         />
       </label>
@@ -31,7 +32,7 @@ class NewVote extends Component {
 
     this.state = {
       title: '',
-      duration: '',
+      duration: 1440,
       question: '',
       choices: ['', '']
     };
@@ -118,37 +119,42 @@ class NewVote extends Component {
         Introduzca la información de la votación:
         <br />
         <form onSubmit={this.handleSubmit}>
-          <Label
+          <TextField
             label="Título:"
             value={this.state.title}
             onChange={this.handleTitleChange}
           />
           <br />
-          <Label
-            label="Vigencia:"
-            value={this.state.duration}
-            onChange={this.handleDurationChange}
-          />
+          <label>
+            Vigencia:
+            <input
+              type="number"
+              min="0" max="10080" step="60"
+              value={this.state.duration}
+              required
+              onChange={this.handleDurationChange}
+            />
+          </label>
           <br />
-          <Label
+          <TextField
             label="Pregunta:"
             value={this.state.question}
             onChange={this.handleQuestionChange}
           />
           <br />
-          <Label
+          <TextField
             label="Opción 1:"
             value={this.state.choices[0]}
             onChange={this.handleChoice1Change}
           />
-          <Label
+          <TextField
             label="Opción 2:"
             value={this.state.choices[1]}
             onChange={this.handleChoice2Change}
           />
           {
             this.state.choices.length >= 3 &&
-            <Label
+            <TextField
               label="Opción 3:"
               value={this.state.choices[2]}
               onChange={this.handleChoice3Change}
@@ -156,7 +162,7 @@ class NewVote extends Component {
           }
           {
             this.state.choices.length >= 4 &&
-            <Label
+            <TextField
               label="Opción 4:"
               value={this.state.choices[3]}
               onChange={this.handleChoice4Change}

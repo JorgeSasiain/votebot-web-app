@@ -50,6 +50,7 @@ class Login extends Component {
             <input
               type="text"
               value={this.state.jidValue}
+              required
               onChange={this.handleJidChange}
             />
           </label>
