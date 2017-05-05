@@ -123,6 +123,7 @@ class NewVote extends Component {
             value={this.state.title}
             onChange={this.handleTitleChange}
           />
+          <br />
           <Label
             label="Vigencia:"
             value={this.state.duration}

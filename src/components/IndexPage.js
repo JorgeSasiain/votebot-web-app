@@ -79,13 +79,7 @@ class IndexPage extends Component {
       type: "private",
       duration: pollInfo.duration,
       hidden: false,
-      questions: [
-        {
-          question: pollInfo.question,
-          multiple: false,
-          choices: pollInfo.choices
-        }
-      ]
+      questions: pollInfo.questions
     };
 
     this.setState({poll: poll});
