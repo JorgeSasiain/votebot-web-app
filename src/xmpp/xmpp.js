@@ -16,8 +16,8 @@ const XMPP = {
     MUC_ROOMS: "http://jabber.org/protocol/muc#rooms"
   },
 
-  URL_BOSH: "http://10.0.2.15:5280/http-bind/",
-  URL_WS: "ws://10.0.2.15:5280",
+  URL_BOSH: "https://bind.chatme.im",
+  URL_WSS: "wss://votebot-web-app-bosh:3000",
 
   createConn: function() {
     XMPP.conn = new Strophe.Connection(XMPP.URL_BOSH);
