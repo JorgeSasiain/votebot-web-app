@@ -9,9 +9,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(Express.static(path.join(__dirname, '../static')));
 
+Mongo.connect();
+
 server.listen(PORT, err => {
-  if (err) {
-    return console.error(err);
-  }
+  if (err) return console.error(err);
   console.info("Server running on port " + PORT);
 });
