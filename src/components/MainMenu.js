@@ -29,17 +29,17 @@ class MainMenu extends Component {
     this.logout = this.logout.bind(this);
   }
 
-  toNewVote() {
+  toNewVote(event) {
     event.preventDefault();
     this.props.setView(VIEWS.NEW_VOTE);
   }
 
-  toNewPoll() {
+  toNewPoll(event) {
     event.preventDefault();
     this.props.setView(VIEWS.NEW_POLL);
   }
 
-  toManagePolls() {
+  toManagePolls(event) {
     event.preventDefault();
     this.props.setView(VIEWS.MANAGE_POLLS);
   }

@@ -103,7 +103,7 @@ class NewVote extends Component {
     this.props.setView(VIEWS.NEW_VOTE_MUCS);
   }
 
-  handleSubmit() {
+  handleSubmit(event) {
     event.preventDefault();
     this.props.onNewVote(this.state);
     XMPP.getMUCsIfSupported(this.onGotMUCs);

@@ -9,7 +9,7 @@ class PollSubmitted extends Component {
     this.toMainMenu = this.toMainMenu.bind(this);
   }
 
-  toMainMenu() {
+  toMainMenu(event) {
     event.preventDefault();
     this.props.setView(VIEWS.MAIN_MENU);
   }

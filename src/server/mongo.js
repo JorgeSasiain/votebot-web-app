@@ -1,4 +1,4 @@
-const MongoClient = require('mongodb').MongoClient;
+import { MongoClient } from 'mongodb';
 
 let MONGO_URI = '';
 try {
@@ -14,14 +14,11 @@ const Mongo = {
   db: null,
 
   connect: function() {
-
     if (Mongo.db) return;
-
-    console.log(Mongo.MONGO_URI);
     Mongo.db = MongoClient.connect(Mongo.MONGO_URI, function(err, db) {
       if (err) {
-        console.log(err);
-        return;
+        console.error(err);
+        throw err;
       }
       Mongo.db = db;
     });
@@ -32,8 +29,19 @@ const Mongo = {
     if (Mongo.db) {
       Mongo.db.close(function(err, result) {
         Mongo.db = null;
+        if (err) console.error(err);
       });
     }
+  },
+
+  addPoll: function(poll) {
+    let collection = Mongo.db.collection('polls');
+    collection.insert(poll, function (err, poll) {
+      if (err) {
+        console.error(err);
+        throw err;
+      }
+    })
   }
 
 };

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import promise from 'es6-promise';
+import fetch from 'isomorphic-fetch';
 import Login from './Login';
 import MainMenu from './MainMenu';
 import NewVote from './NewVote';
@@ -90,17 +92,25 @@ class IndexPage extends Component {
 
   onReadyToSend(contacts, mucs) {
 
-    let that = this;
     let _botMessage = {
-      poll: that.state.poll,
       targets: {
         contacts: contacts,
         mucs: mucs
       }
     };
-
     let botMessage = JSON.stringify(_botMessage);
     XMPP.sendMessageToBot(botMessage);
+
+    let dbDoc = JSON.stringify(this.state.poll);
+    let postRequest = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: dbDoc
+    }
+    fetch('/poll', postRequest).then(response => console.log(response));
 
   }
 

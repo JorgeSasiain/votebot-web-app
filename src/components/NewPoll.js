@@ -205,7 +205,7 @@ class NewPoll extends Component {
 
       handleChoiceChange: function(qid, index, value) {
         let questions = that.state.questions;
-        questions[qid].choices[index] = event.target.value;
+        questions[qid].choices[index] = value;
         that.setState({questions: questions});
       }.bind(this),
 
@@ -227,7 +227,7 @@ class NewPoll extends Component {
     this.props.setView(VIEWS.NEW_POLL_CONTACTS);
   }
 
-  handleSubmit() {
+  handleSubmit(event) {
     event.preventDefault();
     this.props.onNewPoll(this.state);
     XMPP.getContactsAndGroups(this.onGotRoster);
