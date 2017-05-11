@@ -1,9 +1,15 @@
 const MongoClient = require('mongodb').MongoClient;
-import { MONGO_URI } from './mongoUri';
+
+let MONGO_URI = '';
+try {
+  MONGO_URI = require('./mongoUri').MONGO_URI;
+} catch (ex) {
+  MONGO_URI = process.env.MONGO_URI;
+}
 
 const Mongo = {
 
-  MONGO_URI: process.env.MONGO_URI || MONGO_URI,
+  MONGO_URI: MONGO_URI,
 
   db: null,
 
