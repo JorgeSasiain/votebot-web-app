@@ -1,10 +1,10 @@
 Tecnologías
 - Webpack
 - Babel (compilador JS)
-- http-server (solo testeo local)
 - React
 - react-router
 - react-select
+- Express
 - strophe.js
 - node-xmpp-bosh (?)
 
@@ -12,6 +12,9 @@ Estructura
 - package.json
 - webpack.config.js
 - src
+-- server
+--- server.js
+--- mongo.js
 -- index.js (punto de entrada)
 -- components
 --- Routes.js (Rutas de la app)
@@ -36,8 +39,7 @@ XEPs
 
 TODO
 - Ver que pasa al pedir las MUCs del usuario
-- Comprobar campos no vacíos y con formato correcto antes de envíar
 - Al volver a "rehacer encuesta", que no se pierda lo que se había introducido ya
 - Opciones de resultado oculto, y elección múltiple por cada pregunta
-- Servicio BOSH/WebSocket sin node-xmpp-bosh desde local
-- Base de datos
+- Servicio BOSH/WebSocket propio
+- Insertar encuesta en la base de datos
