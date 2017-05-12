@@ -47,6 +47,7 @@ class IndexPage extends Component {
     this.onNewVote = this.onNewVote.bind(this);
     this.onNewPoll = this.onNewPoll.bind(this);
     this.onReadyToSend = this.onReadyToSend.bind(this);
+    this.getExpirationDate = this.getExpirationDate.bind(this);
 
   }
 
@@ -54,13 +55,27 @@ class IndexPage extends Component {
     this.setState({view: view});
   }
 
+  getExpirationDate(ttl) {
+
+    let curTime = new Date(), expTime = new Date();
+    let _curTime = 0, _expTime = 0;
+
+    _curTime = curTime.getTime();
+    _expTime = _curTime + ttl;
+    expTime.setTime(_expTime);
+
+    return expTime;
+  }
+
   onNewVote(voteInfo) {
+
+    let expireAt = this.getExpirationDate(voteInfo.duration * 3600000);
 
     let poll = {
       creator: XMPP.jid,
       title: voteInfo.title,
       type: "public",
-      duration: voteInfo.duration,
+      expireAt: expireAt,
       hidden: false,
       questions: [
         {
@@ -78,11 +93,13 @@ class IndexPage extends Component {
 
   onNewPoll(pollInfo) {
 
+    let expireAt = this.getExpirationDate(pollInfo.duration * 3600000);
+
     let poll = {
       creator: XMPP.jid,
       title: pollInfo.title,
       type: "private",
-      duration: pollInfo.duration,
+      expireAt: expireAt,
       hidden: false,
       questions: pollInfo.questions
     };

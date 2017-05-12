@@ -39,9 +39,8 @@ XEPs
 
 TODO
 - Ver que pasa al pedir las MUCs del usuario
-- Arreglar los formularios de selección multiple (no se si es solo la falta de css?)
+- Arreglar los formularios de selección multiple
 - Al volver a "rehacer encuesta", que no se pierda lo que se había introducido ya
-- añadir campo de "número de votos" a cada opción
 - Opciones de resultado oculto, y elección múltiple por cada pregunta
 - Página de gestionar encuestas y leer información de la BD
 - Servicio BOSH/WebSocket propio

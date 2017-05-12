@@ -32,7 +32,7 @@ class NewVote extends Component {
 
     this.state = {
       title: '',
-      duration: 1440,
+      duration: 24,
       question: '',
       choices: ['', ''],
       votes: [0, 0]
@@ -137,7 +137,7 @@ class NewVote extends Component {
             Vigencia:
             <input
               type="number"
-              min={0} max={10080} step={60}
+              min={1} max={168} step={1}
               value={this.state.duration}
               required
               onChange={this.handleDurationChange}

@@ -41,7 +41,7 @@ const Mongo = {
         console.error(err);
         throw err;
       }
-    })
+    });
   }
 
 };

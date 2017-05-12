@@ -140,7 +140,7 @@ class NewPoll extends Component {
 
     this.state = {
       title: '',
-      duration: 1440,
+      duration: 24,
       questions: [
         {
           question: '',
@@ -260,7 +260,7 @@ class NewPoll extends Component {
             Vigencia:
             <input
               type="number"
-              min={0} max={10080} step={60}
+              min={1} max={168} step={1}
               value={this.state.duration}
               required
               onChange={this.handleDurationChange}
