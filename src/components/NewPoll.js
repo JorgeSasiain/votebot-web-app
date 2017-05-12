@@ -144,7 +144,8 @@ class NewPoll extends Component {
       questions: [
         {
           question: '',
-          choices: ['', '']
+          choices: ['', ''],
+          votes: [0, 0]
         }
       ]
     };
@@ -161,7 +162,11 @@ class NewPoll extends Component {
 
   addQuestion() {
     let questions = this.state.questions;
-    questions.push( {question: '', choices: ['', '']} );
+    questions.push({
+      question: '',
+      choices: ['', ''],
+      votes: [0, 0]
+    });
     this.setState({questions: questions});
   }
 
@@ -170,7 +175,7 @@ class NewPoll extends Component {
   }
 
   handleDurationChange(event) {
-    this.setState({duration: event.target.value});
+    this.setState({duration: parseInt(event.target.value)});
   }
 
   callbacks() {
@@ -188,12 +193,14 @@ class NewPoll extends Component {
       addChoice: function(qid) {
         let questions = that.state.questions;
         questions[qid].choices.push('');
+        questions[qid].votes.push(0);
         that.setState({questions: questions});
       }.bind(this),
 
       removeChoice: function(qid) {
         let questions = that.state.questions;
         questions[qid].choices.pop();
+        questions[qid].votes.pop();
         that.setState({questions: questions});
       }.bind(this),
 
@@ -253,7 +260,7 @@ class NewPoll extends Component {
             Vigencia:
             <input
               type="number"
-              min="0" max="10080" step="60"
+              min={0} max={10080} step={60}
               value={this.state.duration}
               required
               onChange={this.handleDurationChange}

@@ -34,7 +34,8 @@ class NewVote extends Component {
       title: '',
       duration: 1440,
       question: '',
-      choices: ['', '']
+      choices: ['', ''],
+      votes: [0, 0]
     };
 
     this.addChoice = this.addChoice.bind(this);
@@ -55,14 +56,21 @@ class NewVote extends Component {
 
   addChoice() {
     this.setState({
-      choices: this.state.choices.concat([''])
+      choices: this.state.choices.concat(['']),
+      votes: this.state.votes.concat([0])
     });
   }
 
   removeChoice() {
     let choices = this.state.choices;
     choices.pop();
-    this.setState({choices: choices});
+    let votes = this.state.votes;
+    votes.pop();
+
+    this.setState({
+      choices: choices,
+      votes: votes
+    });
   }
 
   handleTitleChange(event) {
@@ -70,7 +78,7 @@ class NewVote extends Component {
   }
 
   handleDurationChange(event) {
-    this.setState({duration: event.target.value});
+    this.setState({duration: parseInt(event.target.value)});
   }
 
   handleQuestionChange(event) {
@@ -129,7 +137,7 @@ class NewVote extends Component {
             Vigencia:
             <input
               type="number"
-              min="0" max="10080" step="60"
+              min={0} max={10080} step={60}
               value={this.state.duration}
               required
               onChange={this.handleDurationChange}

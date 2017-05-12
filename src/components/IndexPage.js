@@ -66,7 +66,8 @@ class IndexPage extends Component {
         {
           question: voteInfo.question,
           multiple: false,
-          choices: voteInfo.choices
+          choices: voteInfo.choices,
+          votes: voteInfo.votes
         }
       ]
     };

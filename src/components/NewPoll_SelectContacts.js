@@ -122,12 +122,14 @@ class NewPoll_SelectContacts extends Component {
         <br />
         <Select
           name="groups-select"
+          placeholder="Selecciona uno o varios grupos"
           options={this.state.options.groups}
           multi={true}
           onChange={this.handleGroupChange}
         />
         <Select
           name="contacts-select"
+          placeholder="Selecciona uno o varios contactos"
           options={this.state.options.contacts}
           multi={true}
           onChange={this.handleContactChange}

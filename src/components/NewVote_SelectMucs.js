@@ -79,6 +79,7 @@ class NewVote_SelectMucs extends Component {
         <br />
         <Select
           name="mucs-select"
+          placeholder="Selecciona uno o varios chats"
           options={this.state.options.mucs}
           multi={true}
           onChange={this.handleMucChange}
