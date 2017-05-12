@@ -57,12 +57,11 @@ class IndexPage extends Component {
 
   getExpirationDate(ttl) {
 
-    let curTime = new Date(), expTime = new Date();
-    let _curTime = 0, _expTime = 0;
+    let curDate = new Date()
+    let curTime = 0, expTime = 0;
 
-    _curTime = curTime.getTime();
-    _expTime = _curTime + ttl;
-    expTime.setTime(_expTime);
+    curTime = curDate.getTime();
+    expTime = curTime + ttl;
 
     return expTime;
   }
