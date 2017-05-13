@@ -43,4 +43,7 @@ TODO
 - Al volver a "rehacer encuesta", que no se pierda lo que se había introducido ya
 - Opciones de resultado oculto, y elección múltiple por cada pregunta
 - Página de gestionar encuestas y leer información de la BD
+- Las encuestas privadas no deben desaparecer hasta 24 horas tras quedar inactivas, por lo
+que hace falta un documento extra en que la referencia a la encuesta se elimine 24 horas antes y
+haga pasar a la encuesta de estado "activa" a "finalizada" (24 horas después se borraría).
 - Servicio BOSH/WebSocket propio

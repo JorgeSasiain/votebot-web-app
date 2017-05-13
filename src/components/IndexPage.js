@@ -109,25 +109,30 @@ class IndexPage extends Component {
 
   onReadyToSend(contacts, mucs) {
 
-    let _botMessage = {
+    let botMessage = {
       targets: {
         contacts: contacts,
         mucs: mucs
       }
     };
-    let botMessage = JSON.stringify(_botMessage);
-    XMPP.sendMessageToBot(botMessage);
 
-    let dbDoc = JSON.stringify(this.state.poll);
     let postRequest = {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: dbDoc
+      body: JSON.stringify(this.state.poll)
     }
-    fetch('/poll', postRequest).then(response => console.log(response));
+
+    XMPP.sendMessageToBot(JSON.stringify(botMessage));
+
+    fetch('/db', postRequest).then(response => {
+      if (response.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+      console.log(response);
+    });
 
   }
 

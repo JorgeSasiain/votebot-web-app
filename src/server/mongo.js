@@ -36,8 +36,7 @@ const Mongo = {
 
   addPoll: function(poll) {
     poll.expireAt = new Date(poll.expireAt);
-    let collection = Mongo.db.collection('polls');
-    collection.insert(poll, function (err, poll) {
+    Mongo.db.collection('polls').insert(poll, function (err, poll) {
       if (err) {
         console.error(err);
         throw err;
