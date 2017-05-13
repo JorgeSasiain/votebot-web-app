@@ -9,18 +9,8 @@ import NewPoll from './NewPoll';
 import NewPoll_SelectContacts from './NewPoll_SelectContacts';
 import ManagePolls from './ManagePolls';
 import PollSubmitted from './PollSubmitted';
-import XMPP from '../xmpp/xmpp';
-
-export const VIEWS = {
-  LOGIN: 0,
-  MAIN_MENU: 1,
-  NEW_VOTE: 2,
-  NEW_VOTE_MUCS: 3,
-  NEW_POLL: 4,
-  NEW_POLL_CONTACTS: 5,
-  MANAGE_POLLS: 6,
-  POLL_SUMBITTED: 7
-};
+import { ONE_HOUR } from './constants';
+import XMPP from '../xmpp';
 
 class IndexPage extends Component {
 
@@ -70,7 +60,7 @@ class IndexPage extends Component {
 
   onNewVote(voteInfo) {
 
-    let expireAt = this.getExpirationDate(voteInfo.duration * 3600000);
+    let expireAt = this.getExpirationDate(voteInfo.duration * ONE_HOUR);
 
     let poll = {
       creator: XMPP.jid,
@@ -94,8 +84,8 @@ class IndexPage extends Component {
 
   onNewPoll(pollInfo) {
 
-    let inactiveAt = this.getExpirationDate(pollInfo.duration * 3600000)
-    let expireAt = this.getExpirationDate(pollInfo.duration * 3600000 + 86400000);
+    let inactiveAt = this.getExpirationDate(pollInfo.duration * ONE_HOUR)
+    let expireAt = this.getExpirationDate((pollInfo.duration + 24) * ONE_HOUR);
 
     let poll = {
       _id: 0,

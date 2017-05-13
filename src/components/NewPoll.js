@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { VIEWS } from './IndexPage';
-import XMPP from '../xmpp/xmpp';
+import { VIEWS, TITLE_MAX_LEN, QUESTION_MAX_LEN, CHOICE_MAX_LEN } from './constants';
+import XMPP from '../xmpp';
 
 class TextField extends Component {
 
@@ -171,7 +171,9 @@ class NewPoll extends Component {
   }
 
   handleTitleChange(event) {
-    this.setState({title: event.target.value});
+    let value = event.target.value;
+    if (value.length > TITLE_MAX_LEN) return;
+    this.setState({title: value});
   }
 
   handleDurationChange(event) {
@@ -206,12 +208,15 @@ class NewPoll extends Component {
 
       handleQuestionChange: function(qid, event) {
         let questions = that.state.questions;
-        questions[qid].question = event.target.value;
+        let value = event.target.value;
+        if (value.length > QUESTION_MAX_LEN) return;
+        questions[qid].question = value;
         that.setState({questions: questions});
       }.bind(this),
 
       handleChoiceChange: function(qid, index, value) {
         let questions = that.state.questions;
+        if (value.length > CHOICE_MAX_LEN) return;
         questions[qid].choices[index] = value;
         that.setState({questions: questions});
       }.bind(this),

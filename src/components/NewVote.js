@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { VIEWS } from './IndexPage';
-import XMPP from '../xmpp/xmpp';
+import { VIEWS, TITLE_MAX_LEN, QUESTION_MAX_LEN, CHOICE_MAX_LEN } from './constants';
+import XMPP from '../xmpp';
 
 class TextField extends Component {
 
@@ -74,7 +74,9 @@ class NewVote extends Component {
   }
 
   handleTitleChange(event) {
-    this.setState({title: event.target.value});
+    let value = event.target.value;
+    if (value.length > TITLE_MAX_LEN) return;
+    this.setState({title: value});
   }
 
   handleDurationChange(event) {
@@ -82,11 +84,14 @@ class NewVote extends Component {
   }
 
   handleQuestionChange(event) {
-    this.setState({question: event.target.value});
+    let value = event.target.value;
+    if (value.length > QUESTION_MAX_LEN) return;
+    this.setState({question: value});
   }
 
   handleChoiceChange(index, value) {
     let choices = this.state.choices;
+    if (value.length > CHOICE_MAX_LEN) return;
     choices[index] = value;
     this.setState({choices: choices});
   }

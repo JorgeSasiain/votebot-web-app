@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VIEWS } from './IndexPage';
+import { VIEWS } from './constants';
 
 class PollSubmitted extends Component {
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-import { VIEWS } from './IndexPage';
-import XMPP from '../xmpp/xmpp';
+import { VIEWS } from './constants';
+import XMPP from '../xmpp';
 
 class NewPoll_SelectContacts extends Component {
 

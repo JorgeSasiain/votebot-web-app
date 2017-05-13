@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { VIEWS } from './IndexPage';
-import XMPP from '../xmpp/xmpp';
+import { VIEWS } from './constants';
+import XMPP from '../xmpp';
 
 class SubmitButton extends Component {
 
