@@ -3,6 +3,7 @@ import { Server } from 'http';
 import Express from 'express';
 import bodyParser from 'body-parser';
 import Mongo from './mongo';
+import { ObjectID } from 'mongodb';
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
@@ -26,7 +27,12 @@ app.get('/db', function(req, res) {
 });
 
 app.post('/db', function(req, res) {
-  Mongo.addPoll(req.body);
+  req.body.poll._id = new ObjectID();
+  Mongo.addPoll(req.body.poll);
+  if (req.body.hasOwnProperty('pollActive')) {
+    req.body.pollActive.poll_id = req.body.poll._id;
+    Mongo.addActivePeriod(req.body.pollActive);
+  }
   res.sendStatus(200);
 });
 

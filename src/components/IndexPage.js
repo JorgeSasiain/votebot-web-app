@@ -37,6 +37,7 @@ class IndexPage extends Component {
         hidden: false,
         questions: []
       },
+      pollActive: {},
       targets: {
         contacts: [],
         mucs: []
@@ -47,7 +48,8 @@ class IndexPage extends Component {
     this.onNewVote = this.onNewVote.bind(this);
     this.onNewPoll = this.onNewPoll.bind(this);
     this.onReadyToSend = this.onReadyToSend.bind(this);
-    this.getExpirationDate = this.getExpirationDate.bind(this);
+    this.onReadyToSendVote = this.onReadyToSendVote.bind(this);
+    this.onReadyToSendPoll = this.onReadyToSendPoll.bind(this);
 
   }
 
@@ -86,15 +88,17 @@ class IndexPage extends Component {
       ]
     };
 
-    this.setState({poll: poll});
+    this.setState({ poll: poll, pollActive: {} });
 
   }
 
   onNewPoll(pollInfo) {
 
-    let expireAt = this.getExpirationDate(pollInfo.duration * 3600000);
+    let inactiveAt = this.getExpirationDate(pollInfo.duration * 3600000)
+    let expireAt = this.getExpirationDate(pollInfo.duration * 3600000 + 86400000);
 
     let poll = {
+      _id: 0,
       creator: XMPP.jid,
       title: pollInfo.title,
       type: "private",
@@ -103,18 +107,16 @@ class IndexPage extends Component {
       questions: pollInfo.questions
     };
 
-    this.setState({poll: poll});
+    let pollActive = {
+      poll_id: 0,
+      inactiveAt: inactiveAt
+    }
+
+    this.setState({ poll: poll, pollActive: pollActive });
 
   }
 
-  onReadyToSend(contacts, mucs) {
-
-    let botMessage = {
-      targets: {
-        contacts: contacts,
-        mucs: mucs
-      }
-    };
+  onReadyToSend(requestBody, botMessage) {
 
     let postRequest = {
       method: 'POST',
@@ -122,17 +124,44 @@ class IndexPage extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(this.state.poll)
-    }
-
-    XMPP.sendMessageToBot(JSON.stringify(botMessage));
+      body: requestBody
+    };
 
     fetch('/db', postRequest).then(response => {
       if (response.status >= 400) {
         throw new Error("Bad response from server");
       }
-      console.log(response);
+      XMPP.sendMessageToBot(JSON.stringify(botMessage));
     });
+
+  }
+
+  onReadyToSendVote(mucs) {
+
+    let requestBody = JSON.stringify({
+      poll: this.state.poll
+    });
+
+    let botMessage = {
+      mucs: mucs
+    };
+
+    this.onReadyToSend(requestBody, botMessage);
+
+  }
+
+  onReadyToSendPoll(contacts) {
+
+    let requestBody = JSON.stringify({
+      poll: this.state.poll,
+      pollActive: this.state.pollActive
+    });
+
+    let botMessage = {
+      contacts: contacts
+    };
+
+    this.onReadyToSend(requestBody, botMessage);
 
   }
 
@@ -147,13 +176,13 @@ class IndexPage extends Component {
             3:
             <NewVote_SelectMucs
               setView={this.setView}
-              onReadyToSend={this.onReadyToSend}
+              onReadyToSend={this.onReadyToSendVote}
             />,
             4: <NewPoll setView={this.setView} onNewPoll={this.onNewPoll} />,
             5:
             <NewPoll_SelectContacts
               setView={this.setView}
-              onReadyToSend={this.onReadyToSend}
+              onReadyToSend={this.onReadyToSendPoll}
             />,
             6: <ManagePolls setView={this.setView} />,
             7: <PollSubmitted setView={this.setView} />

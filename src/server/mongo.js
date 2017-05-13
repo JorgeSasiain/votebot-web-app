@@ -34,9 +34,19 @@ const Mongo = {
     }
   },
 
-  addPoll: function(poll) {
-    poll.expireAt = new Date(poll.expireAt);
-    Mongo.db.collection('polls').insert(poll, function (err, poll) {
+  addPoll: function(doc) {
+    doc.expireAt = new Date(doc.expireAt);
+    Mongo.db.collection('polls').insert(doc, function (err, doc) {
+      if (err) {
+        console.error(err);
+        throw err;
+      }
+    });
+  },
+
+  addActivePeriod: function(doc) {
+    doc.inactiveAt = new Date(doc.inactiveAt);
+    Mongo.db.collection('active_polls').insert(doc, function (err, doc) {
       if (err) {
         console.error(err);
         throw err;
