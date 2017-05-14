@@ -37,7 +37,6 @@ class IndexPage extends Component {
     this.setView = this.setView.bind(this);
     this.onNewVote = this.onNewVote.bind(this);
     this.onNewPoll = this.onNewPoll.bind(this);
-    this.onReadyToSend = this.onReadyToSend.bind(this);
     this.onReadyToSendVote = this.onReadyToSendVote.bind(this);
     this.onReadyToSendPoll = this.onReadyToSendPoll.bind(this);
 
@@ -106,7 +105,9 @@ class IndexPage extends Component {
 
   }
 
-  onReadyToSend(requestBody, botMessage) {
+  onReadyToSendVote(mucs) {
+
+    let requestBody = JSON.stringify(this.state.poll);
 
     let postRequest = {
       method: 'POST',
@@ -117,41 +118,53 @@ class IndexPage extends Component {
       body: requestBody
     };
 
-    fetch('/db', postRequest).then(response => {
-      if (response.status >= 400) {
-        throw new Error("Bad response from server");
-      }
+    let botMessage = {
+      pollTitle: this.state.poll.title,
+      mucs: mucs
+    };
+
+    fetch('/polls', postRequest).then(response => {
+      if (response.status >= 400) return;
       XMPP.sendMessageToBot(JSON.stringify(botMessage));
     });
 
   }
 
-  onReadyToSendVote(mucs) {
-
-    let requestBody = JSON.stringify({
-      poll: this.state.poll
-    });
-
-    let botMessage = {
-      mucs: mucs
-    };
-
-    this.onReadyToSend(requestBody, botMessage);
-
-  }
-
   onReadyToSendPoll(contacts) {
 
-    let requestBody = JSON.stringify({
-      poll: this.state.poll,
-      pollActive: this.state.pollActive
-    });
+    let requestBody = JSON.stringify(this.state.poll);
+    let requestBody2 = JSON.stringify(this.state.pollActive);
+
+    let postRequest = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: requestBody
+    };
+
+    let postRequest2 = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: requestBody2
+    };
 
     let botMessage = {
+      pollTitle: this.state.poll.title,
       contacts: contacts
     };
 
-    this.onReadyToSend(requestBody, botMessage);
+    fetch('/polls', postRequest).then(response => {
+      if (response.status >= 400) return;
+      fetch('/polls2', postRequest2).then(response => {
+        if (response.status >= 400) return;
+        XMPP.sendMessageToBot(JSON.stringify(botMessage));
+      })
+    });
 
   }
 

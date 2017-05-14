@@ -12,6 +12,7 @@ import routes from '../components/Routes'
 const app = new Express();
 const server = new Server(app);
 const PORT = process.env.PORT || 3000;
+let POLL_ID = 0;
 
 app.use(Express.static(path.join(__dirname, '../static')));
 
@@ -19,21 +20,25 @@ app.use(Express.static(path.join(__dirname, '../static')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-Mongo.connect();
-
 /* Requests for DB operations */
-app.get('/db', function(req, res) {
-  res.status(404).send('Not Found');
+app.get('/polls', function(req, res) {
+  //res.status(404).send('Not Found');
 });
 
-app.post('/db', function(req, res) {
-  req.body.poll._id = new ObjectID();
-  Mongo.addPoll(req.body.poll);
-  if (req.body.hasOwnProperty('pollActive')) {
-    req.body.pollActive.poll_id = req.body.poll._id;
-    Mongo.addActivePeriod(req.body.pollActive);
+app.post('/polls', function(req, res) {
+  POLL_ID = new ObjectID();
+  req.body._id = POLL_ID;
+  Mongo.addPoll(req.body, res);
+});
+
+app.post('/polls2', function(req, res) {
+  req.body.poll_id = POLL_ID;
+  if (POLL_ID !== 0) {
+    Mongo.addActivePeriod(req.body, res);
+    POLL_ID = 0;
+  } else {
+    res.sendStatus(400);
   }
-  res.sendStatus(200);
 });
 
 /* Server-side rendering */

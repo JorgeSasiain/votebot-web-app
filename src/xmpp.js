@@ -27,24 +27,22 @@ const XMPP = {
 
     XMPP.conn.connect(jid, pass, function (status) {
       if (status === Strophe.Status.CONNECTED) {
-        alert('connected');
+        alert('Conectado');
         XMPP.jid = jid;
         XMPP.server = jid.substr(jid.indexOf("@") + 1);
         onConnected();
       } else if (status === Strophe.Status.DISCONNECTED) {
-        alert('disconnected');
+        alert('Desconectado');
         onDisconnected();
       } else if (status === Strophe.Status.CONNECTING) {
-        alert('connecting');
+        alert('Conectando...');
       } else if (status === Strophe.Status.DISCONNECTING) {
-        alert('disconnecting');
       } else if (status === Strophe.Status.AUTHENTICATING) {
-        alert('authenticating');
       } else if (status === Strophe.Status.CONNFAIL) {
-        alert('connfail');
+        alert('Error de conexión');
         onDisconnected();
       } else if (status === Strophe.Status.AUTHFAIL) {
-        alert('authfail');
+        alert('Error de autenticación');
         onDisconnected();
       }
     });
@@ -135,9 +133,15 @@ const XMPP = {
 
   sendMessage: function(dests, type, text) {
     for (let i = 0; i < dests.length; i ++) {
-      let message = $msg({'to':dests[i], 'type':type, 'id':'msg'+(i+1)}).c('body').t(text);
+      let message = $msg({
+        'to':dests[i],
+        'type':type,
+        'id':'msg'+(i+1)
+      })
+        .c('body')
+        .t(text);
       XMPP.conn.send(message);
-      alert("mensaje\n" + message + "\nenviado a " + dests[i]);
+      //alert("mensaje\n" + message + "\nenviado a " + dests[i]);
     }
   },
 
