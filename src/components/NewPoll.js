@@ -160,6 +160,12 @@ class NewPoll extends Component {
 
   }
 
+  componentDidMount() {
+    let savedData = this.props.getSavedData();
+    if (savedData != null)
+      this.setState(savedData);
+  }
+
   addQuestion() {
     let questions = this.state.questions;
     questions.push({

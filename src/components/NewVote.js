@@ -54,6 +54,12 @@ class NewVote extends Component {
 
   }
 
+  componentDidMount() {
+    let savedData = this.props.getSavedData();
+    if (savedData != null)
+      this.setState(savedData);
+  }
+
   addChoice() {
     this.setState({
       choices: this.state.choices.concat(['']),

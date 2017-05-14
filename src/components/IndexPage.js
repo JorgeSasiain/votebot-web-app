@@ -9,7 +9,7 @@ import NewPoll from './NewPoll';
 import NewPoll_SelectContacts from './NewPoll_SelectContacts';
 import ManagePolls from './ManagePolls';
 import PollSubmitted from './PollSubmitted';
-import { ONE_HOUR } from './constants';
+import { VIEWS, ONE_HOUR } from './constants';
 import XMPP from '../xmpp';
 
 class IndexPage extends Component {
@@ -20,21 +20,13 @@ class IndexPage extends Component {
 
     this.state = {
       view: 0,
-      poll: {
-        creator: '',
-        title: '',
-        duration: 0,
-        hidden: false,
-        questions: []
-      },
-      pollActive: {},
-      targets: {
-        contacts: [],
-        mucs: []
-      }
+      savedData: null,
+      poll: {},
+      pollActive: {}
     };
 
     this.setView = this.setView.bind(this);
+    this.getSavedData = this.getSavedData.bind(this);
     this.onNewVote = this.onNewVote.bind(this);
     this.onNewPoll = this.onNewPoll.bind(this);
     this.onReadyToSendVote = this.onReadyToSendVote.bind(this);
@@ -44,6 +36,10 @@ class IndexPage extends Component {
 
   setView(view) {
     this.setState({view: view});
+  }
+
+  getSavedData() {
+    return this.state.savedData;
   }
 
   getExpirationDate(ttl) {
@@ -77,7 +73,7 @@ class IndexPage extends Component {
       ]
     };
 
-    this.setState({ poll: poll, pollActive: {} });
+    this.setState({ poll: poll, pollActive: {}, savedData: voteInfo });
 
   }
 
@@ -101,7 +97,7 @@ class IndexPage extends Component {
       inactiveAt: inactiveAt
     }
 
-    this.setState({ poll: poll, pollActive: pollActive });
+    this.setState({ poll: poll, pollActive: pollActive, savedData: pollInfo });
 
   }
 
@@ -126,6 +122,12 @@ class IndexPage extends Component {
     fetch('/polls', postRequest).then(response => {
       if (response.status >= 400) return;
       XMPP.sendMessageToBot(JSON.stringify(botMessage));
+      this.setState({
+        view: VIEWS.POLL_SUMBITTED,
+        savedData: null,
+        poll: {},
+        pollActive: {},
+      });
     });
 
   }
@@ -160,10 +162,18 @@ class IndexPage extends Component {
 
     fetch('/polls', postRequest).then(response => {
       if (response.status >= 400) return;
+
       fetch('/polls2', postRequest2).then(response => {
         if (response.status >= 400) return;
         XMPP.sendMessageToBot(JSON.stringify(botMessage));
-      })
+        this.setState({
+          view: VIEWS.POLL_SUMBITTED,
+          savedData: null,
+          poll: {},
+          pollActive: {}
+        });
+      });
+
     });
 
   }
@@ -175,13 +185,23 @@ class IndexPage extends Component {
           {
             0: <Login setView={this.setView} />,
             1: <MainMenu setView={this.setView} />,
-            2: <NewVote setView={this.setView} onNewVote={this.onNewVote} />,
+            2:
+            <NewVote
+              setView={this.setView}
+              onNewVote={this.onNewVote}
+              getSavedData={this.getSavedData}
+            />,
             3:
             <NewVote_SelectMucs
               setView={this.setView}
               onReadyToSend={this.onReadyToSendVote}
             />,
-            4: <NewPoll setView={this.setView} onNewPoll={this.onNewPoll} />,
+            4:
+            <NewPoll
+              setView={this.setView}
+              onNewPoll={this.onNewPoll}
+              getSavedData={this.getSavedData}
+            />,
             5:
             <NewPoll_SelectContacts
               setView={this.setView}

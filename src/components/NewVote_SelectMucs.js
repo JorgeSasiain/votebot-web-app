@@ -13,8 +13,8 @@ class NewVote_SelectMucs extends Component {
     this.deselectMuc = this.deselectMuc.bind(this);
     this.handleMucChange = this.handleMucChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.toPollSubmitted = this.toPollSubmitted.bind(this);
     this.redoVote = this.redoVote.bind(this);
+    this.toMainMenu = this.toMainMenu.bind(this);
   }
 
   componentWillMount() {
@@ -61,15 +61,14 @@ class NewVote_SelectMucs extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.onReadyToSend([], this.state.mucs);
-    this.toPollSubmitted();
-  }
-
-  toPollSubmitted() {
-    this.props.setView(VIEWS.POLL_SUMBITTED);
   }
 
   redoVote() {
     this.props.setView(VIEWS.NEW_VOTE);
+  }
+
+  toMainMenu() {
+    this.props.setView(VIEWS.MAIN_MENU)
   }
 
   render() {
@@ -91,7 +90,7 @@ class NewVote_SelectMucs extends Component {
         <button type="button" onClick={this.redoVote}>
           Rehacer votación
         </button>
-        <button type="button" onClick={this.toPollSubmitted}>
+        <button type="button" onClick={this.toMainMenu}>
           Volver al menú principal
         </button>
       </div>
