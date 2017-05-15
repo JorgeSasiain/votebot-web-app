@@ -47,7 +47,7 @@ app.get('*', (req, res) => {
 
     /* Route matching error */
     if (err) {
-      res.status(500).send(err.message);
+      res.status(500).send('<p>500 Internal Server Error</p><br/><a href="..">Volver</a>');
 
     /* Redirect */
     } else if (redirect) {
@@ -60,7 +60,7 @@ app.get('*', (req, res) => {
 
     /* No match */
     } else {
-      res.status(404).send('Not Found');
+      res.status(404).send('<p>404 Not Found</p><br/><a href="..">Volver</a>');
     }
 
   })

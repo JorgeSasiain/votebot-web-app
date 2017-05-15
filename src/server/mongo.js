@@ -79,12 +79,12 @@ const Mongo = {
 
     let _getPollsByCreator = function(creator) {
       if (creator == null) {
-        res.sendStatus(500);
+        res.sendStatus(500); /* Connection to DB failed */
         return;
       }
       Mongo.db.collection('polls').find({creator: creator}).toArray(function(err, result) {
-        if (err || !result) res.sendStatus(422);
-        else res.status(200).json(result);
+        if (err || !result) res.sendStatus(422); /* Read from DB failed */
+        else res.status(200).json(result); /* Success */
       });
     }
 
