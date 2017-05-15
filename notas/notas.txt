@@ -46,7 +46,6 @@ TODO
 ** Mejoras o sin hacer
 - Validar la entrada de datos a la BD, ya sea al introducir la información o la proipa BD
 - Opción (botón) de ocultar los contactos que ya están clasificados en algún grupo
-- Al volver a "rehacer encuesta", que no se pierda lo que se había introducido ya
 - Los alert en conexión XMPP deberían ser componentes para que no haya que cerrar una ventana
 - Notificar al usuario si ha habido un error en una operación con la base de datos (HTTP status code >= 400)
 - Opciones de resultado oculto, y elección múltiple por cada pregunta, y organizar los campos según la wiki

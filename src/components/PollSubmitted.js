@@ -17,6 +17,7 @@ class PollSubmitted extends Component {
   render() {
     return (
       <div className="Poll-submitted">
+        ¡Encuesta enviada correctamente!
         <form onSubmit={this.toMainMenu}>
           <input type="submit" value="Menú principal" />
         </form>

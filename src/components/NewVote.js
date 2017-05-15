@@ -54,7 +54,7 @@ class NewVote extends Component {
 
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let savedData = this.props.getSavedData();
     if (savedData != null)
       this.setState(savedData);

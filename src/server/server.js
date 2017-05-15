@@ -21,8 +21,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 /* Requests for DB operations */
-app.get('/polls', function(req, res) {
-  //res.status(404).send('Not Found');
+app.get('/polls/:user', function(req, res) {
+  Mongo.getPollsByCreator(req.params.user, res);
 });
 
 app.post('/polls', function(req, res) {
@@ -37,7 +37,7 @@ app.post('/polls2', function(req, res) {
     Mongo.addActivePeriod(req.body, res);
     POLL_ID = 0;
   } else {
-    res.sendStatus(400);
+    res.sendStatus(400); /* IDs don't match */
   }
 });
 

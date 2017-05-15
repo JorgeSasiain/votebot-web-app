@@ -8,7 +8,6 @@ class NewPoll_SelectContacts extends Component {
   constructor(props) {
     super(props);
     this.state = { groups: [], contacts: [], options: {} };
-    this.setUpOptions = this.setUpOptions.bind(this);
     this.selectContact = this.selectContact.bind(this);
     this.deselectContact = this.deselectContact.bind(this);
     this.selectGroup = this.selectGroup.bind(this);
@@ -21,10 +20,6 @@ class NewPoll_SelectContacts extends Component {
   }
 
   componentWillMount() {
-    this.setUpOptions();
-  }
-
-  setUpOptions() {
 
     let contacts = XMPP.contacts;
     let groups = XMPP.groups;

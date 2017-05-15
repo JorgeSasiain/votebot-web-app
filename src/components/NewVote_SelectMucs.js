@@ -8,7 +8,6 @@ class NewVote_SelectMucs extends Component {
   constructor(props) {
     super(props);
     this.state = { mucs: [], options: {} };
-    this.setUpOptions = this.setUpOptions.bind(this);
     this.selectMuc = this.selectMuc.bind(this);
     this.deselectMuc = this.deselectMuc.bind(this);
     this.handleMucChange = this.handleMucChange.bind(this);
@@ -18,10 +17,6 @@ class NewVote_SelectMucs extends Component {
   }
 
   componentWillMount() {
-    this.setUpOptions();
-  }
-
-  setUpOptions() {
 
     let mucs = XMPP.mucs;
 
