@@ -28614,7 +28614,7 @@
 	      var poll = {
 	        creator: _xmpp2.default.jid,
 	        title: voteInfo.title,
-	        type: "public",
+	        private: false,
 	        expireAt: expireAt,
 	        hidden: false,
 	        questions: [{
@@ -28638,7 +28638,7 @@
 	        _id: 0,
 	        creator: _xmpp2.default.jid,
 	        title: pollInfo.title,
-	        type: "private",
+	        private: true,
 	        expireAt: expireAt,
 	        hidden: false,
 	        questions: pollInfo.questions
@@ -30363,6 +30363,7 @@
 	var QUESTION_MAX_LEN = exports.QUESTION_MAX_LEN = 100;
 	var CHOICE_MAX_LEN = exports.CHOICE_MAX_LEN = 50;
 	var ONE_HOUR = exports.ONE_HOUR = 3600000;
+	var ONE_MINUTE = exports.ONE_MINUTE = 60000;
 
 /***/ }),
 /* 256 */
@@ -37264,6 +37265,7 @@
 	    var _this = _possibleConstructorReturn(this, (NewVote_SelectMucs.__proto__ || Object.getPrototypeOf(NewVote_SelectMucs)).call(this, props));
 	
 	    _this.state = { mucs: [], options: {} };
+	    _this.options = {};
 	    _this.selectMuc = _this.selectMuc.bind(_this);
 	    _this.deselectMuc = _this.deselectMuc.bind(_this);
 	    _this.handleMucChange = _this.handleMucChange.bind(_this);
@@ -37285,7 +37287,7 @@
 	      };
 	
 	      var _mucs = mucs.reduce(pushItem, []);
-	      this.setState({ options: { mucs: _mucs } });
+	      this.options = { mucs: _mucs };
 	    }
 	  }, {
 	    key: 'selectMuc',
@@ -37317,7 +37319,7 @@
 	    key: 'handleSubmit',
 	    value: function handleSubmit(event) {
 	      event.preventDefault();
-	      this.props.onReadyToSend([], this.state.mucs);
+	      this.props.onReadyToSend(this.state.mucs);
 	    }
 	  }, {
 	    key: 'redoVote',
@@ -37340,7 +37342,7 @@
 	        _react2.default.createElement(_reactSelect2.default, {
 	          name: 'mucs-select',
 	          placeholder: 'Selecciona uno o varios chats',
-	          options: this.state.options.mucs,
+	          options: this.options.mucs,
 	          multi: true,
 	          onChange: this.handleMucChange
 	        }),
@@ -39084,7 +39086,8 @@
 	
 	    var _this = _possibleConstructorReturn(this, (NewPoll_SelectContacts.__proto__ || Object.getPrototypeOf(NewPoll_SelectContacts)).call(this, props));
 	
-	    _this.state = { groups: [], contacts: [], options: {} };
+	    _this.state = { groups: [], contacts: [] };
+	    _this.options = {};
 	    _this.selectContact = _this.selectContact.bind(_this);
 	    _this.deselectContact = _this.deselectContact.bind(_this);
 	    _this.selectGroup = _this.selectGroup.bind(_this);
@@ -39111,7 +39114,7 @@
 	
 	      var _contacts = contacts.reduce(pushItem, []);
 	      var _groups = groups.reduce(pushItem, []);
-	      this.setState({ options: { groups: _groups, contacts: _contacts } });
+	      this.options = { groups: _groups, contacts: _contacts };
 	    }
 	  }, {
 	    key: 'selectContact',
@@ -39182,7 +39185,7 @@
 	      };
 	
 	      this.state.groups.forEach(getUniqueContacts);
-	      this.props.onReadyToSend(this.state.contacts, []);
+	      this.props.onReadyToSend(this.state.contacts);
 	    }
 	  }, {
 	    key: 'redoPoll',
@@ -39205,14 +39208,14 @@
 	        _react2.default.createElement(_reactSelect2.default, {
 	          name: 'groups-select',
 	          placeholder: 'Selecciona uno o varios grupos',
-	          options: this.state.options.groups,
+	          options: this.options.groups,
 	          multi: true,
 	          onChange: this.handleGroupChange
 	        }),
 	        _react2.default.createElement(_reactSelect2.default, {
 	          name: 'contacts-select',
 	          placeholder: 'Selecciona uno o varios contactos',
-	          options: this.state.options.contacts,
+	          options: this.options.contacts,
 	          multi: true,
 	          onChange: this.handleContactChange
 	        }),
@@ -39268,6 +39271,8 @@
 	
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 	
+	var _constants = __webpack_require__(/*! ./constants */ 255);
+	
 	var _xmpp = __webpack_require__(/*! ../xmpp */ 256);
 	
 	var _xmpp2 = _interopRequireDefault(_xmpp);
@@ -39280,23 +39285,148 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var ManagePolls = function (_Component) {
-	  _inherits(ManagePolls, _Component);
+	var PollItem = function (_Component) {
+	  _inherits(PollItem, _Component);
+	
+	  function PollItem(props) {
+	    _classCallCheck(this, PollItem);
+	
+	    var _this = _possibleConstructorReturn(this, (PollItem.__proto__ || Object.getPrototypeOf(PollItem)).call(this, props));
+	
+	    _this.state = { minutesLeft: 0, untilExpireMinutesLeft: 0 };
+	    _this.poll = _this.props.poll;
+	    _this.timeLeft = 0;
+	    _this.untilExpireTimeLeft = 0;
+	    _this.timer = {};
+	    _this.timerTick = _this.timerTick.bind(_this);
+	    _this.stateTick = _this.stateTick.bind(_this);
+	    _this.toDetails = _this.toDetails.bind(_this);
+	    _this.terminate = _this.terminate.bind(_this);
+	    _this.rerenderParent = _this.rerenderParent.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(PollItem, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	
+	      var curTime = new Date().getTime();
+	      var expireAt = new Date(this.poll.expireAt).getTime();
+	      var inactiveAt = this.poll.private ? expireAt - 24 * _constants.ONE_HOUR : expireAt;
+	
+	      if (expireAt - curTime > 0) this.untilExpireTimeLeft = expireAt - curTime;
+	
+	      if (inactiveAt - curTime > 0) this.timeLeft = inactiveAt - curTime;
+	
+	      this.stateTick();
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var that = this;
+	      this.timer = setInterval(function () {
+	        that.timerTick();
+	        that.stateTick();
+	      }, _constants.ONE_MINUTE);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      clearInterval(this.timer);
+	    }
+	  }, {
+	    key: 'timerTick',
+	    value: function timerTick() {
+	
+	      if (this.timeLeft > _constants.ONE_MINUTE) {
+	        this.timeLeft -= _constants.ONE_MINUTE;
+	      } else {
+	        this.timeLeft = 0;
+	      }
+	
+	      if (this.untilExpireTimeLeft > _constants.ONE_MINUTE) {
+	        this.untilExpireTimeLeft -= _constants.ONE_MINUTE;
+	      } else {
+	        this.untilExpireTimeLeft = 0;
+	      }
+	    }
+	  }, {
+	    key: 'stateTick',
+	    value: function stateTick() {
+	
+	      if (this.timeLeft > _constants.ONE_MINUTE) {
+	        this.setState({ minutesLeft: this.timeLeft / _constants.ONE_MINUTE });
+	      } else {
+	        this.setState({ minutesLeft: 0 });
+	      }
+	
+	      if (this.untilExpireTimeLeft > _constants.ONE_MINUTE) {
+	        this.setState({ untilExpireMinutesLeft: this.untilExpireTimeLeft / _constants.ONE_MINUTE });
+	      } else {
+	        this.setState({ untilExpireMinutesLeft: 0 });
+	      }
+	    }
+	  }, {
+	    key: 'toDetails',
+	    value: function toDetails(event) {
+	      event.preventDefault();
+	    }
+	  }, {
+	    key: 'terminate',
+	    value: function terminate(event) {
+	      event.preventDefault();
+	    }
+	  }, {
+	    key: 'rerenderParent',
+	    value: function rerenderParent() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'b',
+	          null,
+	          this.poll.title,
+	          ': '
+	        ),
+	        this.state.minutesLeft > 0 ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos' : 'Finalizada se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos',
+	        _react2.default.createElement(
+	          'button',
+	          { type: 'button', onClick: this.toDetails },
+	          'Ver detalles'
+	        ),
+	        _react2.default.createElement(
+	          'button',
+	          { type: 'button', onClick: this.terminate },
+	          'Finalizar'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return PollItem;
+	}(_react.Component);
+	
+	var ManagePolls = function (_Component2) {
+	  _inherits(ManagePolls, _Component2);
 	
 	  function ManagePolls(props) {
 	    _classCallCheck(this, ManagePolls);
 	
-	    var _this = _possibleConstructorReturn(this, (ManagePolls.__proto__ || Object.getPrototypeOf(ManagePolls)).call(this, props));
+	    var _this2 = _possibleConstructorReturn(this, (ManagePolls.__proto__ || Object.getPrototypeOf(ManagePolls)).call(this, props));
 	
-	    _this.state = { polls: [] };
-	    _this.responseJson = {};
-	    return _this;
+	    _this2.state = { pollItems: [] };
+	    _this2.responseJson = [];
+	    _this2.toMainMenu = _this2.toMainMenu.bind(_this2);
+	    return _this2;
 	  }
 	
 	  _createClass(ManagePolls, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this2 = this;
+	      var _this3 = this;
 	
 	      var getRequest = {
 	        method: 'GET',
@@ -39307,18 +39437,59 @@
 	      };
 	
 	      (0, _isomorphicFetch2.default)('/polls/' + _xmpp2.default.jid, getRequest).then(function (response) {
+	
 	        if (response.status >= 400) return;
 	        return response.json();
 	      }).then(function (data) {
-	        _this2.responseJson = data;
-	        console.log(_this2.responseJson);
-	        alert(JSON.stringify(_this2.responseJson));
+	
+	        _this3.responseJson = data;
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+	
+	        try {
+	          for (var _iterator = _this3.responseJson[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	            var poll = _step.value;
+	
+	            _this3.setState({
+	              pollItems: _this3.state.pollItems.concat([_react2.default.createElement(PollItem, { poll: poll })])
+	            });
+	          }
+	        } catch (err) {
+	          _didIteratorError = true;
+	          _iteratorError = err;
+	        } finally {
+	          try {
+	            if (!_iteratorNormalCompletion && _iterator.return) {
+	              _iterator.return();
+	            }
+	          } finally {
+	            if (_didIteratorError) {
+	              throw _iteratorError;
+	            }
+	          }
+	        }
 	      });
+	    }
+	  }, {
+	    key: 'toMainMenu',
+	    value: function toMainMenu(event) {
+	      event.preventDefault();
+	      this.props.setView(_constants.VIEWS.MAIN_MENU);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement('div', { className: 'Manage-polls' });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'Manage-polls' },
+	        this.state.pollItems,
+	        _react2.default.createElement(
+	          'button',
+	          { type: 'button', onClick: this.toMainMenu },
+	          'Volver al men\xFA principal'
+	        )
+	      );
 	    }
 	  }]);
 	

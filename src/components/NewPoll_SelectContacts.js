@@ -7,7 +7,8 @@ class NewPoll_SelectContacts extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { groups: [], contacts: [], options: {} };
+    this.state = { groups: [], contacts: [] };
+    this.options = {};
     this.selectContact = this.selectContact.bind(this);
     this.deselectContact = this.deselectContact.bind(this);
     this.selectGroup = this.selectGroup.bind(this);
@@ -31,7 +32,7 @@ class NewPoll_SelectContacts extends Component {
 
     let _contacts = contacts.reduce(pushItem, []);
     let _groups = groups.reduce(pushItem, []);
-    this.setState({ options: {groups: _groups, contacts: _contacts} });
+    this.options = { groups: _groups, contacts: _contacts };
 
   }
 
@@ -97,7 +98,7 @@ class NewPoll_SelectContacts extends Component {
     }
 
     this.state.groups.forEach(getUniqueContacts);
-    this.props.onReadyToSend(this.state.contacts, []);
+    this.props.onReadyToSend(this.state.contacts);
 
   }
 
@@ -117,14 +118,14 @@ class NewPoll_SelectContacts extends Component {
         <Select
           name="groups-select"
           placeholder="Selecciona uno o varios grupos"
-          options={this.state.options.groups}
+          options={this.options.groups}
           multi={true}
           onChange={this.handleGroupChange}
         />
         <Select
           name="contacts-select"
           placeholder="Selecciona uno o varios contactos"
-          options={this.state.options.contacts}
+          options={this.options.contacts}
           multi={true}
           onChange={this.handleContactChange}
         />

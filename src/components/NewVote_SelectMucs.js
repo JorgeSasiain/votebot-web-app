@@ -8,6 +8,7 @@ class NewVote_SelectMucs extends Component {
   constructor(props) {
     super(props);
     this.state = { mucs: [], options: {} };
+    this.options = {};
     this.selectMuc = this.selectMuc.bind(this);
     this.deselectMuc = this.deselectMuc.bind(this);
     this.handleMucChange = this.handleMucChange.bind(this);
@@ -26,7 +27,7 @@ class NewVote_SelectMucs extends Component {
     }
 
     let _mucs = mucs.reduce(pushItem, []);
-    this.setState({ options: {mucs: _mucs} });
+    this.options = { mucs: _mucs };
 
   }
 
@@ -55,7 +56,7 @@ class NewVote_SelectMucs extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.onReadyToSend([], this.state.mucs);
+    this.props.onReadyToSend(this.state.mucs);
   }
 
   redoVote() {
@@ -74,7 +75,7 @@ class NewVote_SelectMucs extends Component {
         <Select
           name="mucs-select"
           placeholder="Selecciona uno o varios chats"
-          options={this.state.options.mucs}
+          options={this.options.mucs}
           multi={true}
           onChange={this.handleMucChange}
         />

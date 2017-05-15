@@ -60,7 +60,7 @@ class IndexPage extends Component {
     let poll = {
       creator: XMPP.jid,
       title: voteInfo.title,
-      type: "public",
+      private: false,
       expireAt: expireAt,
       hidden: false,
       questions: [
@@ -86,7 +86,7 @@ class IndexPage extends Component {
       _id: 0,
       creator: XMPP.jid,
       title: pollInfo.title,
-      type: "private",
+      private: true,
       expireAt: expireAt,
       hidden: false,
       questions: pollInfo.questions
