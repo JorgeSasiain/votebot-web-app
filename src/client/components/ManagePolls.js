@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import promise from 'es6-promise';
 import fetch from 'isomorphic-fetch';
-import { VIEWS, ONE_HOUR, ONE_MINUTE } from './constants';
+import { VIEWS, ONE_HOUR, ONE_MINUTE } from '../constants';
 import XMPP from '../xmpp';
 
 class PollItem extends Component {

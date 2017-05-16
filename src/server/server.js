@@ -6,7 +6,7 @@ import Mongo from './mongo';
 import { ObjectID } from 'mongodb';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
-import routes from '../components/Routes';
+import routes from '../Routes';
 
 const app = new Express();
 const server = new Server(app);

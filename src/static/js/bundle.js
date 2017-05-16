@@ -42,9 +42,9 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
+/*!*****************************!*\
+  !*** ./src/client/index.js ***!
+  \*****************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57,7 +57,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _Routes = __webpack_require__(/*! ./components/Routes */ 182);
+	var _Routes = __webpack_require__(/*! ../Routes */ 182);
 	
 	var _Routes2 = _interopRequireDefault(_Routes);
 	
@@ -22293,9 +22293,9 @@
 
 /***/ }),
 /* 182 */
-/*!**********************************!*\
-  !*** ./src/components/Routes.js ***!
-  \**********************************/
+/*!***********************!*\
+  !*** ./src/Routes.js ***!
+  \***********************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22312,11 +22312,11 @@
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 183);
 	
-	var _Layout = __webpack_require__(/*! ./Layout */ 246);
+	var _Layout = __webpack_require__(/*! ./client/components/Layout */ 246);
 	
 	var _Layout2 = _interopRequireDefault(_Layout);
 	
-	var _IndexPage = __webpack_require__(/*! ./IndexPage */ 247);
+	var _IndexPage = __webpack_require__(/*! ./client/components/IndexPage */ 247);
 	
 	var _IndexPage2 = _interopRequireDefault(_IndexPage);
 	
@@ -28434,9 +28434,9 @@
 
 /***/ }),
 /* 246 */
-/*!**********************************!*\
-  !*** ./src/components/Layout.js ***!
-  \**********************************/
+/*!*****************************************!*\
+  !*** ./src/client/components/Layout.js ***!
+  \*****************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28486,9 +28486,9 @@
 
 /***/ }),
 /* 247 */
-/*!*************************************!*\
-  !*** ./src/components/IndexPage.js ***!
-  \*************************************/
+/*!********************************************!*\
+  !*** ./src/client/components/IndexPage.js ***!
+  \********************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28543,7 +28543,7 @@
 	
 	var _PollSubmitted2 = _interopRequireDefault(_PollSubmitted);
 	
-	var _constants = __webpack_require__(/*! ./constants */ 255);
+	var _constants = __webpack_require__(/*! ../constants */ 255);
 	
 	var _xmpp = __webpack_require__(/*! ../xmpp */ 256);
 	
@@ -30222,9 +30222,9 @@
 
 /***/ }),
 /* 254 */
-/*!*********************************!*\
-  !*** ./src/components/Login.js ***!
-  \*********************************/
+/*!****************************************!*\
+  !*** ./src/client/components/Login.js ***!
+  \****************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30247,7 +30247,7 @@
 	
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 	
-	var _constants = __webpack_require__(/*! ./constants */ 255);
+	var _constants = __webpack_require__(/*! ../constants */ 255);
 	
 	var _xmpp = __webpack_require__(/*! ../xmpp */ 256);
 	
@@ -30377,9 +30377,9 @@
 
 /***/ }),
 /* 255 */
-/*!*************************************!*\
-  !*** ./src/components/constants.js ***!
-  \*************************************/
+/*!*********************************!*\
+  !*** ./src/client/constants.js ***!
+  \*********************************/
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30405,9 +30405,9 @@
 
 /***/ }),
 /* 256 */
-/*!*********************!*\
-  !*** ./src/xmpp.js ***!
-  \*********************/
+/*!****************************!*\
+  !*** ./src/client/xmpp.js ***!
+  \****************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36857,9 +36857,9 @@
 
 /***/ }),
 /* 258 */
-/*!************************************!*\
-  !*** ./src/components/MainMenu.js ***!
-  \************************************/
+/*!*******************************************!*\
+  !*** ./src/client/components/MainMenu.js ***!
+  \*******************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36874,7 +36874,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _constants = __webpack_require__(/*! ./constants */ 255);
+	var _constants = __webpack_require__(/*! ../constants */ 255);
 	
 	var _xmpp = __webpack_require__(/*! ../xmpp */ 256);
 	
@@ -36987,9 +36987,9 @@
 
 /***/ }),
 /* 259 */
-/*!***********************************!*\
-  !*** ./src/components/NewVote.js ***!
-  \***********************************/
+/*!******************************************!*\
+  !*** ./src/client/components/NewVote.js ***!
+  \******************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37004,7 +37004,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _constants = __webpack_require__(/*! ./constants */ 255);
+	var _constants = __webpack_require__(/*! ../constants */ 255);
 	
 	var _xmpp = __webpack_require__(/*! ../xmpp */ 256);
 	
@@ -37259,9 +37259,9 @@
 
 /***/ }),
 /* 260 */
-/*!**********************************************!*\
-  !*** ./src/components/NewVote_SelectMucs.js ***!
-  \**********************************************/
+/*!*****************************************************!*\
+  !*** ./src/client/components/NewVote_SelectMucs.js ***!
+  \*****************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37280,7 +37280,7 @@
 	
 	var _reactSelect2 = _interopRequireDefault(_reactSelect);
 	
-	var _constants = __webpack_require__(/*! ./constants */ 255);
+	var _constants = __webpack_require__(/*! ../constants */ 255);
 	
 	var _xmpp = __webpack_require__(/*! ../xmpp */ 256);
 	
@@ -38698,9 +38698,9 @@
 
 /***/ }),
 /* 268 */
-/*!***********************************!*\
-  !*** ./src/components/NewPoll.js ***!
-  \***********************************/
+/*!******************************************!*\
+  !*** ./src/client/components/NewPoll.js ***!
+  \******************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38715,7 +38715,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _constants = __webpack_require__(/*! ./constants */ 255);
+	var _constants = __webpack_require__(/*! ../constants */ 255);
 	
 	var _xmpp = __webpack_require__(/*! ../xmpp */ 256);
 	
@@ -39081,9 +39081,9 @@
 
 /***/ }),
 /* 269 */
-/*!**************************************************!*\
-  !*** ./src/components/NewPoll_SelectContacts.js ***!
-  \**************************************************/
+/*!*********************************************************!*\
+  !*** ./src/client/components/NewPoll_SelectContacts.js ***!
+  \*********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39102,7 +39102,7 @@
 	
 	var _reactSelect2 = _interopRequireDefault(_reactSelect);
 	
-	var _constants = __webpack_require__(/*! ./constants */ 255);
+	var _constants = __webpack_require__(/*! ../constants */ 255);
 	
 	var _xmpp = __webpack_require__(/*! ../xmpp */ 256);
 	
@@ -39284,9 +39284,9 @@
 
 /***/ }),
 /* 270 */
-/*!***************************************!*\
-  !*** ./src/components/ManagePolls.js ***!
-  \***************************************/
+/*!**********************************************!*\
+  !*** ./src/client/components/ManagePolls.js ***!
+  \**********************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39309,7 +39309,7 @@
 	
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 	
-	var _constants = __webpack_require__(/*! ./constants */ 255);
+	var _constants = __webpack_require__(/*! ../constants */ 255);
 	
 	var _xmpp = __webpack_require__(/*! ../xmpp */ 256);
 	
@@ -39545,9 +39545,9 @@
 
 /***/ }),
 /* 271 */
-/*!*****************************************!*\
-  !*** ./src/components/PollSubmitted.js ***!
-  \*****************************************/
+/*!************************************************!*\
+  !*** ./src/client/components/PollSubmitted.js ***!
+  \************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39562,7 +39562,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _constants = __webpack_require__(/*! ./constants */ 255);
+	var _constants = __webpack_require__(/*! ../constants */ 255);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	

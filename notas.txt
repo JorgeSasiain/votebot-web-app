@@ -12,20 +12,20 @@ Estructura
 - package.json
 - webpack.config.js
 - src
+-- index.js (punto de entrada)
+-- Routes.js (Rutas de la app)
 -- server
 --- server.js
 --- mongo.js
--- index.js (punto de entrada)
--- components
---- Routes.js (Rutas de la app)
---- Layout.js (componente principal que aplica a todas las páginas)
---- IndexPage.js (página principal, carga un componente u otro en función del estado)
---- >Login.js (componente para hacer login XMPP)
---- >MainMenu.js (componente donde se muestran las opciones tras hacer login)
---- >>NewVote.js (componente donde un usuario puede crear una nueva votación pública)
---- >>NewPoll.js (componente donde un usuario puede enviar una nueva encuesta privada)
---- >>ManagePolls.js (componente donde un usuario puede gestionar sus encuestas activas)
--- xmpp
+-- client
+--- components
+---- Layout.js (componente principal que aplica a todas las páginas)
+---- IndexPage.js (página principal, carga un componente u otro en función del estado)
+---- >Login.js (componente para hacer login XMPP)
+---- >MainMenu.js (componente donde se muestran las opciones tras hacer login)
+---- >>NewVote.js (componente donde un usuario puede crear una nueva votación pública)
+---- >>NewPoll.js (componente donde un usuario puede enviar una nueva encuesta privada)
+---- >>ManagePolls.js (componente donde un usuario puede gestionar sus encuestas activas)
 --- xmpp.js (funcionalidades XMPP utilizando strophe.js)
 -- static
 --- index.html

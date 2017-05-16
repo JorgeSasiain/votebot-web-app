@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VIEWS, TITLE_MAX_LEN, QUESTION_MAX_LEN, CHOICE_MAX_LEN } from './constants';
+import { VIEWS, TITLE_MAX_LEN, QUESTION_MAX_LEN, CHOICE_MAX_LEN } from '../constants';
 import XMPP from '../xmpp';
 
 class TextField extends Component {

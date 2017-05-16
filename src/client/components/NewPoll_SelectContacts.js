@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-import { VIEWS } from './constants';
+import { VIEWS } from '../constants';
 import XMPP from '../xmpp';
 
 class NewPoll_SelectContacts extends Component {

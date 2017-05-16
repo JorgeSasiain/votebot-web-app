@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VIEWS } from './constants';
+import { VIEWS } from '../constants';
 import XMPP from '../xmpp';
 
 class SubmitButton extends Component {

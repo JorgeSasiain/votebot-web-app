@@ -9,7 +9,7 @@ import NewPoll from './NewPoll';
 import NewPoll_SelectContacts from './NewPoll_SelectContacts';
 import ManagePolls from './ManagePolls';
 import PollSubmitted from './PollSubmitted';
-import { VIEWS, ONE_HOUR } from './constants';
+import { VIEWS, ONE_HOUR } from '../constants';
 import XMPP from '../xmpp';
 
 class IndexPage extends Component {

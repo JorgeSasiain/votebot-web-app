@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import promise from 'es6-promise';
 import fetch from 'isomorphic-fetch';
-import { VIEWS } from './constants';
+import { VIEWS } from '../constants';
 import XMPP from '../xmpp';
 
 class Login extends Component {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import Layout from './Layout'
-import IndexPage from './IndexPage';
+import Layout from './client/components/Layout'
+import IndexPage from './client/components/IndexPage';
 
 export default class Routes extends React.Component {
   render() {
