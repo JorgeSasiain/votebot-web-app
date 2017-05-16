@@ -17,6 +17,7 @@ class PollItem extends Component {
     this.stateTick = this.stateTick.bind(this);
     this.toDetails = this.toDetails.bind(this);
     this.terminate = this.terminate.bind(this);
+    this.delete = this.delete.bind(this);
     this.rerenderParent = this.rerenderParent.bind(this);
   }
 
@@ -91,6 +92,10 @@ class PollItem extends Component {
     event.preventDefault();
   }
 
+  delete(event) {
+    event.preventDefault();
+  }
+
   rerenderParent() {
 
   }
@@ -101,10 +106,13 @@ class PollItem extends Component {
         <b>{this.poll.title}: </b>
         {this.state.minutesLeft > 0
           ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos'
-          : 'Finalizada se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos'
+          : 'Finalizada (se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos)'
         }
         <button type="button" onClick={this.toDetails}>Ver detalles</button>
-        <button type="button" onClick={this.terminate}>Finalizar</button>
+        {this.state.minutesLeft > 0
+          ? <button type="button" onClick={this.terminate}>Finalizar</button>
+          : <button type="button" onClick={this.delete}>Eliminar</button>
+        }
       </div>
     );
   }
@@ -123,13 +131,10 @@ class ManagePolls extends Component {
 
     let getRequest = {
       method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
+      credentials: 'same-origin'
     };
 
-    fetch('/polls/'+XMPP.jid, getRequest).then(response => {
+    fetch('/polls', getRequest).then(response => {
 
       if (response.status >= 400) return;
       return response.json();

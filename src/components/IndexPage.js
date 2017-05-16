@@ -107,6 +107,7 @@ class IndexPage extends Component {
 
     let postRequest = {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -139,6 +140,7 @@ class IndexPage extends Component {
 
     let postRequest = {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -148,6 +150,7 @@ class IndexPage extends Component {
 
     let postRequest2 = {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

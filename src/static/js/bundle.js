@@ -28660,6 +28660,7 @@
 	
 	      var postRequest = {
 	        method: 'POST',
+	        credentials: 'same-origin',
 	        headers: {
 	          'Accept': 'application/json',
 	          'Content-Type': 'application/json'
@@ -28693,6 +28694,7 @@
 	
 	      var postRequest = {
 	        method: 'POST',
+	        credentials: 'same-origin',
 	        headers: {
 	          'Accept': 'application/json',
 	          'Content-Type': 'application/json'
@@ -28702,6 +28704,7 @@
 	
 	      var postRequest2 = {
 	        method: 'POST',
+	        credentials: 'same-origin',
 	        headers: {
 	          'Accept': 'application/json',
 	          'Content-Type': 'application/json'
@@ -30236,6 +30239,14 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _es6Promise = __webpack_require__(/*! es6-promise */ 248);
+	
+	var _es6Promise2 = _interopRequireDefault(_es6Promise);
+	
+	var _isomorphicFetch = __webpack_require__(/*! isomorphic-fetch */ 252);
+	
+	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+	
 	var _constants = __webpack_require__(/*! ./constants */ 255);
 	
 	var _xmpp = __webpack_require__(/*! ../xmpp */ 256);
@@ -30280,12 +30291,39 @@
 	  }, {
 	    key: 'onConnected',
 	    value: function onConnected() {
-	      this.props.setView(_constants.VIEWS.MAIN_MENU);
+	
+	      var that = this;
+	      var postRequest = {
+	        method: 'POST',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify({ jid: _xmpp2.default.jid })
+	      };
+	
+	      (0, _isomorphicFetch2.default)('/login', postRequest).then(function (response) {
+	        that.props.setView(_constants.VIEWS.MAIN_MENU);
+	      });
 	    }
 	  }, {
 	    key: 'onDisconnected',
 	    value: function onDisconnected() {
-	      this.props.setView(_constants.VIEWS.LOGIN);
+	
+	      var that = this;
+	      var postRequest = {
+	        method: 'POST',
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json'
+	        },
+	        credentials: 'same-origin'
+	      };
+	
+	      (0, _isomorphicFetch2.default)('/logout', postRequest).then(function (response) {
+	        that.props.setView(_constants.VIEWS.LOGIN);
+	      });
 	    }
 	  }, {
 	    key: 'handleSubmit',
@@ -39302,6 +39340,7 @@
 	    _this.stateTick = _this.stateTick.bind(_this);
 	    _this.toDetails = _this.toDetails.bind(_this);
 	    _this.terminate = _this.terminate.bind(_this);
+	    _this.delete = _this.delete.bind(_this);
 	    _this.rerenderParent = _this.rerenderParent.bind(_this);
 	    return _this;
 	  }
@@ -39377,6 +39416,11 @@
 	      event.preventDefault();
 	    }
 	  }, {
+	    key: 'delete',
+	    value: function _delete(event) {
+	      event.preventDefault();
+	    }
+	  }, {
 	    key: 'rerenderParent',
 	    value: function rerenderParent() {}
 	  }, {
@@ -39391,16 +39435,20 @@
 	          this.poll.title,
 	          ': '
 	        ),
-	        this.state.minutesLeft > 0 ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos' : 'Finalizada se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos',
+	        this.state.minutesLeft > 0 ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos' : 'Finalizada (se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos)',
 	        _react2.default.createElement(
 	          'button',
 	          { type: 'button', onClick: this.toDetails },
 	          'Ver detalles'
 	        ),
-	        _react2.default.createElement(
+	        this.state.minutesLeft > 0 ? _react2.default.createElement(
 	          'button',
 	          { type: 'button', onClick: this.terminate },
 	          'Finalizar'
+	        ) : _react2.default.createElement(
+	          'button',
+	          { type: 'button', onClick: this.delete },
+	          'Eliminar'
 	        )
 	      );
 	    }
@@ -39430,13 +39478,10 @@
 	
 	      var getRequest = {
 	        method: 'GET',
-	        headers: {
-	          'Accept': 'application/json',
-	          'Content-Type': 'application/json'
-	        }
+	        credentials: 'same-origin'
 	      };
 	
-	      (0, _isomorphicFetch2.default)('/polls/' + _xmpp2.default.jid, getRequest).then(function (response) {
+	      (0, _isomorphicFetch2.default)('/polls', getRequest).then(function (response) {
 	
 	        if (response.status >= 400) return;
 	        return response.json();

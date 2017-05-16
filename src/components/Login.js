@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import promise from 'es6-promise';
+import fetch from 'isomorphic-fetch';
 import { VIEWS } from './constants';
 import XMPP from '../xmpp';
 
@@ -23,11 +25,40 @@ class Login extends Component {
   }
 
   onConnected() {
-    this.props.setView(VIEWS.MAIN_MENU);
+
+    let that = this;
+    let postRequest = {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ jid: XMPP.jid })
+    };
+
+    fetch('/login', postRequest).then(response => {
+      that.props.setView(VIEWS.MAIN_MENU);
+    });
+
   }
 
   onDisconnected() {
-    this.props.setView(VIEWS.LOGIN);
+
+    let that = this;
+    let postRequest = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin'
+    };
+
+    fetch('/logout', postRequest).then(response => {
+      that.props.setView(VIEWS.LOGIN);
+    });
+
   }
 
   handleSubmit(event) {

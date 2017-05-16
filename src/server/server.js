@@ -4,34 +4,61 @@ import Express from 'express';
 import bodyParser from 'body-parser';
 import Mongo from './mongo';
 import { ObjectID } from 'mongodb';
-import React from 'react'
-import { renderToString } from 'react-dom/server'
-import { match, RouterContext } from 'react-router'
-import routes from '../components/Routes'
+import { renderToString } from 'react-dom/server';
+import { match, RouterContext } from 'react-router';
+import routes from '../components/Routes';
 
 const app = new Express();
 const server = new Server(app);
 const PORT = process.env.PORT || 3000;
+let session = require('express-session');
 let POLL_ID = 0;
 
+/* Static files */
 app.use(Express.static(path.join(__dirname, '../static')));
 
 /* Parse the body (req.body) of all requests as JSON */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-/* Requests for DB operations */
-app.get('/polls/:user', function(req, res) {
-  Mongo.getPollsByCreator(req.params.user, res);
+/* Session */
+app.use(session({
+  secret: 'hEe7PvZQNkvL7mzp',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {secure: false}
+}));
+
+/*Login and logout */
+app.post('/login', (req, res) => {
+  session = req.session;
+  session.jid = req.body.jid;
+  res.sendStatus(200);
 });
 
-app.post('/polls', function(req, res) {
+app.post('/logout', (req, res) => {
+  session = req.session;
+  session.destroy(function(err){ });
+  res.sendStatus(200);
+});
+
+/* Requests for DB operations */
+app.get('/polls', (req, res) => {
+  session = req.session;
+  if (!session.jid) {
+    res.sendStatus(401);
+    return;
+  }
+  Mongo.getPollsByCreator(session.jid, res);
+});
+
+app.post('/polls', (req, res) => {
   POLL_ID = new ObjectID();
   req.body._id = POLL_ID;
   Mongo.addPoll(req.body, res);
 });
 
-app.post('/polls2', function(req, res) {
+app.post('/polls2', (req, res) => {
   req.body.poll_id = POLL_ID;
   if (POLL_ID !== 0) {
     Mongo.addActivePeriod(req.body, res);
