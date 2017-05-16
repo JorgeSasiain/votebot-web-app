@@ -39,14 +39,18 @@ XEPs
 
 TODO
 ** Problemas
-- Ver que pasa al pedir las MUCs del usuario
+- Ver que pasa al pedir las MUCs del usuario (hace falta JID con recurso)
 - Servicio BOSH/WebSocket propio
 - Arreglar los formularios de selección multiple
 
-** Mejoras o sin hacer
+** Mejoras
+- Autenticar con contraseña, y también al insertar en la base de datos (comprobar que JID y pass son iguales en cliente y servidor)
 - Validar la entrada de datos a la BD, ya sea al introducir la información o la proipa BD
-- Opción (botón) de ocultar los contactos que ya están clasificados en algún grupo
+- Cerrar la conexión XMPP al salir de la aplicación
+- En selección de contactos y grupos, añadir opción (botón) de ocultar los contactos que ya estén clasificados en algún grupo
 - Los alert en conexión XMPP deberían ser componentes para que no haya que cerrar una ventana
-- Notificar al usuario si ha habido un error en una operación con la base de datos (HTTP status code >= 400)
-- Opciones de resultado oculto, y elección múltiple por cada pregunta, y organizar los campos según la wiki
-- Página de gestionar encuestas y leer información de la BD
+
+**Por hacer
+- Notificar al usuario si ha habido un error en una operación con la base de datos (HTTP status code >= 400), mostrando la página correspondiente y pudiendo volver atrás
+- Opciones de resultado oculto (solo encuestas privadas) y elección múltiple por cada pregunta
+- Sub-menu para cada encuesta en página de gestionar encuestas
