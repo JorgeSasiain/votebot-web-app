@@ -48,11 +48,11 @@ class Login extends Component {
     let that = this;
     let postRequest = {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
-      credentials: 'same-origin'
+      }
     };
 
     fetch('/logout', postRequest).then(response => {

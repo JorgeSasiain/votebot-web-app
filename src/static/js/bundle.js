@@ -30314,11 +30314,11 @@
 	      var that = this;
 	      var postRequest = {
 	        method: 'POST',
+	        credentials: 'same-origin',
 	        headers: {
 	          'Accept': 'application/json',
 	          'Content-Type': 'application/json'
-	        },
-	        credentials: 'same-origin'
+	        }
 	      };
 	
 	      (0, _isomorphicFetch2.default)('/logout', postRequest).then(function (response) {

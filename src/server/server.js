@@ -12,7 +12,6 @@ const app = new Express();
 const server = new Server(app);
 const PORT = process.env.PORT || 3000;
 let session = require('express-session');
-let POLL_ID = 0;
 
 /* Static files */
 app.use(Express.static(path.join(__dirname, '../static')));
@@ -53,16 +52,22 @@ app.get('/polls', (req, res) => {
 });
 
 app.post('/polls', (req, res) => {
-  POLL_ID = new ObjectID();
-  req.body._id = POLL_ID;
+  session = req.session;
+  if (session.jid !== req.body.creator) {
+    res.sendStatus(401);
+    return;
+  }
+  session.pollId = new ObjectID();
+  req.body._id = session.pollId;
   Mongo.addPoll(req.body, res);
 });
 
 app.post('/polls2', (req, res) => {
-  req.body.poll_id = POLL_ID;
-  if (POLL_ID !== 0) {
+  session = req.session;
+  req.body.poll_id = session.pollId;
+  if (session.pollId != null) {
     Mongo.addActivePeriod(req.body, res);
-    POLL_ID = 0;
+    session.pollId = null;
   } else {
     res.sendStatus(400); /* IDs don't match */
   }

@@ -44,7 +44,6 @@ TODO
 - Arreglar los formularios de selección multiple
 
 ** Mejoras
-- Autenticar con contraseña, y también al insertar en la base de datos (comprobar que JID y pass son iguales en cliente y servidor)
 - Validar la entrada de datos a la BD, ya sea al introducir la información o la proipa BD
 - Cerrar la conexión XMPP al salir de la aplicación
 - En selección de contactos y grupos, añadir opción (botón) de ocultar los contactos que ya estén clasificados en algún grupo
