@@ -28719,16 +28719,12 @@
 	
 	      (0, _isomorphicFetch2.default)('/polls', postRequest).then(function (response) {
 	        if (response.status >= 400) return;
-	
-	        (0, _isomorphicFetch2.default)('/polls2', postRequest2).then(function (response) {
-	          if (response.status >= 400) return;
-	          _xmpp2.default.sendMessageToBot(JSON.stringify(botMessage));
-	          _this3.setState({
-	            view: _constants.VIEWS.POLL_SUMBITTED,
-	            savedData: null,
-	            poll: {},
-	            pollActive: {}
-	          });
+	        _xmpp2.default.sendMessageToBot(JSON.stringify(botMessage));
+	        _this3.setState({
+	          view: _constants.VIEWS.POLL_SUMBITTED,
+	          savedData: null,
+	          poll: {},
+	          pollActive: {}
 	        });
 	      });
 	    }
@@ -30269,9 +30265,10 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
 	
-	    _this.state = { jidValue: '', passValue: '' };
+	    _this.state = { jidValue: '', passValue: '', show: false };
 	    _this.handleJidChange = _this.handleJidChange.bind(_this);
 	    _this.handlePassChange = _this.handlePassChange.bind(_this);
+	    _this.showHide = _this.showHide.bind(_this);
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
 	    _this.onConnected = _this.onConnected.bind(_this);
 	    _this.onDisconnected = _this.onDisconnected.bind(_this);
@@ -30287,6 +30284,11 @@
 	    key: 'handlePassChange',
 	    value: function handlePassChange(event) {
 	      this.setState({ passValue: event.target.value });
+	    }
+	  }, {
+	    key: 'showHide',
+	    value: function showHide(event) {
+	      this.setState({ show: !this.state.show });
 	    }
 	  }, {
 	    key: 'onConnected',
@@ -30358,10 +30360,15 @@
 	            null,
 	            'Contrase\xF1a:',
 	            _react2.default.createElement('input', {
-	              type: 'text',
+	              type: this.state.show ? "text" : "password",
 	              value: this.state.passValue,
 	              onChange: this.handlePassChange
-	            })
+	            }),
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'button', onClick: this.showHide },
+	              this.state.show ? "Ocultar" : "Mostrar"
+	            )
 	          ),
 	          _react2.default.createElement('br', null),
 	          _react2.default.createElement('input', { type: 'submit', value: 'Identificarse' })

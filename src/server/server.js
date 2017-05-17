@@ -57,20 +57,8 @@ app.post('/polls', (req, res) => {
     res.sendStatus(401);
     return;
   }
-  session.pollId = new ObjectID();
-  req.body._id = session.pollId;
+  req.body._id = new ObjectID();
   Mongo.addPoll(req.body, res);
-});
-
-app.post('/polls2', (req, res) => {
-  session = req.session;
-  req.body.poll_id = session.pollId;
-  if (session.pollId != null) {
-    Mongo.addActivePeriod(req.body, res);
-    session.pollId = null;
-  } else {
-    res.sendStatus(400); /* IDs don't match */
-  }
 });
 
 /* Server-side rendering */

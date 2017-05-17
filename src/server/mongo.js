@@ -57,24 +57,6 @@ const Mongo = {
 
   },
 
-  addActivePeriod: function(doc, res) {
-
-    let _addActivePeriod = function(doc) {
-      if (doc == null) {
-        res.sendStatus(500); /* Connection to DB failed */
-        return;
-      }
-      Mongo.db.collection('active_polls').insert(doc, function(err, result) {
-        if (err || !result) res.sendStatus(422); /* Insert into DB failed */
-        else res.sendStatus(201); /* Success */
-      });
-    }
-
-    doc.inactiveAt = new Date(doc.inactiveAt);
-    Mongo.connect(_addActivePeriod, doc);
-
-  },
-
   getPollsByCreator: function(creator, res) {
 
     let _getPollsByCreator = function(creator) {

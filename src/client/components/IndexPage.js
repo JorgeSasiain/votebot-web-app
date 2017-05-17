@@ -165,18 +165,13 @@ class IndexPage extends Component {
 
     fetch('/polls', postRequest).then(response => {
       if (response.status >= 400) return;
-
-      fetch('/polls2', postRequest2).then(response => {
-        if (response.status >= 400) return;
-        XMPP.sendMessageToBot(JSON.stringify(botMessage));
-        this.setState({
-          view: VIEWS.POLL_SUMBITTED,
-          savedData: null,
-          poll: {},
-          pollActive: {}
-        });
+      XMPP.sendMessageToBot(JSON.stringify(botMessage));
+      this.setState({
+        view: VIEWS.POLL_SUMBITTED,
+        savedData: null,
+        poll: {},
+        pollActive: {}
       });
-
     });
 
   }
