@@ -28613,7 +28613,6 @@
 	
 	      var poll = {
 	        creator: _xmpp2.default.jid,
-	        title: voteInfo.title,
 	        private: false,
 	        expireAt: expireAt,
 	        hidden: false,
@@ -28669,7 +28668,7 @@
 	      };
 	
 	      var botMessage = {
-	        pollTitle: this.state.poll.title,
+	        pollTitle: this.state.poll.questions[0].question,
 	        mucs: mucs
 	      };
 	
@@ -37055,7 +37054,6 @@
 	    var _this2 = _possibleConstructorReturn(this, (NewVote.__proto__ || Object.getPrototypeOf(NewVote)).call(this, props));
 	
 	    _this2.state = {
-	      title: '',
 	      duration: 24,
 	      question: '',
 	      choices: ['', ''],
@@ -37064,7 +37062,6 @@
 	
 	    _this2.addChoice = _this2.addChoice.bind(_this2);
 	    _this2.removeChoice = _this2.removeChoice.bind(_this2);
-	    _this2.handleTitleChange = _this2.handleTitleChange.bind(_this2);
 	    _this2.handleDurationChange = _this2.handleDurationChange.bind(_this2);
 	    _this2.handleQuestionChange = _this2.handleQuestionChange.bind(_this2);
 	    _this2.handleChoiceChange = _this2.handleChoiceChange.bind(_this2);
@@ -37105,13 +37102,6 @@
 	        choices: choices,
 	        votes: votes
 	      });
-	    }
-	  }, {
-	    key: 'handleTitleChange',
-	    value: function handleTitleChange(event) {
-	      var value = event.target.value;
-	      if (value.length > _constants.TITLE_MAX_LEN) return;
-	      this.setState({ title: value });
 	    }
 	  }, {
 	    key: 'handleDurationChange',
@@ -37181,12 +37171,6 @@
 	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: this.handleSubmit },
-	          _react2.default.createElement(TextField, {
-	            label: 'T\xEDtulo:',
-	            value: this.state.title,
-	            onChange: this.handleTitleChange
-	          }),
-	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
 	            'label',
 	            null,
@@ -39428,26 +39412,56 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        this.poll.hasOwnProperty("title") && this.poll.private ? /* Poll */
 	        _react2.default.createElement(
-	          'b',
+	          'div',
 	          null,
-	          this.poll.title,
-	          ': '
-	        ),
-	        this.state.minutesLeft > 0 ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos' : 'Finalizada (se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos)',
+	          _react2.default.createElement(
+	            'b',
+	            null,
+	            this.poll.title,
+	            ': '
+	          ),
+	          this.state.minutesLeft > 0 ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos' : 'Finalizada (se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos)',
+	          _react2.default.createElement(
+	            'button',
+	            { type: 'button', onClick: this.toDetails },
+	            'Ver detalles'
+	          ),
+	          this.state.minutesLeft > 0 ? _react2.default.createElement(
+	            'button',
+	            { type: 'button', onClick: this.terminate },
+	            'Finalizar'
+	          ) : _react2.default.createElement(
+	            'button',
+	            { type: 'button', onClick: this.delete },
+	            'Eliminar'
+	          )
+	        ) : /* Vote */
 	        _react2.default.createElement(
-	          'button',
-	          { type: 'button', onClick: this.toDetails },
-	          'Ver detalles'
-	        ),
-	        this.state.minutesLeft > 0 ? _react2.default.createElement(
-	          'button',
-	          { type: 'button', onClick: this.terminate },
-	          'Finalizar'
-	        ) : _react2.default.createElement(
-	          'button',
-	          { type: 'button', onClick: this.delete },
-	          'Eliminar'
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'b',
+	            null,
+	            _react2.default.createElement(
+	              'i',
+	              null,
+	              this.poll.questions[0].question,
+	              ': '
+	            )
+	          ),
+	          this.state.minutesLeft > 0 ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos' : 'Finalizada (a punto de ser borrada)',
+	          _react2.default.createElement(
+	            'button',
+	            { type: 'button', onClick: this.toDetails },
+	            'Ver detalles'
+	          ),
+	          this.state.minutesLeft > 0 && _react2.default.createElement(
+	            'button',
+	            { type: 'button', onClick: this.terminate },
+	            'Finalizar y eliminar'
+	          )
 	        )
 	      );
 	    }
@@ -39485,7 +39499,7 @@
 	        _react2.default.createElement(
 	          'h2',
 	          null,
-	          this.poll.title
+	          this.poll.hasOwnProperty("title") && this.poll.private && this.poll.title
 	        ),
 	        this.poll.questions.map(function (item) {
 	          var elements = [];

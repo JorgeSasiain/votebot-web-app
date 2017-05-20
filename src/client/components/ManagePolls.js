@@ -106,16 +106,41 @@ class PollItem extends Component {
   render() {
     return (
       <div>
-        <b>{this.poll.title}: </b>
-        {this.state.minutesLeft > 0
-          ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos'
-          : 'Finalizada (se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos)'
-        }
-        <button type="button" onClick={this.toDetails}>Ver detalles</button>
-        {this.state.minutesLeft > 0
-          ? <button type="button" onClick={this.terminate}>Finalizar</button>
-          : <button type="button" onClick={this.delete}>Eliminar</button>
-        }
+      {
+        (this.poll.hasOwnProperty("title") && this.poll.private)
+
+        ? /* Poll */
+        <div>
+          <b>{this.poll.title}: </b>
+          {
+            this.state.minutesLeft > 0
+            ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos'
+            : 'Finalizada (se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos)'
+          }
+          <button type="button" onClick={this.toDetails}>Ver detalles</button>
+          {
+            this.state.minutesLeft > 0
+            ? <button type="button" onClick={this.terminate}>Finalizar</button>
+            : <button type="button" onClick={this.delete}>Eliminar</button>
+          }
+        </div>
+
+        : /* Vote */
+        <div>
+          <b><i>{this.poll.questions[0].question}: </i></b>
+          {
+            this.state.minutesLeft > 0
+            ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos'
+            : 'Finalizada (a punto de ser borrada)'
+          }
+          <button type="button" onClick={this.toDetails}>Ver detalles</button>
+          {
+            this.state.minutesLeft > 0 &&
+              <button type="button" onClick={this.terminate}>Finalizar y eliminar</button>
+          }
+        </div>
+
+      }
       </div>
     );
   }
@@ -138,7 +163,10 @@ class PollDetails extends Component {
   render() {
     return (
       <div>
-        <h2>{this.poll.title}</h2>
+        <h2>{
+          this.poll.hasOwnProperty("title") && this.poll.private
+            && this.poll.title
+        }</h2>
         {
           this.poll.questions.map(
             item => {

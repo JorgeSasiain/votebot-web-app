@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VIEWS, TITLE_MAX_LEN, QUESTION_MAX_LEN, CHOICE_MAX_LEN } from '../constants';
+import { VIEWS, QUESTION_MAX_LEN, CHOICE_MAX_LEN } from '../constants';
 import XMPP from '../xmpp';
 
 class TextField extends Component {
@@ -31,7 +31,6 @@ class NewVote extends Component {
     super(props);
 
     this.state = {
-      title: '',
       duration: 24,
       question: '',
       choices: ['', ''],
@@ -40,7 +39,6 @@ class NewVote extends Component {
 
     this.addChoice = this.addChoice.bind(this);
     this.removeChoice = this.removeChoice.bind(this);
-    this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDurationChange = this.handleDurationChange.bind(this);
     this.handleQuestionChange = this.handleQuestionChange.bind(this);
     this.handleChoiceChange = this.handleChoiceChange.bind(this);
@@ -77,12 +75,6 @@ class NewVote extends Component {
       choices: choices,
       votes: votes
     });
-  }
-
-  handleTitleChange(event) {
-    let value = event.target.value;
-    if (value.length > TITLE_MAX_LEN) return;
-    this.setState({title: value});
   }
 
   handleDurationChange(event) {
@@ -138,12 +130,6 @@ class NewVote extends Component {
         Introduzca la información de la votación:
         <br />
         <form onSubmit={this.handleSubmit}>
-          <TextField
-            label="Título:"
-            value={this.state.title}
-            onChange={this.handleTitleChange}
-          />
-          <br />
           <label>
             Vigencia:
             <input

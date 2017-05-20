@@ -59,7 +59,6 @@ class IndexPage extends Component {
 
     let poll = {
       creator: XMPP.jid,
-      title: voteInfo.title,
       private: false,
       expireAt: expireAt,
       hidden: false,
@@ -116,7 +115,7 @@ class IndexPage extends Component {
     };
 
     let botMessage = {
-      pollTitle: this.state.poll.title,
+      pollTitle: this.state.poll.questions[0].question,
       mucs: mucs
     };
 
