@@ -28661,7 +28661,6 @@
 	        method: 'POST',
 	        credentials: 'same-origin',
 	        headers: {
-	          'Accept': 'application/json',
 	          'Content-Type': 'application/json'
 	        },
 	        body: requestBody
@@ -28694,7 +28693,6 @@
 	        method: 'POST',
 	        credentials: 'same-origin',
 	        headers: {
-	          'Accept': 'application/json',
 	          'Content-Type': 'application/json'
 	        },
 	        body: requestBody
@@ -30287,7 +30285,6 @@
 	        method: 'POST',
 	        credentials: 'same-origin',
 	        headers: {
-	          'Accept': 'application/json',
 	          'Content-Type': 'application/json'
 	        },
 	        body: JSON.stringify({ jid: _xmpp2.default.jid })
@@ -30306,7 +30303,6 @@
 	        method: 'POST',
 	        credentials: 'same-origin',
 	        headers: {
-	          'Accept': 'application/json',
 	          'Content-Type': 'application/json'
 	        }
 	      };
@@ -39400,7 +39396,7 @@
 	    key: 'terminate',
 	    value: function terminate(event) {
 	      event.preventDefault();
-	      this.props.c().delete(this.poll._id);
+	      this.props.c().terminate(this.poll._id);
 	      this.rerenderParent();
 	    }
 	  }, {
@@ -39463,7 +39459,7 @@
 	          ),
 	          this.state.minutesLeft > 0 && _react2.default.createElement(
 	            'button',
-	            { type: 'button', onClick: this.terminate },
+	            { type: 'button', onClick: this.delete },
 	            'Finalizar y eliminar'
 	          )
 	        )
@@ -39576,7 +39572,10 @@
 	
 	      var getRequest = {
 	        method: 'GET',
-	        credentials: 'same-origin'
+	        credentials: 'same-origin',
+	        headers: {
+	          'Accept': 'application/json'
+	        }
 	      };
 	
 	      (0, _isomorphicFetch2.default)('/polls', getRequest).then(function (response) {
@@ -39641,7 +39640,21 @@
 	          that.setState({ selectedPoll: _id }, that.setState({ inDetailsView: true }));
 	        },
 	
-	        terminate: function terminate(_id) {},
+	        terminate: function terminate(_id) {
+	          var putRequest = {
+	            method: 'PUT',
+	            credentials: 'same-origin',
+	            headers: {
+	              'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify({
+	              date: new Date().getTime() + 24 * _constants.ONE_HOUR
+	            })
+	          };
+	          (0, _isomorphicFetch2.default)('/polls/' + _id, putRequest).then(function (response) {
+	            if (response.status >= 400) return;
+	          });
+	        },
 	
 	        delete: function _delete(_id) {
 	          var deleteRequest = {

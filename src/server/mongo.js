@@ -84,10 +84,29 @@ const Mongo = {
       Mongo.db.collection('polls').deleteOne({_id: _id}, function(err, result) {
         if (err || !result) res.sendStatus(422); /* Delete from DB failed */
         else res.sendStatus(204); /* Success */
-      })
+      });
     }
 
     Mongo.connect(_deletePollByID, _id);
+
+  },
+
+  updatePollTTLByID: function(_id, date, res) {
+
+    let _updatePollTTLByID = function(params) {
+      if (params == null) {
+        res.sendStatus(500); /* Connection to DB failed */
+        return;
+      }
+      Mongo.db.collection('polls').update({_id: params._id}, {$set: {expireAt: params.date}},
+      function(err, result) {
+        if (err || !result) res.sendStatus(422); /* Delete from DB failed */
+        else res.sendStatus(204); /* Success */
+      });
+    }
+
+    date = new Date(date);
+    Mongo.connect(_updatePollTTLByID, {_id: _id, date: date});
 
   }
 

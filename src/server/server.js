@@ -42,6 +42,8 @@ app.post('/logout', (req, res) => {
 });
 
 /* Requests for DB operations */
+
+/* Get polls of user */
 app.get('/polls', (req, res) => {
   session = req.session;
   if (!session.jid) {
@@ -51,6 +53,7 @@ app.get('/polls', (req, res) => {
   Mongo.getPollsByCreator(session.jid, res);
 });
 
+/* Insert new poll */
 app.post('/polls', (req, res) => {
   session = req.session;
   if (session.jid !== req.body.creator) {
@@ -61,6 +64,7 @@ app.post('/polls', (req, res) => {
   Mongo.addPoll(req.body, res);
 });
 
+/* Delete poll */
 app.delete('/polls/:id', (req, res) => {
   session = req.session;
   if (!session.jid) {
@@ -68,6 +72,16 @@ app.delete('/polls/:id', (req, res) => {
     return;
   }
   Mongo.deletePollByID(new ObjectID(req.params.id), res);
+});
+
+/* Update time to live of poll */
+app.put('/polls/:id', (req, res) => {
+  session = req.session;
+  if (!session.jid) {
+    res.sendStatus(401);
+    return;
+  }
+  Mongo.updatePollTTLByID(new ObjectID(req.params.id), req.body.date, res);
 })
 
 /* Server-side rendering */
@@ -95,6 +109,7 @@ app.get('*', (req, res) => {
   })
 });
 
+/* Start server */
 server.listen(PORT, err => {
   if (err) return console.error(err);
   console.info("Server running on port " + PORT);

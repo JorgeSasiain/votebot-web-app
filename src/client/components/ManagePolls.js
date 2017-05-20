@@ -138,7 +138,7 @@ class PollItem extends Component {
           <button type="button" onClick={this.toDetails}>Ver detalles</button>
           {
             this.state.minutesLeft > 0 &&
-              <button type="button" onClick={this.terminate}>Finalizar y eliminar</button>
+              <button type="button" onClick={this.delete}>Finalizar y eliminar</button>
           }
         </div>
 
@@ -209,7 +209,10 @@ class ManagePolls extends Component {
 
     let getRequest = {
       method: 'GET',
-      credentials: 'same-origin'
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json'
+      }
     };
 
     fetch('/polls', getRequest).then(response => {
@@ -258,13 +261,25 @@ class ManagePolls extends Component {
       },
 
       terminate: function(_id) {
-
+        let putRequest = {
+          method: 'PUT',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            date: new Date().getTime() + 24 * ONE_HOUR
+          })
+        };
+        fetch('/polls/' + _id, putRequest).then(response => {
+          if (response.status >= 400) return;
+        });
       },
 
       delete: function(_id) {
         let deleteRequest = {
           method: 'DELETE',
-          credentials: 'same-origin',
+          credentials: 'same-origin'
         };
         fetch('/polls/' + _id, deleteRequest).then(response => {
           if (response.status >= 400) return;
