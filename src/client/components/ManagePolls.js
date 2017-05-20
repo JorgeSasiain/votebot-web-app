@@ -249,7 +249,13 @@ class ManagePolls extends Component {
       },
 
       delete: function(_id) {
-
+        let deleteRequest = {
+          method: 'DELETE',
+          credentials: 'same-origin',
+        };
+        fetch('/polls/' + _id, deleteRequest).then(response => {
+          if (response.status >= 400) return;
+        });
       }
 
     }
@@ -262,12 +268,13 @@ class ManagePolls extends Component {
         {
           this.state.inDetailsView
           ? <PollDetails
-            poll={
-              this.state.pollItems.find(
-                item => item.props.poll._id === this.state.selectedPoll
-              ).props.poll
-            }
-            returnToGeneralView={this.returnToGeneralView} />
+              poll={
+                this.state.pollItems.find(
+                  item => item.props.poll._id === this.state.selectedPoll
+                ).props.poll
+              }
+              returnToGeneralView={this.returnToGeneralView}
+            />
           : this.state.pollItems
         }
         <button type="button" onClick={this.toMainMenu}>

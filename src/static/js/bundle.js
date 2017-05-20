@@ -39311,7 +39311,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, (PollItem.__proto__ || Object.getPrototypeOf(PollItem)).call(this, props));
 	
-	    _this.state = { minutesLeft: 0, untilExpireMinutesLeft: 0 };
+	    _this.state = { minutesLeft: 0, untilExpireMinutesLeft: 0, deleted: false };
 	    _this.poll = _this.props.poll;
 	    _this.timeLeft = 0;
 	    _this.untilExpireTimeLeft = 0;
@@ -39395,13 +39395,15 @@
 	    key: 'terminate',
 	    value: function terminate(event) {
 	      event.preventDefault();
-	      this.props.c().terminate(this.poll._id);
+	      this.props.c().delete(this.poll._id);
+	      this.setState({ deleted: true });
 	    }
 	  }, {
 	    key: 'delete',
 	    value: function _delete(event) {
 	      event.preventDefault();
 	      this.props.c().delete(this.poll._id);
+	      this.setState({ deleted: true });
 	    }
 	  }, {
 	    key: 'rerenderParent',
@@ -39412,6 +39414,8 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	
+	        /* Not deleted (exists) */
 	        this.poll.hasOwnProperty("title") && this.poll.private ? /* Poll */
 	        _react2.default.createElement(
 	          'div',
@@ -39627,7 +39631,15 @@
 	
 	        terminate: function terminate(_id) {},
 	
-	        delete: function _delete(_id) {}
+	        delete: function _delete(_id) {
+	          var deleteRequest = {
+	            method: 'DELETE',
+	            credentials: 'same-origin'
+	          };
+	          (0, _isomorphicFetch2.default)('/polls/' + _id, deleteRequest).then(function (response) {
+	            if (response.status >= 400) return;
+	          });
+	        }
 	
 	      };
 	    }
@@ -39643,7 +39655,8 @@
 	          poll: this.state.pollItems.find(function (item) {
 	            return item.props.poll._id === _this5.state.selectedPoll;
 	          }).props.poll,
-	          returnToGeneralView: this.returnToGeneralView }) : this.state.pollItems,
+	          returnToGeneralView: this.returnToGeneralView
+	        }) : this.state.pollItems,
 	        _react2.default.createElement(
 	          'button',
 	          { type: 'button', onClick: this.toMainMenu },

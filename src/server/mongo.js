@@ -72,6 +72,23 @@ const Mongo = {
 
     Mongo.connect(_getPollsByCreator, creator);
 
+  },
+
+  deletePollByID: function(_id, res) {
+
+    let _deletePollByID = function(_id) {
+      if (_id == null) {
+        res.sendStatus(500); /* Connection to DB failed */
+        return;
+      }
+      Mongo.db.collection('polls').deleteOne({_id: _id}, function(err, result) {
+        if (err || !result) res.sendStatus(422); /* Delete from DB failed */
+        else res.sendStatus(204); /* Success */
+      })
+    }
+
+    Mongo.connect(_deletePollByID, _id);
+
   }
 
 };

@@ -61,6 +61,15 @@ app.post('/polls', (req, res) => {
   Mongo.addPoll(req.body, res);
 });
 
+app.delete('/polls/:id', (req, res) => {
+  session = req.session;
+  if (!session.jid) {
+    res.sendStatus(401);
+    return;
+  }
+  Mongo.deletePollByID(new ObjectID(req.params.id), res);
+})
+
 /* Server-side rendering */
 app.get('*', (req, res) => {
   match({ routes: routes, location: req.url }, (err, redirect, props) => {
