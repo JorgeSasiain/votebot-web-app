@@ -15,10 +15,10 @@ class PollItem extends Component {
     this.timer = {};
     this.timerTick = this.timerTick.bind(this);
     this.stateTick = this.stateTick.bind(this);
+    this.rerenderParent = this.rerenderParent.bind(this);
     this.toDetails = this.toDetails.bind(this);
     this.terminate = this.terminate.bind(this);
     this.delete = this.delete.bind(this);
-    this.rerenderParent = this.rerenderParent.bind(this);
   }
 
   componentWillMount() {
@@ -84,6 +84,10 @@ class PollItem extends Component {
 
   }
 
+  rerenderParent() {
+    this.props.c().rerender();
+  }
+
   toDetails(event) {
     event.preventDefault();
     this.props.c().toDetails(this.poll._id);
@@ -92,15 +96,13 @@ class PollItem extends Component {
   terminate(event) {
     event.preventDefault();
     this.props.c().terminate(this.poll._id);
+    this.rerenderParent();
   }
 
   delete(event) {
     event.preventDefault();
     this.props.c().delete(this.poll._id);
-  }
-
-  rerenderParent() {
-
+    this.rerenderParent();
   }
 
   render() {
@@ -191,12 +193,19 @@ class ManagePolls extends Component {
     super(props);
     this.state = { inDetailsView: false, pollItems: [], selectedPoll: 0 };
     this.responseJson = [];
+    this.reload = this.reload.bind(this);
     this.toMainMenu = this.toMainMenu.bind(this);
     this.returnToGeneralView = this.returnToGeneralView.bind(this);
     this.callbacks = this.callbacks.bind(this);
   }
 
   componentDidMount() {
+    this.reload();
+  }
+
+  reload() {
+
+    this.setState({pollItems: []});
 
     let getRequest = {
       method: 'GET',
@@ -236,6 +245,10 @@ class ManagePolls extends Component {
     let that = this;
 
     return {
+
+      rerender: function() {
+        that.reload();
+      },
 
       toDetails: function(_id) {
         that.setState(

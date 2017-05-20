@@ -39311,17 +39311,17 @@
 	
 	    var _this = _possibleConstructorReturn(this, (PollItem.__proto__ || Object.getPrototypeOf(PollItem)).call(this, props));
 	
-	    _this.state = { minutesLeft: 0, untilExpireMinutesLeft: 0, deleted: false };
+	    _this.state = { minutesLeft: 0, untilExpireMinutesLeft: 0 };
 	    _this.poll = _this.props.poll;
 	    _this.timeLeft = 0;
 	    _this.untilExpireTimeLeft = 0;
 	    _this.timer = {};
 	    _this.timerTick = _this.timerTick.bind(_this);
 	    _this.stateTick = _this.stateTick.bind(_this);
+	    _this.rerenderParent = _this.rerenderParent.bind(_this);
 	    _this.toDetails = _this.toDetails.bind(_this);
 	    _this.terminate = _this.terminate.bind(_this);
 	    _this.delete = _this.delete.bind(_this);
-	    _this.rerenderParent = _this.rerenderParent.bind(_this);
 	    return _this;
 	  }
 	
@@ -39386,6 +39386,11 @@
 	      }
 	    }
 	  }, {
+	    key: 'rerenderParent',
+	    value: function rerenderParent() {
+	      this.props.c().rerender();
+	    }
+	  }, {
 	    key: 'toDetails',
 	    value: function toDetails(event) {
 	      event.preventDefault();
@@ -39396,26 +39401,21 @@
 	    value: function terminate(event) {
 	      event.preventDefault();
 	      this.props.c().delete(this.poll._id);
-	      this.setState({ deleted: true });
+	      this.rerenderParent();
 	    }
 	  }, {
 	    key: 'delete',
 	    value: function _delete(event) {
 	      event.preventDefault();
 	      this.props.c().delete(this.poll._id);
-	      this.setState({ deleted: true });
+	      this.rerenderParent();
 	    }
-	  }, {
-	    key: 'rerenderParent',
-	    value: function rerenderParent() {}
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	
-	        /* Not deleted (exists) */
 	        this.poll.hasOwnProperty("title") && this.poll.private ? /* Poll */
 	        _react2.default.createElement(
 	          'div',
@@ -39555,6 +39555,7 @@
 	
 	    _this3.state = { inDetailsView: false, pollItems: [], selectedPoll: 0 };
 	    _this3.responseJson = [];
+	    _this3.reload = _this3.reload.bind(_this3);
 	    _this3.toMainMenu = _this3.toMainMenu.bind(_this3);
 	    _this3.returnToGeneralView = _this3.returnToGeneralView.bind(_this3);
 	    _this3.callbacks = _this3.callbacks.bind(_this3);
@@ -39564,7 +39565,14 @@
 	  _createClass(ManagePolls, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      this.reload();
+	    }
+	  }, {
+	    key: 'reload',
+	    value: function reload() {
 	      var _this4 = this;
+	
+	      this.setState({ pollItems: [] });
 	
 	      var getRequest = {
 	        method: 'GET',
@@ -39624,6 +39632,10 @@
 	      var that = this;
 	
 	      return {
+	
+	        rerender: function rerender() {
+	          that.reload();
+	        },
 	
 	        toDetails: function toDetails(_id) {
 	          that.setState({ selectedPoll: _id }, that.setState({ inDetailsView: true }));
