@@ -28690,7 +28690,6 @@
 	      var _this3 = this;
 	
 	      var requestBody = JSON.stringify(this.state.poll);
-	      var requestBody2 = JSON.stringify(this.state.pollActive);
 	
 	      var postRequest = {
 	        method: 'POST',
@@ -28700,16 +28699,6 @@
 	          'Content-Type': 'application/json'
 	        },
 	        body: requestBody
-	      };
-	
-	      var postRequest2 = {
-	        method: 'POST',
-	        credentials: 'same-origin',
-	        headers: {
-	          'Accept': 'application/json',
-	          'Content-Type': 'application/json'
-	        },
-	        body: requestBody2
 	      };
 	
 	      var botMessage = {
@@ -39416,16 +39405,19 @@
 	    key: 'toDetails',
 	    value: function toDetails(event) {
 	      event.preventDefault();
+	      this.props.c().toDetails(this.poll._id);
 	    }
 	  }, {
 	    key: 'terminate',
 	    value: function terminate(event) {
 	      event.preventDefault();
+	      this.props.c().terminate(this.poll._id);
 	    }
 	  }, {
 	    key: 'delete',
 	    value: function _delete(event) {
 	      event.preventDefault();
+	      this.props.c().delete(this.poll._id);
 	    }
 	  }, {
 	    key: 'rerenderParent',
@@ -39464,24 +39456,97 @@
 	  return PollItem;
 	}(_react.Component);
 	
-	var ManagePolls = function (_Component2) {
-	  _inherits(ManagePolls, _Component2);
+	var PollDetails = function (_Component2) {
+	  _inherits(PollDetails, _Component2);
+	
+	  function PollDetails(props) {
+	    _classCallCheck(this, PollDetails);
+	
+	    var _this2 = _possibleConstructorReturn(this, (PollDetails.__proto__ || Object.getPrototypeOf(PollDetails)).call(this, props));
+	
+	    _this2.state = {};
+	    _this2.poll = _this2.props.poll;
+	    _this2.back = _this2.back.bind(_this2);
+	    return _this2;
+	  }
+	
+	  _createClass(PollDetails, [{
+	    key: 'back',
+	    value: function back(event) {
+	      event.preventDefault();
+	      this.props.returnToGeneralView();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          this.poll.title
+	        ),
+	        this.poll.questions.map(function (item) {
+	          var elements = [];
+	          for (var i = 0; i < item.choices.length; i++) {
+	            elements.push(_react2.default.createElement(
+	              'li',
+	              null,
+	              item.choices[i],
+	              ': ',
+	              item.votes[i],
+	              ' votos',
+	              _react2.default.createElement('br', null)
+	            ));
+	          }
+	          return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'h3',
+	              null,
+	              item.question
+	            ),
+	            _react2.default.createElement(
+	              'ul',
+	              null,
+	              elements
+	            )
+	          );
+	        }),
+	        _react2.default.createElement(
+	          'button',
+	          { type: 'button', onClick: this.back },
+	          'Volver'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return PollDetails;
+	}(_react.Component);
+	
+	var ManagePolls = function (_Component3) {
+	  _inherits(ManagePolls, _Component3);
 	
 	  function ManagePolls(props) {
 	    _classCallCheck(this, ManagePolls);
 	
-	    var _this2 = _possibleConstructorReturn(this, (ManagePolls.__proto__ || Object.getPrototypeOf(ManagePolls)).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, (ManagePolls.__proto__ || Object.getPrototypeOf(ManagePolls)).call(this, props));
 	
-	    _this2.state = { pollItems: [] };
-	    _this2.responseJson = [];
-	    _this2.toMainMenu = _this2.toMainMenu.bind(_this2);
-	    return _this2;
+	    _this3.state = { inDetailsView: false, pollItems: [], selectedPoll: 0 };
+	    _this3.responseJson = [];
+	    _this3.toMainMenu = _this3.toMainMenu.bind(_this3);
+	    _this3.returnToGeneralView = _this3.returnToGeneralView.bind(_this3);
+	    _this3.callbacks = _this3.callbacks.bind(_this3);
+	    return _this3;
 	  }
 	
 	  _createClass(ManagePolls, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this3 = this;
+	      var _this4 = this;
 	
 	      var getRequest = {
 	        method: 'GET',
@@ -39494,17 +39559,17 @@
 	        return response.json();
 	      }).then(function (data) {
 	
-	        _this3.responseJson = data;
+	        _this4.responseJson = data;
 	        var _iteratorNormalCompletion = true;
 	        var _didIteratorError = false;
 	        var _iteratorError = undefined;
 	
 	        try {
-	          for (var _iterator = _this3.responseJson[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          for (var _iterator = _this4.responseJson[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	            var poll = _step.value;
 	
-	            _this3.setState({
-	              pollItems: _this3.state.pollItems.concat([_react2.default.createElement(PollItem, { poll: poll })])
+	            _this4.setState({
+	              pollItems: _this4.state.pollItems.concat([_react2.default.createElement(PollItem, { poll: poll, c: _this4.callbacks })])
 	            });
 	          }
 	        } catch (err) {
@@ -39530,12 +39595,41 @@
 	      this.props.setView(_constants.VIEWS.MAIN_MENU);
 	    }
 	  }, {
+	    key: 'returnToGeneralView',
+	    value: function returnToGeneralView() {
+	      this.setState({ inDetailsView: false });
+	    }
+	  }, {
+	    key: 'callbacks',
+	    value: function callbacks() {
+	
+	      var that = this;
+	
+	      return {
+	
+	        toDetails: function toDetails(_id) {
+	          that.setState({ selectedPoll: _id }, that.setState({ inDetailsView: true }));
+	        },
+	
+	        terminate: function terminate(_id) {},
+	
+	        delete: function _delete(_id) {}
+	
+	      };
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this5 = this;
+	
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'Manage-polls' },
-	        this.state.pollItems,
+	        this.state.inDetailsView ? _react2.default.createElement(PollDetails, {
+	          poll: this.state.pollItems.find(function (item) {
+	            return item.props.poll._id === _this5.state.selectedPoll;
+	          }).props.poll,
+	          returnToGeneralView: this.returnToGeneralView }) : this.state.pollItems,
 	        _react2.default.createElement(
 	          'button',
 	          { type: 'button', onClick: this.toMainMenu },

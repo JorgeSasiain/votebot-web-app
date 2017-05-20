@@ -86,14 +86,17 @@ class PollItem extends Component {
 
   toDetails(event) {
     event.preventDefault();
+    this.props.c().toDetails(this.poll._id);
   }
 
   terminate(event) {
     event.preventDefault();
+    this.props.c().terminate(this.poll._id);
   }
 
   delete(event) {
     event.preventDefault();
+    this.props.c().delete(this.poll._id);
   }
 
   rerenderParent() {
@@ -118,13 +121,51 @@ class PollItem extends Component {
   }
 }
 
+class PollDetails extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.poll = this.props.poll;
+    this.back = this.back.bind(this);
+  }
+
+  back(event) {
+    event.preventDefault();
+    this.props.returnToGeneralView();
+  }
+
+  render() {
+    return (
+      <div>
+        <h2>{this.poll.title}</h2>
+        {
+          this.poll.questions.map(
+            item => {
+              let elements = [];
+              for (let i = 0; i < item.choices.length; i ++) {
+                elements.push(<li>{item.choices[i]}: {item.votes[i]} votos<br/></li>);
+              }
+              return <div><h3>{item.question}</h3><ul>{elements}</ul></div>
+            }
+          )
+        }
+        <button type="button" onClick={this.back}>Volver</button>
+      </div>
+    );
+  }
+
+}
+
 class ManagePolls extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {pollItems: []};
+    this.state = { inDetailsView: false, pollItems: [], selectedPoll: 0 };
     this.responseJson = [];
     this.toMainMenu = this.toMainMenu.bind(this);
+    this.returnToGeneralView = this.returnToGeneralView.bind(this);
+    this.callbacks = this.callbacks.bind(this);
   }
 
   componentDidMount() {
@@ -144,7 +185,9 @@ class ManagePolls extends Component {
       this.responseJson = data;
       for (let poll of this.responseJson) {
         this.setState({
-          pollItems: this.state.pollItems.concat([<PollItem poll={poll} />])
+          pollItems: this.state.pollItems.concat([
+            <PollItem poll={poll} c={this.callbacks} />
+          ])
         });
       }
     });
@@ -156,10 +199,49 @@ class ManagePolls extends Component {
     this.props.setView(VIEWS.MAIN_MENU);
   }
 
+  returnToGeneralView() {
+    this.setState({inDetailsView: false});
+  }
+
+  callbacks() {
+
+    let that = this;
+
+    return {
+
+      toDetails: function(_id) {
+        that.setState(
+          {selectedPoll: _id},
+          that.setState({inDetailsView: true})
+        );
+      },
+
+      terminate: function(_id) {
+
+      },
+
+      delete: function(_id) {
+
+      }
+
+    }
+
+  }
+
   render() {
     return (
       <div className="Manage-polls">
-        {this.state.pollItems}
+        {
+          this.state.inDetailsView
+          ? <PollDetails
+            poll={
+              this.state.pollItems.find(
+                item => item.props.poll._id === this.state.selectedPoll
+              ).props.poll
+            }
+            returnToGeneralView={this.returnToGeneralView} />
+          : this.state.pollItems
+        }
         <button type="button" onClick={this.toMainMenu}>
           Volver al menú principal
         </button>

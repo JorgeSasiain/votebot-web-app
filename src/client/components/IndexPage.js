@@ -136,7 +136,6 @@ class IndexPage extends Component {
   onReadyToSendPoll(contacts) {
 
     let requestBody = JSON.stringify(this.state.poll);
-    let requestBody2 = JSON.stringify(this.state.pollActive);
 
     let postRequest = {
       method: 'POST',
@@ -146,16 +145,6 @@ class IndexPage extends Component {
         'Content-Type': 'application/json'
       },
       body: requestBody
-    };
-
-    let postRequest2 = {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: requestBody2
     };
 
     let botMessage = {

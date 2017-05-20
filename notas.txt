@@ -49,6 +49,7 @@ TODO
 - No usar MemoryStore para almacenar la sesión (seguramente usar mongodb)
 - En selección de contactos y grupos, añadir opción (botón) de ocultar los contactos que ya estén clasificados en algún grupo
 - Los alert en conexión XMPP deberían ser componentes para que no haya que cerrar una ventana
+- No permitir dar al botón de login mientras está conectando y abrir varias conexiones a la vez
 
 **Por hacer
 - Notificar al usuario si ha habido un error en una operación con la base de datos (HTTP status code >= 400), mostrando la página correspondiente y pudiendo volver atrás
