@@ -39314,7 +39314,6 @@
 	    _this.timer = {};
 	    _this.timerTick = _this.timerTick.bind(_this);
 	    _this.stateTick = _this.stateTick.bind(_this);
-	    _this.rerenderParent = _this.rerenderParent.bind(_this);
 	    _this.toDetails = _this.toDetails.bind(_this);
 	    _this.terminate = _this.terminate.bind(_this);
 	    _this.delete = _this.delete.bind(_this);
@@ -39382,11 +39381,6 @@
 	      }
 	    }
 	  }, {
-	    key: 'rerenderParent',
-	    value: function rerenderParent() {
-	      this.props.c().rerender();
-	    }
-	  }, {
 	    key: 'toDetails',
 	    value: function toDetails(event) {
 	      event.preventDefault();
@@ -39397,14 +39391,12 @@
 	    value: function terminate(event) {
 	      event.preventDefault();
 	      this.props.c().terminate(this.poll._id);
-	      this.rerenderParent();
 	    }
 	  }, {
 	    key: 'delete',
 	    value: function _delete(event) {
 	      event.preventDefault();
 	      this.props.c().delete(this.poll._id);
-	      this.rerenderParent();
 	    }
 	  }, {
 	    key: 'render',
@@ -39632,10 +39624,6 @@
 	
 	      return {
 	
-	        rerender: function rerender() {
-	          that.reload();
-	        },
-	
 	        toDetails: function toDetails(_id) {
 	          that.setState({ selectedPoll: _id }, that.setState({ inDetailsView: true }));
 	        },
@@ -39653,6 +39641,7 @@
 	          };
 	          (0, _isomorphicFetch2.default)('/polls/' + _id, putRequest).then(function (response) {
 	            if (response.status >= 400) return;
+	            that.reload();
 	          });
 	        },
 	
@@ -39663,6 +39652,7 @@
 	          };
 	          (0, _isomorphicFetch2.default)('/polls/' + _id, deleteRequest).then(function (response) {
 	            if (response.status >= 400) return;
+	            that.reload();
 	          });
 	        }
 	

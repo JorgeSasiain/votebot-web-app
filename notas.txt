@@ -46,6 +46,7 @@ TODO
 ** Mejoras
 - Validar la entrada de datos a la BD, ya sea al introducir la información o la proipa BD
 - Cerrar la conexión XMPP al salir de la aplicación
+- Poner el tiempo restante de una encuesta en horas + días + minutos
 - Igual usar tokens mejor que cookies para la sesion. Sino, al menos no usar MemoryStore para almacenar la sesión (seguramente usar mongodb)
 - En selección de contactos y grupos, añadir opción (botón) de ocultar los contactos que ya estén clasificados en algún grupo
 - Los alert en conexión XMPP deberían ser componentes para que no haya que cerrar una ventana

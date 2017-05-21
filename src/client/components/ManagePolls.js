@@ -15,7 +15,6 @@ class PollItem extends Component {
     this.timer = {};
     this.timerTick = this.timerTick.bind(this);
     this.stateTick = this.stateTick.bind(this);
-    this.rerenderParent = this.rerenderParent.bind(this);
     this.toDetails = this.toDetails.bind(this);
     this.terminate = this.terminate.bind(this);
     this.delete = this.delete.bind(this);
@@ -84,10 +83,6 @@ class PollItem extends Component {
 
   }
 
-  rerenderParent() {
-    this.props.c().rerender();
-  }
-
   toDetails(event) {
     event.preventDefault();
     this.props.c().toDetails(this.poll._id);
@@ -96,13 +91,11 @@ class PollItem extends Component {
   terminate(event) {
     event.preventDefault();
     this.props.c().terminate(this.poll._id);
-    this.rerenderParent();
   }
 
   delete(event) {
     event.preventDefault();
     this.props.c().delete(this.poll._id);
-    this.rerenderParent();
   }
 
   render() {
@@ -249,10 +242,6 @@ class ManagePolls extends Component {
 
     return {
 
-      rerender: function() {
-        that.reload();
-      },
-
       toDetails: function(_id) {
         that.setState(
           {selectedPoll: _id},
@@ -273,6 +262,7 @@ class ManagePolls extends Component {
         };
         fetch('/polls/' + _id, putRequest).then(response => {
           if (response.status >= 400) return;
+          that.reload();
         });
       },
 
@@ -283,6 +273,7 @@ class ManagePolls extends Component {
         };
         fetch('/polls/' + _id, deleteRequest).then(response => {
           if (response.status >= 400) return;
+          that.reload();
         });
       }
 
