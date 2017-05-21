@@ -20,7 +20,7 @@ const Mongo = {
       return;
     }
 
-    Mongo.db = MongoClient.connect(Mongo.MONGO_URI, function(err, db) {
+    MongoClient.connect(Mongo.MONGO_URI, function(err, db) {
       if (err) {
         callback(null);
         return;

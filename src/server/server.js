@@ -86,6 +86,8 @@ app.put('/polls/:id', (req, res) => {
 
 /* Server-side rendering */
 app.get('*', (req, res) => {
+
+  /* Match routes to URL */
   match({ routes: routes, location: req.url }, (err, redirect, props) => {
 
     /* Route matching error */
