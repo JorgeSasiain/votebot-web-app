@@ -1,14 +1,24 @@
-Tecnologías
-- Webpack
+TECNOLOGÍAS
+
+- Webpack (module blunder)
 - Babel (compilador JS)
+
 - React
 - react-router
 - react-select
-- Express
+- isomorphic-fetch
+
 - strophe.js
 - node-xmpp-bosh (?)
 
-Estructura
+- Express
+- express-session
+
+- MongoDB
+
+
+ESTRUCTURA
+
 - package.json
 - webpack.config.js
 - src
@@ -32,27 +42,34 @@ Estructura
 --- css
 --- js (donde webpack genera bundle.js)
 
+
 XEPs
+
 - 0030 (Service Discovery) - Usado por 0045 para descubrimiento de MUCs
 - 0045 (MUCs) - Para obtener las MUCs a las que está conectado el usuario
 - 0124/0206 (BOSH) - Para permitir conexión XMPP en navegador (si se usa BOSH)
 
+
 TODO
-** Problemas
+
+** XMPP
 - Ver que pasa al pedir las MUCs del usuario (hace falta JID con recurso)
-- Servicio BOSH/WebSocket propio
-- Arreglar los formularios de selección multiple
-
-** Mejoras
-- Validar la entrada de datos a la BD, ya sea al introducir la información o la proipa BD
+- La conexión XMPP se pierde al cabo de unos minutos (pings sin respuesta)
+- Usar WebSockets en vez de BOSH
 - Cerrar la conexión XMPP al salir de la aplicación
-- Poner el tiempo restante de una encuesta en horas + días + minutos
-- Igual usar tokens mejor que cookies para la sesion. Sino, al menos no usar MemoryStore para almacenar la sesión (seguramente usar mongodb)
-- En selección de contactos y grupos, añadir opción (botón) de ocultar los contactos que ya estén clasificados en algún grupo
-- Los alert en conexión XMPP deberían ser componentes para que no haya que cerrar una ventana
-- No permitir dar al botón de login mientras está conectando y abrir varias conexiones a la vez
 
-**Por hacer
+** DB
+- Validar la entrada de datos a la BD, ya sea al introducir la información o la proipa BD
+- Igual usar tokens mejor que cookies para la sesion. Sino, al menos no usar MemoryStore para almacenar la sesión (seguramente usar mongodb)
+
+** UI
+- Arreglar los formularios de selección multiple (react-select)
+- No permitir dar al botón de login mientras está conectando y abrir varias conexiones a la vez
+- Los alert en conexión XMPP deberían ser componentes para que no haya que cerrar una ventana
 - Notificar al usuario si ha habido un error en una operación con la base de datos (HTTP status code >= 400), mostrando la página correspondiente y pudiendo volver atrás
-- Opciones de resultado oculto (solo encuestas privadas) y elección múltiple por cada pregunta
+- Poner el tiempo restante de una encuesta en horas + días + minutos
+- En selección de contactos y grupos, añadir opción (botón) de ocultar los contactos que ya estén clasificados en algún grupo
 - Presentación y CSS
+
+** Funcionalidades
+- Opciones de resultado oculto (solo encuestas privadas) y elección múltiple por cada pregunta
