@@ -114,6 +114,7 @@ class IndexPage extends Component {
     };
 
     let botMessage = {
+      type: 'newVote',
       pollTitle: this.state.poll.questions[0].question,
       creator: this.state.poll.creator,
       mucs: mucs
@@ -146,6 +147,7 @@ class IndexPage extends Component {
     };
 
     let botMessage = {
+      type: 'newPoll',
       pollTitle: this.state.poll.title,
       creator: this.state.poll.creator,
       contacts: contacts
