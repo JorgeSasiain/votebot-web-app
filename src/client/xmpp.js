@@ -20,6 +20,7 @@ const XMPP = {
   URL_WSS: "wss://votebot-web-app-bosh.herokuapp.com/http-bind/",
 
   createConn: function() {
+    //XMPP.conn = new Strophe.Connection(XMPP.URL_WSS, {protocol: "wss"});
     XMPP.conn = new Strophe.Connection(XMPP.URL_BOSH);
   },
 
