@@ -7,12 +7,8 @@ class NewPoll_SelectContacts extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { groups: [], contacts: [] };
+    this.state = { groups: "", contacts: "" };
     this.options = {};
-    this.selectContact = this.selectContact.bind(this);
-    this.deselectContact = this.deselectContact.bind(this);
-    this.selectGroup = this.selectGroup.bind(this);
-    this.deselectGroup = this.deselectGroup.bind(this);
     this.handleContactChange = this.handleContactChange.bind(this);
     this.handleGroupChange = this.handleGroupChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,69 +32,35 @@ class NewPoll_SelectContacts extends Component {
 
   }
 
-  selectContact(value) {
-    this.setState({
-      contacts: this.state.contacts.concat([value])
-    });
-  }
-
-  deselectContact(value) {
-    this.setState({
-      contacts: this.state.contacts.filter(function(contact) {
-        return contact !== value;
-      })
-    });
-  }
-
-  selectGroup(value) {
-    this.setState({
-      groups: this.state.groups.concat([value])
-    });
-  }
-
-  deselectGroup(value) {
-    this.setState({
-      groups: this.state.groups.filter(function(group) {
-        return group !== value;
-      })
-    });
-  }
-
   handleContactChange(value) {
-    let index = this.state.contacts.indexOf(value);
-    if (index == -1) {
-      this.selectContact(value);
-    } else {
-      this.deselectContact(value);
-    }
+    this.setState({ contacts: value });
   }
 
   handleGroupChange(value) {
-    let index = this.state.groups.indexOf(value);
-    if (index == -1) {
-      this.selectGroup(value);
-    } else {
-      this.deselectGroup(value);
-    }
+    this.setState({ groups: value });
   }
 
   handleSubmit(event) {
 
     event.preventDefault();
 
-    let that = this;
+    let contacts = [];
+    let groups = [];
+    if (this.state.contacts) contacts = this.state.contacts.split(",");
+    if (this.state.groups) groups = this.state.groups.split(",");
+
     let getUniqueContacts = function(group, index, groups) {
 
       let _getUniqueContacts = function(user, index, users) {
-        if (that.state.contacts.indexOf(user) === -1)
-          that.state.contacts.push(user);
+        if (contacts.indexOf(user) === -1 && user !== XMPP.votebot)
+          contacts.push(user);
       }
 
-      XMPP.groupUsers[group].forEach(_getUniqueContacts);
+      if (group) XMPP.groupUsers[group].forEach(_getUniqueContacts);
     }
 
-    this.state.groups.forEach(getUniqueContacts);
-    this.props.onReadyToSend(this.state.contacts);
+    groups.forEach(getUniqueContacts);
+    this.props.onReadyToSend(contacts);
 
   }
 
@@ -119,6 +81,7 @@ class NewPoll_SelectContacts extends Component {
           name="groups-select"
           placeholder="Selecciona uno o varios grupos"
           options={this.options.groups}
+          value={this.state.groups}
           multi={true}
           onChange={this.handleGroupChange}
         />
@@ -126,6 +89,7 @@ class NewPoll_SelectContacts extends Component {
           name="contacts-select"
           placeholder="Selecciona uno o varios contactos"
           options={this.options.contacts}
+          value={this.state.contacts}
           multi={true}
           onChange={this.handleContactChange}
         />

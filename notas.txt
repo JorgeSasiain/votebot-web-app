@@ -63,7 +63,6 @@ TODO
 - Igual usar tokens mejor que cookies para la sesion. Sino, al menos no usar MemoryStore para almacenar la sesión (seguramente usar mongodb)
 
 ** UI
-- Arreglar los formularios de selección multiple (react-select)
 - No permitir dar al botón de login mientras está conectando y abrir varias conexiones a la vez
 - No permitir dar al botón de enviar encuesta mientras se está enviando y enviarla varias veces
 - Los alert en conexión XMPP deberían ser componentes para que no haya que cerrar una ventana

@@ -76,7 +76,7 @@ const XMPP = {
       if (items.length > 0) {
         for (let item of items) {
           let curContact = item.getAttribute("jid");
-          XMPP.contacts.push(curContact);
+          if (curContact !== XMPP.votebot) XMPP.contacts.push(curContact);
           let groupItems = item.getElementsByTagName("group");
           if (groupItems.length > 0) {
             for (let groupItem of groupItems) {
