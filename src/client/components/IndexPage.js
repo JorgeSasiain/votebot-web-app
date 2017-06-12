@@ -65,7 +65,7 @@ class IndexPage extends Component {
       questions: [
         {
           question: voteInfo.question,
-          multiple: false,
+          multiple: voteInfo.multiple,
           choices: voteInfo.choices,
           votes: voteInfo.votes
         }
@@ -87,7 +87,7 @@ class IndexPage extends Component {
       title: pollInfo.title,
       private: true,
       expireAt: expireAt,
-      hidden: false,
+      hidden: pollInfo.hidden,
       questions: pollInfo.questions
     };
 

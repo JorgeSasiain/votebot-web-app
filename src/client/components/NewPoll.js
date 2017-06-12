@@ -34,6 +34,7 @@ class PollQuestion extends Component {
     this.addChoice = this.addChoice.bind(this);
     this.removeChoice = this.removeChoice.bind(this);
     this.handleQuestionChange = this.handleQuestionChange.bind(this);
+    this.handleMultipleChange = this.handleMultipleChange.bind(this);
     this.handleChoiceChange = this.handleChoiceChange.bind(this);
     this.handleChoice1Change = this.handleChoice1Change.bind(this);
     this.handleChoice2Change = this.handleChoice2Change.bind(this);
@@ -56,6 +57,10 @@ class PollQuestion extends Component {
 
   handleQuestionChange(event) {
     this.props.c().handleQuestionChange(this.props.qid, event);
+  }
+
+  handleMultipleChange(event) {
+    this.props.c().handleMultipleChange(this.props.qid, event)
   }
 
   handleChoiceChange(index, value) {
@@ -86,6 +91,14 @@ class PollQuestion extends Component {
           value={this.props.c().getQuestion(this.props.qid)}
           onChange={this.handleQuestionChange}
         />
+        <label>
+          Elección multiple:
+          <input
+            type="checkbox"
+            checked={this.props.c().getMultiple(this.props.qid)}
+            onChange={this.handleMultipleChange}
+          />
+        </label>
         {
           this.props.c().numQuestions() !== 1 &&
           <button type="button" onClick={this.removeQuestion}>-</button>
@@ -141,9 +154,11 @@ class NewPoll extends Component {
     this.state = {
       title: '',
       duration: 24,
+      hidden: false,
       questions: [
         {
           question: '',
+          multiple: false,
           choices: ['', ''],
           votes: [0, 0]
         }
@@ -153,6 +168,7 @@ class NewPoll extends Component {
     this.addQuestion = this.addQuestion.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDurationChange = this.handleDurationChange.bind(this);
+    this.handleHiddenChange = this.handleHiddenChange.bind(this);
     this.callbacks = this.callbacks.bind(this);
     this.onGotRoster = this.onGotRoster.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -170,6 +186,7 @@ class NewPoll extends Component {
     let questions = this.state.questions;
     questions.push({
       question: '',
+      multiple: false,
       choices: ['', ''],
       votes: [0, 0]
     });
@@ -184,6 +201,10 @@ class NewPoll extends Component {
 
   handleDurationChange(event) {
     this.setState({duration: parseInt(event.target.value)});
+  }
+
+  handleHiddenChange(event) {
+    this.setState({hidden: event.target.checked});
   }
 
   callbacks() {
@@ -220,6 +241,13 @@ class NewPoll extends Component {
         that.setState({questions: questions});
       }.bind(this),
 
+      handleMultipleChange: function (qid, event) {
+        let questions = that.state.questions;
+        let checked = event.target.checked;
+        questions[qid].multiple = checked;
+        that.setState({questions: questions});
+      }.bind(this),
+
       handleChoiceChange: function(qid, index, value) {
         let questions = that.state.questions;
         if (value.length > CHOICE_MAX_LEN) return;
@@ -228,6 +256,8 @@ class NewPoll extends Component {
       }.bind(this),
 
       getQuestion: function(qid) { return that.state.questions[qid].question }.bind(this),
+
+      getMultiple: function(qid) { return that.state.questions[qid].multiple }.bind(this),
 
       getChoice: function(qid, index) {
         return that.state.questions[qid].choices[index];
@@ -275,6 +305,15 @@ class NewPoll extends Component {
               value={this.state.duration}
               required
               onChange={this.handleDurationChange}
+            />
+          </label>
+          <br />
+          <label>
+            Resultados ocultos:
+            <input
+              type="checkbox"
+              checked={this.state.hidden}
+              onChange={this.handleHiddenChange}
             />
           </label>
           <br />

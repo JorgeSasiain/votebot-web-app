@@ -33,6 +33,7 @@ class NewVote extends Component {
     this.state = {
       duration: 24,
       question: '',
+      multiple: false,
       choices: ['', ''],
       votes: [0, 0]
     };
@@ -41,6 +42,7 @@ class NewVote extends Component {
     this.removeChoice = this.removeChoice.bind(this);
     this.handleDurationChange = this.handleDurationChange.bind(this);
     this.handleQuestionChange = this.handleQuestionChange.bind(this);
+    this.handleMultipleChange = this.handleMultipleChange.bind(this);
     this.handleChoiceChange = this.handleChoiceChange.bind(this);
     this.handleChoice1Change = this.handleChoice1Change.bind(this);
     this.handleChoice2Change = this.handleChoice2Change.bind(this);
@@ -85,6 +87,10 @@ class NewVote extends Component {
     let value = event.target.value;
     if (value.length > QUESTION_MAX_LEN) return;
     this.setState({question: value});
+  }
+
+  handleMultipleChange(event) {
+    this.setState({multiple: event.target.checked});
   }
 
   handleChoiceChange(index, value) {
@@ -146,6 +152,14 @@ class NewVote extends Component {
             value={this.state.question}
             onChange={this.handleQuestionChange}
           />
+          <label>
+            Elección multiple:
+            <input
+              type="checkbox"
+              checked={this.state.multiple}
+              onChange={this.handleMultipleChange}
+            />
+          </label>
           <br />
           <TextField
             label="Opción 1:"

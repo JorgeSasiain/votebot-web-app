@@ -65,11 +65,9 @@ TODO
 ** UI
 - Arreglar los formularios de selección multiple (react-select)
 - No permitir dar al botón de login mientras está conectando y abrir varias conexiones a la vez
+- No permitir dar al botón de enviar encuesta mientras se está enviando y enviarla varias veces
 - Los alert en conexión XMPP deberían ser componentes para que no haya que cerrar una ventana
 - Notificar al usuario si ha habido un error en una operación con la base de datos (HTTP status code >= 400), mostrando la página correspondiente y pudiendo volver atrás
 - Poner el tiempo restante de una encuesta en horas + días + minutos
 - En selección de contactos y grupos, añadir opción (botón) de ocultar los contactos que ya estén clasificados en algún grupo
 - Presentación y CSS
-
-** Funcionalidades
-- Opciones de resultado oculto (solo encuestas privadas) y elección múltiple por cada pregunta
