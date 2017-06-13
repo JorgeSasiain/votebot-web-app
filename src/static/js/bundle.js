@@ -30255,7 +30255,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
 	
-	    _this.state = { jidValue: '', passValue: '', show: false, inputVisible: true };
+	    _this.state = { jidValue: '', passValue: '', show: false, submitVisible: true };
 	    _this.handleJidChange = _this.handleJidChange.bind(_this);
 	    _this.handlePassChange = _this.handlePassChange.bind(_this);
 	    _this.showHide = _this.showHide.bind(_this);
@@ -30314,13 +30314,13 @@
 	
 	      (0, _isomorphicFetch2.default)('/logout', postRequest).then(function (response) {
 	        that.props.setView(_constants.VIEWS.LOGIN);
-	        that.setState({ inputVisible: true });
+	        that.setState({ submitVisible: true });
 	      });
 	    }
 	  }, {
 	    key: 'onConnecting',
 	    value: function onConnecting() {
-	      this.setState({ inputVisible: false });
+	      this.setState({ submitVisible: false });
 	    }
 	  }, {
 	    key: 'handleSubmit',
@@ -30366,7 +30366,7 @@
 	            )
 	          ),
 	          _react2.default.createElement('br', null),
-	          this.state.inputVisible ? _react2.default.createElement('input', { type: 'submit', value: 'Identificarse' }) : "Conectando..."
+	          this.state.submitVisible ? _react2.default.createElement('input', { type: 'submit', value: 'Identificarse' }) : "Conectando..."
 	        )
 	      );
 	    }
@@ -37310,7 +37310,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, (NewVote_SelectMucs.__proto__ || Object.getPrototypeOf(NewVote_SelectMucs)).call(this, props));
 	
-	    _this.state = { mucs: "" };
+	    _this.state = { mucs: "", submitVisible: true };
 	    _this.options = {};
 	    _this.handleMucChange = _this.handleMucChange.bind(_this);
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -37342,6 +37342,8 @@
 	    key: 'handleSubmit',
 	    value: function handleSubmit(event) {
 	      event.preventDefault();
+	      this.setState({ submitVisible: false });
+	
 	      var mucs = [];
 	      if (this.state.mucs) mucs = this.state.mucs.split(",");
 	      this.props.onReadyToSend(mucs);
@@ -37375,7 +37377,7 @@
 	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: this.handleSubmit },
-	          _react2.default.createElement('input', { type: 'submit', value: 'Enviar' })
+	          this.state.submitVisible ? _react2.default.createElement('input', { type: 'submit', value: 'Enviar' }) : "Enviando..."
 	        ),
 	        _react2.default.createElement('br', null),
 	        _react2.default.createElement(
@@ -39159,7 +39161,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, (NewPoll_SelectContacts.__proto__ || Object.getPrototypeOf(NewPoll_SelectContacts)).call(this, props));
 	
-	    _this.state = { groups: "", contacts: "" };
+	    _this.state = { groups: "", contacts: "", submitVisible: true };
 	    _this.options = {};
 	    _this.handleContactChange = _this.handleContactChange.bind(_this);
 	    _this.handleGroupChange = _this.handleGroupChange.bind(_this);
@@ -39200,6 +39202,8 @@
 	    value: function handleSubmit(event) {
 	
 	      event.preventDefault();
+	
+	      this.setState({ submitVisible: false });
 	
 	      var contacts = [];
 	      var groups = [];
@@ -39255,7 +39259,7 @@
 	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: this.handleSubmit },
-	          _react2.default.createElement('input', { type: 'submit', value: 'Enviar' })
+	          this.state.submitVisible ? _react2.default.createElement('input', { type: 'submit', value: 'Enviar' }) : "Enviando..."
 	        ),
 	        _react2.default.createElement('br', null),
 	        _react2.default.createElement(

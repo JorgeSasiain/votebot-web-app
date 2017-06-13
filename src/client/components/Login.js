@@ -8,7 +8,7 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {jidValue: '', passValue: '', show: false, inputVisible: true};
+    this.state = {jidValue: '', passValue: '', show: false, submitVisible: true};
     this.handleJidChange = this.handleJidChange.bind(this);
     this.handlePassChange = this.handlePassChange.bind(this);
     this.showHide = this.showHide.bind(this);
@@ -61,13 +61,13 @@ class Login extends Component {
 
     fetch('/logout', postRequest).then(response => {
       that.props.setView(VIEWS.LOGIN);
-      that.setState({inputVisible: true});
+      that.setState({submitVisible: true});
     });
 
   }
 
   onConnecting() {
-    this.setState({inputVisible: false});
+    this.setState({submitVisible: false});
   }
 
   handleSubmit(event) {
@@ -109,7 +109,7 @@ class Login extends Component {
           </label>
           <br />
           {
-            this.state.inputVisible
+            this.state.submitVisible
             ? <input type="submit" value="Identificarse" />
             : "Conectando..."
           }

@@ -7,7 +7,7 @@ class NewVote_SelectMucs extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { mucs: "" };
+    this.state = { mucs: "", submitVisible: true };
     this.options = {};
     this.handleMucChange = this.handleMucChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,6 +35,8 @@ class NewVote_SelectMucs extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    this.setState({ submitVisible: false });
+
     let mucs = [];
     if (this.state.mucs) mucs = this.state.mucs.split(",");
     this.props.onReadyToSend(mucs);
@@ -62,7 +64,9 @@ class NewVote_SelectMucs extends Component {
           onChange={this.handleMucChange}
         />
         <form onSubmit={this.handleSubmit}>
-          <input type="submit" value="Enviar" />
+          {
+            this.state.submitVisible ? <input type="submit" value="Enviar" /> : "Enviando..."
+          }
         </form>
         <br />
         <button type="button" onClick={this.redoVote}>

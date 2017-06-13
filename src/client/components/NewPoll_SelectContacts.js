@@ -7,7 +7,7 @@ class NewPoll_SelectContacts extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { groups: "", contacts: "" };
+    this.state = { groups: "", contacts: "", submitVisible: true };
     this.options = {};
     this.handleContactChange = this.handleContactChange.bind(this);
     this.handleGroupChange = this.handleGroupChange.bind(this);
@@ -43,6 +43,8 @@ class NewPoll_SelectContacts extends Component {
   handleSubmit(event) {
 
     event.preventDefault();
+
+    this.setState({ submitVisible: false });
 
     let contacts = [];
     let groups = [];
@@ -94,7 +96,9 @@ class NewPoll_SelectContacts extends Component {
           onChange={this.handleContactChange}
         />
         <form onSubmit={this.handleSubmit}>
-          <input type="submit" value="Enviar" />
+          {
+            this.state.submitVisible ? <input type="submit" value="Enviar" /> : "Enviando..."
+          }
         </form>
         <br />
         <button type="button" onClick={this.redoPoll}>
