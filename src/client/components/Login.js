@@ -8,11 +8,12 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {jidValue: '', passValue: '', show: false};
+    this.state = {jidValue: '', passValue: '', show: false, inputVisible: true};
     this.handleJidChange = this.handleJidChange.bind(this);
     this.handlePassChange = this.handlePassChange.bind(this);
     this.showHide = this.showHide.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onConnecting = this.onConnecting.bind(this);
     this.onConnected = this.onConnected.bind(this);
     this.onDisconnected = this.onDisconnected.bind(this);
   }
@@ -60,8 +61,13 @@ class Login extends Component {
 
     fetch('/logout', postRequest).then(response => {
       that.props.setView(VIEWS.LOGIN);
+      that.setState({inputVisible: true});
     });
 
+  }
+
+  onConnecting() {
+    this.setState({inputVisible: false});
   }
 
   handleSubmit(event) {
@@ -71,7 +77,8 @@ class Login extends Component {
       this.state.jidValue,
       this.state.passValue,
       this.onConnected,
-      this.onDisconnected
+      this.onDisconnected,
+      this.onConnecting
     );
   }
 
@@ -89,19 +96,23 @@ class Login extends Component {
             />
           </label>
           <br />
-        <label>
-          Contraseña:
-          <input
-            type={this.state.show ? "text" : "password"}
-            value={this.state.passValue}
-            onChange={this.handlePassChange}
-          />
-          <button type="button" onClick={this.showHide}>
-            {this.state.show ? "Ocultar" : "Mostrar"}
-          </button>
-        </label>
+          <label>
+            Contraseña:
+            <input
+              type={this.state.show ? "text" : "password"}
+              value={this.state.passValue}
+              onChange={this.handlePassChange}
+            />
+            <button type="button" onClick={this.showHide}>
+              {this.state.show ? "Ocultar" : "Mostrar"}
+            </button>
+          </label>
           <br />
-          <input type="submit" value="Identificarse" />
+          {
+            this.state.inputVisible
+            ? <input type="submit" value="Identificarse" />
+            : "Conectando..."
+          }
         </form>
       </div>
     );

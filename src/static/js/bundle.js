@@ -30255,11 +30255,12 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
 	
-	    _this.state = { jidValue: '', passValue: '', show: false };
+	    _this.state = { jidValue: '', passValue: '', show: false, inputVisible: true };
 	    _this.handleJidChange = _this.handleJidChange.bind(_this);
 	    _this.handlePassChange = _this.handlePassChange.bind(_this);
 	    _this.showHide = _this.showHide.bind(_this);
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    _this.onConnecting = _this.onConnecting.bind(_this);
 	    _this.onConnected = _this.onConnected.bind(_this);
 	    _this.onDisconnected = _this.onDisconnected.bind(_this);
 	    return _this;
@@ -30313,14 +30314,20 @@
 	
 	      (0, _isomorphicFetch2.default)('/logout', postRequest).then(function (response) {
 	        that.props.setView(_constants.VIEWS.LOGIN);
+	        that.setState({ inputVisible: true });
 	      });
+	    }
+	  }, {
+	    key: 'onConnecting',
+	    value: function onConnecting() {
+	      this.setState({ inputVisible: false });
 	    }
 	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(event) {
 	      event.preventDefault();
 	      _xmpp2.default.createConn();
-	      _xmpp2.default.connect(this.state.jidValue, this.state.passValue, this.onConnected, this.onDisconnected);
+	      _xmpp2.default.connect(this.state.jidValue, this.state.passValue, this.onConnected, this.onDisconnected, this.onConnecting);
 	    }
 	  }, {
 	    key: 'render',
@@ -30359,7 +30366,7 @@
 	            )
 	          ),
 	          _react2.default.createElement('br', null),
-	          _react2.default.createElement('input', { type: 'submit', value: 'Identificarse' })
+	          this.state.inputVisible ? _react2.default.createElement('input', { type: 'submit', value: 'Identificarse' }) : "Conectando..."
 	        )
 	      );
 	    }
@@ -30435,11 +30442,10 @@
 	    XMPP.conn = new _strophe.Strophe.Connection(XMPP.URL_BOSH);
 	  },
 	
-	  connect: function connect(jid, pass, onConnected, onDisconnected) {
+	  connect: function connect(jid, pass, onConnected, onDisconnected, onConnecting) {
 	
 	    XMPP.conn.connect(jid, pass, function (status) {
 	      if (status === _strophe.Strophe.Status.CONNECTED) {
-	        alert('Conectado');
 	        XMPP.jid = jid;
 	        XMPP.server = jid.substr(jid.indexOf("@") + 1);
 	        onConnected();
@@ -30447,7 +30453,7 @@
 	        alert('Desconectado');
 	        onDisconnected();
 	      } else if (status === _strophe.Strophe.Status.CONNECTING) {
-	        alert('Conectando...');
+	        onConnecting();
 	      } else if (status === _strophe.Strophe.Status.DISCONNECTING) {} else if (status === _strophe.Strophe.Status.AUTHENTICATING) {} else if (status === _strophe.Strophe.Status.CONNFAIL) {
 	        alert('Error de conexión');
 	        onDisconnected();
@@ -30468,12 +30474,12 @@
 	  },
 	
 	  getMUCSupport: function getMUCSupport(callback) {
-	    var iq = (0, _strophe.$iq)({ 'type': 'get', 'to': XMPP.jid + '/phone', 'id': 'rooms1' }).c('query', { 'xmlns': _strophe.Strophe.NS.DISCO_INFO });
+	    var iq = (0, _strophe.$iq)({ 'type': 'get', 'to': XMPP.jid, 'id': 'rooms1' }).c('query', { 'xmlns': _strophe.Strophe.NS.DISCO_INFO });
 	    XMPP.conn.sendIQ(iq, callback);
 	  },
 	
 	  getMUCs: function getMUCs(callback) {
-	    var iq = (0, _strophe.$iq)({ 'type': 'get', 'to': XMPP.jid + '/phone', 'id': 'rooms2' }).c('query', { 'xmlns': _strophe.Strophe.NS.DISCO_ITEMS, 'node': XMPP.NS.MUC_ROOMS });
+	    var iq = (0, _strophe.$iq)({ 'type': 'get', 'to': XMPP.jid, 'id': 'rooms2' }).c('query', { 'xmlns': _strophe.Strophe.NS.DISCO_ITEMS, 'node': XMPP.NS.MUC_ROOMS });
 	    XMPP.conn.sendIQ(iq, callback);
 	  },
 	
@@ -30547,7 +30553,7 @@
 	  getMUCsIfSupported: function getMUCsIfSupported(callback) {
 	
 	    var onFeatures = function onFeatures(iq) {
-	      alert(new XMLSerializer().serializeToString(iq));
+	      //alert(new XMLSerializer().serializeToString(iq));
 	      var mucSupport = false;
 	      var features = iq.getElementsByTagName("feature");
 	      if (features.length > 0) {
@@ -30583,13 +30589,12 @@
 	      if (mucSupport) {
 	        XMPP.getMUCs(onMUCs);
 	      } else {
-	        //XMPP.getMUCs(onMUCs);
 	        callback();
 	      }
 	    };
 	
 	    var onMUCs = function onMUCs(iq) {
-	      alert(new XMLSerializer().serializeToString(iq));
+	      //alert(new XMLSerializer().serializeToString(iq));
 	      var items = iq.getElementsByTagName("item");
 	      if (items.length > 0) {
 	        var _iteratorNormalCompletion4 = true;

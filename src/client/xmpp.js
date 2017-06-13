@@ -25,11 +25,10 @@ const XMPP = {
     XMPP.conn = new Strophe.Connection(XMPP.URL_BOSH);
   },
 
-  connect: function(jid, pass, onConnected, onDisconnected) {
+  connect: function(jid, pass, onConnected, onDisconnected, onConnecting) {
 
     XMPP.conn.connect(jid, pass, function (status) {
       if (status === Strophe.Status.CONNECTED) {
-        alert('Conectado');
         XMPP.jid = jid;
         XMPP.server = jid.substr(jid.indexOf("@") + 1);
         onConnected();
@@ -37,7 +36,7 @@ const XMPP = {
         alert('Desconectado');
         onDisconnected();
       } else if (status === Strophe.Status.CONNECTING) {
-        alert('Conectando...');
+        onConnecting();
       } else if (status === Strophe.Status.DISCONNECTING) {
       } else if (status === Strophe.Status.AUTHENTICATING) {
       } else if (status === Strophe.Status.CONNFAIL) {
