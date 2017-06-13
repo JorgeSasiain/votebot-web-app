@@ -13,7 +13,8 @@ const XMPP = {
   mucs: [],       /* MUCs user belongs to */
 
   NS: {
-    MUC_ROOMS: "http://jabber.org/protocol/muc#rooms"
+    MUC_ROOMS: "http://jabber.org/protocol/muc#rooms",
+    MUC_SUPPORT: "http://jabber.org/protocol/muc"
   },
 
   URL_BOSH: "https://votebot-web-app-bosh.herokuapp.com/http-bind/",
@@ -100,12 +101,13 @@ const XMPP = {
   getMUCsIfSupported: function(callback) {
 
     let onFeatures = function(iq) {
+      //alert(new XMLSerializer().serializeToString(iq));
       let mucSupport = false;
       let features = iq.getElementsByTagName("feature");
       if (features.length > 0) {
         for (let feature of features) {
           let curFeature = feature.getAttribute("var");
-          if (curFeature === XMPP.NS.MUC_ROOMS) {
+          if (curFeature === XMPP.NS.MUC_SUPPORT) {
             mucSupport = true;
             break;
           }
@@ -119,6 +121,7 @@ const XMPP = {
     }
 
     let onMUCs = function(iq) {
+      //alert(new XMLSerializer().serializeToString(iq));
       let items = iq.getElementsByTagName("item");
       if (items.length > 0) {
         for (let item of items) {

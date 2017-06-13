@@ -30423,7 +30423,8 @@
 	  mucs: [], /* MUCs user belongs to */
 	
 	  NS: {
-	    MUC_ROOMS: "http://jabber.org/protocol/muc#rooms"
+	    MUC_ROOMS: "http://jabber.org/protocol/muc#rooms",
+	    MUC_SUPPORT: "http://jabber.org/protocol/muc"
 	  },
 	
 	  URL_BOSH: "https://votebot-web-app-bosh.herokuapp.com/http-bind/",
@@ -30467,12 +30468,12 @@
 	  },
 	
 	  getMUCSupport: function getMUCSupport(callback) {
-	    var iq = (0, _strophe.$iq)({ 'type': 'get', 'to': XMPP.jid, 'id': 'rooms1' }).c('query', { 'xmlns': _strophe.Strophe.NS.DISCO_INFO });
+	    var iq = (0, _strophe.$iq)({ 'type': 'get', 'to': XMPP.jid + '/phone', 'id': 'rooms1' }).c('query', { 'xmlns': _strophe.Strophe.NS.DISCO_INFO });
 	    XMPP.conn.sendIQ(iq, callback);
 	  },
 	
 	  getMUCs: function getMUCs(callback) {
-	    var iq = (0, _strophe.$iq)({ 'type': 'get', 'to': XMPP.jid, 'id': 'rooms2' }).c('query', { 'xmlns': _strophe.Strophe.NS.DISCO_ITEMS, 'node': XMPP.NS.MUC_ROOMS });
+	    var iq = (0, _strophe.$iq)({ 'type': 'get', 'to': XMPP.jid + '/phone', 'id': 'rooms2' }).c('query', { 'xmlns': _strophe.Strophe.NS.DISCO_ITEMS, 'node': XMPP.NS.MUC_ROOMS });
 	    XMPP.conn.sendIQ(iq, callback);
 	  },
 	
@@ -30546,6 +30547,7 @@
 	  getMUCsIfSupported: function getMUCsIfSupported(callback) {
 	
 	    var onFeatures = function onFeatures(iq) {
+	      alert(new XMLSerializer().serializeToString(iq));
 	      var mucSupport = false;
 	      var features = iq.getElementsByTagName("feature");
 	      if (features.length > 0) {
@@ -30558,7 +30560,7 @@
 	            var feature = _step3.value;
 	
 	            var curFeature = feature.getAttribute("var");
-	            if (curFeature === XMPP.NS.MUC_ROOMS) {
+	            if (curFeature === XMPP.NS.MUC_SUPPORT) {
 	              mucSupport = true;
 	              break;
 	            }
@@ -30581,11 +30583,13 @@
 	      if (mucSupport) {
 	        XMPP.getMUCs(onMUCs);
 	      } else {
+	        //XMPP.getMUCs(onMUCs);
 	        callback();
 	      }
 	    };
 	
 	    var onMUCs = function onMUCs(iq) {
+	      alert(new XMLSerializer().serializeToString(iq));
 	      var items = iq.getElementsByTagName("item");
 	      if (items.length > 0) {
 	        var _iteratorNormalCompletion4 = true;
@@ -37315,9 +37319,6 @@
 	    value: function componentWillMount() {
 	
 	      var mucs = _xmpp2.default.mucs;
-	      mucs.push("aaa");
-	      mucs.push("bbb");
-	      mucs.push("ccc");
 	
 	      var pushItem = function pushItem(items, item) {
 	        items.push({ value: item, label: item });
