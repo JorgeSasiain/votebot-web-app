@@ -53,14 +53,12 @@ XEPs
 TODO
 
 ** XMPP
-- Ver que pasa al pedir las MUCs del usuario (hace falta JID con recurso)
-- La conexión XMPP se pierde al cabo de unos minutos (pings sin respuesta)
-- Usar WebSockets en vez de BOSH
+- La conexión XMPP se pierde al cabo de unos minutos (pings sin respuesta) (a veces???)
 - Cerrar la conexión XMPP al salir de la aplicación
+- (Usar WebSockets en vez de BOSH)
 
 ** DB
 - Validar la entrada de datos a la BD, ya sea al introducir la información o la proipa BD
-- Igual usar tokens mejor que cookies para la sesion. Sino, al menos no usar MemoryStore para almacenar la sesión (seguramente usar mongodb)
 
 ** UI
 - Notificar al usuario si ha habido un error en una operación con la base de datos (HTTP status code >= 400), mostrando la página correspondiente y pudiendo volver atrás

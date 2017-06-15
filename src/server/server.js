@@ -12,6 +12,7 @@ const app = new Express();
 const server = new Server(app);
 const PORT = process.env.PORT || 3000;
 let session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 /* Static files */
 app.use(Express.static(path.join(__dirname, '../static')));
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 /* Session */
 app.use(session({
   secret: 'hEe7PvZQNkvL7mzp',
+  store: new MongoStore({ url: Mongo.MONGO_URI }),
   resave: false,
   saveUninitialized: false,
   cookie: {secure: false}
