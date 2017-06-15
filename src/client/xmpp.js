@@ -1,4 +1,4 @@
-import { Strophe, $iq, $msg } from 'strophe.js';
+import { Strophe, $iq, $msg, $pres } from 'strophe.js';
 
 const XMPP = {
 
@@ -25,27 +25,36 @@ const XMPP = {
     XMPP.conn = new Strophe.Connection(XMPP.URL_BOSH);
   },
 
-  connect: function(jid, pass, onConnected, onDisconnected, onConnecting) {
+  connect: function(jid, pass, presence, onConnected, onDisconnected, onConnecting) {
 
     XMPP.conn.connect(jid, pass, function (status) {
+
       if (status === Strophe.Status.CONNECTED) {
         XMPP.jid = jid;
         XMPP.server = jid.substr(jid.indexOf("@") + 1);
         onConnected();
+        if (presence) XMPP.conn.send($pres());
+
       } else if (status === Strophe.Status.DISCONNECTED) {
         alert('Desconectado');
         onDisconnected();
+
       } else if (status === Strophe.Status.CONNECTING) {
         onConnecting();
+
       } else if (status === Strophe.Status.DISCONNECTING) {
+
       } else if (status === Strophe.Status.AUTHENTICATING) {
+
       } else if (status === Strophe.Status.CONNFAIL) {
         alert('Error de conexión');
         onDisconnected();
+
       } else if (status === Strophe.Status.AUTHFAIL) {
         alert('Error de autenticación');
         onDisconnected();
       }
+
     });
 
   },
@@ -59,13 +68,16 @@ const XMPP = {
     XMPP.conn.sendIQ(iq, callback);
   },
 
+  /*
   getMUCSupport: function(callback) {
     let iq = $iq({'type':'get', 'to':XMPP.jid, 'id':'rooms1'}).c('query', {'xmlns':Strophe.NS.DISCO_INFO});
     XMPP.conn.sendIQ(iq, callback);
   },
+  */
 
   getMUCs: function(callback) {
-    let iq = $iq({'type':'get', 'to':XMPP.jid, 'id':'rooms2'}).c('query', {'xmlns':Strophe.NS.DISCO_ITEMS, 'node':XMPP.NS.MUC_ROOMS});
+    let iq = $iq({'type':'get', 'to':'conference.' + XMPP.server, 'id':'rooms2'})
+      .c('query', {'xmlns':Strophe.NS.DISCO_ITEMS});
     XMPP.conn.sendIQ(iq, callback);
   },
 
@@ -99,6 +111,7 @@ const XMPP = {
 
   getMUCsIfSupported: function(callback) {
 
+    /*
     let onFeatures = function(iq) {
       //alert(new XMLSerializer().serializeToString(iq));
       let mucSupport = false;
@@ -115,9 +128,11 @@ const XMPP = {
       if (mucSupport) {
         XMPP.getMUCs(onMUCs);
       } else {
+        //XMPP.getMUCs(onMUCs);
         callback();
       }
     }
+    */
 
     let onMUCs = function(iq) {
       //alert(new XMLSerializer().serializeToString(iq));
@@ -131,7 +146,7 @@ const XMPP = {
       callback();
     }
 
-    XMPP.getMUCSupport(onFeatures);
+    XMPP.getMUCs(onMUCs);
   },
 
   sendMessage: function(dests, type, text) {

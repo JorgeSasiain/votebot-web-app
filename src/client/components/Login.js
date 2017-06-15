@@ -8,9 +8,16 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {jidValue: '', passValue: '', show: false, submitVisible: true};
+    this.state = {
+      jidValue: '',
+      passValue: '',
+      showHidePass: false,
+      sendPresence: false,
+      submitVisible: true
+    };
     this.handleJidChange = this.handleJidChange.bind(this);
     this.handlePassChange = this.handlePassChange.bind(this);
+    this.handleSendPresenceChange = this.handleSendPresenceChange.bind(this);
     this.showHide = this.showHide.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onConnecting = this.onConnecting.bind(this);
@@ -26,8 +33,12 @@ class Login extends Component {
     this.setState({passValue: event.target.value});
   }
 
+  handleSendPresenceChange(event) {
+    this.setState({sendPresence: event.target.checked});
+  }
+
   showHide(event) {
-    this.setState({show: !this.state.show});
+    this.setState({showHidePass: !this.state.showHidePass});
   }
 
   onConnected() {
@@ -76,6 +87,7 @@ class Login extends Component {
     XMPP.connect(
       this.state.jidValue,
       this.state.passValue,
+      this.state.sendPresence,
       this.onConnected,
       this.onDisconnected,
       this.onConnecting
@@ -99,13 +111,22 @@ class Login extends Component {
           <label>
             Contraseña:
             <input
-              type={this.state.show ? "text" : "password"}
+              type={this.state.showHidePass ? "text" : "password"}
               value={this.state.passValue}
               onChange={this.handlePassChange}
             />
             <button type="button" onClick={this.showHide}>
-              {this.state.show ? "Ocultar" : "Mostrar"}
+              {this.state.showHidePass ? "Ocultar" : "Mostrar"}
             </button>
+          </label>
+          <br />
+          <label>
+            Enviar presencia:
+            <input
+              type="checkbox"
+              checked={this.state.sendPresence}
+              onChange={this.handleSendPresenceChange}
+            />
           </label>
           <br />
           {
