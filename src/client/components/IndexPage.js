@@ -42,7 +42,7 @@ class IndexPage extends Component {
     return this.state.savedData;
   }
 
-  getExpirationDate(ttl) {
+  getExpirationTime(ttl) {
 
     let curDate = new Date()
     let curTime = 0, expTime = 0;
@@ -55,7 +55,7 @@ class IndexPage extends Component {
 
   onNewVote(voteInfo) {
 
-    let expireAt = this.getExpirationDate(voteInfo.duration * ONE_HOUR);
+    let expireAt = this.getExpirationTime(voteInfo.duration * ONE_HOUR);
 
     let poll = {
       creator: XMPP.jid,
@@ -78,8 +78,8 @@ class IndexPage extends Component {
 
   onNewPoll(pollInfo) {
 
-    let inactiveAt = this.getExpirationDate(pollInfo.duration * ONE_HOUR)
-    let expireAt = this.getExpirationDate((pollInfo.duration + 24) * ONE_HOUR);
+    let inactiveAt = this.getExpirationTime(pollInfo.duration * ONE_HOUR)
+    let expireAt = this.getExpirationTime((pollInfo.duration + 24) * ONE_HOUR);
 
     let poll = {
       _id: 0,
