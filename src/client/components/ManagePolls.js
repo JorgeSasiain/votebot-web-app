@@ -18,6 +18,7 @@ class PollItem extends Component {
     this.toDetails = this.toDetails.bind(this);
     this.terminate = this.terminate.bind(this);
     this.delete = this.delete.bind(this);
+    this.formatTime = this.formatTime.bind(this);
   }
 
   componentWillMount() {
@@ -98,6 +99,13 @@ class PollItem extends Component {
     this.props.c().delete(this.poll._id);
   }
 
+  formatTime(minutes) {
+    let days = (minutes / 1440) | 0
+    let hours = ((minutes / 60) | 0) % 24;
+    minutes %= 60;
+    return ('' + days + 'd ' + hours + 'h ' + minutes + 'm ');
+  }
+
   render() {
     return (
       <div>
@@ -109,8 +117,8 @@ class PollItem extends Component {
           <b>{this.poll.title}: </b>
           {
             this.state.minutesLeft > 0
-            ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos'
-            : 'Finalizada (se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos)'
+            ? 'Quedan ' + (this.formatTime(this.state.minutesLeft | 0))
+            : 'Finalizada (se borrará en ' + (this.formatTime(this.state.untilExpireMinutesLeft | 0)) + ')'
           }
           <button type="button" onClick={this.toDetails}>Ver detalles</button>
           {
@@ -125,7 +133,7 @@ class PollItem extends Component {
           <b><i>{this.poll.questions[0].question}: </i></b>
           {
             this.state.minutesLeft > 0
-            ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos'
+            ? 'Quedan ' + (this.formatTime(this.state.minutesLeft | 0))
             : 'Finalizada (a punto de ser borrada)'
           }
           <button type="button" onClick={this.toDetails}>Ver detalles</button>

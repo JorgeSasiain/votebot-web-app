@@ -39349,6 +39349,7 @@
 	    _this.toDetails = _this.toDetails.bind(_this);
 	    _this.terminate = _this.terminate.bind(_this);
 	    _this.delete = _this.delete.bind(_this);
+	    _this.formatTime = _this.formatTime.bind(_this);
 	    return _this;
 	  }
 	
@@ -39431,6 +39432,14 @@
 	      this.props.c().delete(this.poll._id);
 	    }
 	  }, {
+	    key: 'formatTime',
+	    value: function formatTime(minutes) {
+	      var days = minutes / 1440 | 0;
+	      var hours = (minutes / 60 | 0) % 24;
+	      minutes %= 60;
+	      return '' + days + 'd ' + hours + 'h ' + minutes + 'm ';
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -39446,7 +39455,7 @@
 	            this.poll.title,
 	            ': '
 	          ),
-	          this.state.minutesLeft > 0 ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos' : 'Finalizada (se borrará en ' + (this.state.untilExpireMinutesLeft | 0) + ' minutos)',
+	          this.state.minutesLeft > 0 ? 'Quedan ' + this.formatTime(this.state.minutesLeft | 0) : 'Finalizada (se borrará en ' + this.formatTime(this.state.untilExpireMinutesLeft | 0) + ')',
 	          _react2.default.createElement(
 	            'button',
 	            { type: 'button', onClick: this.toDetails },
@@ -39475,7 +39484,7 @@
 	              ': '
 	            )
 	          ),
-	          this.state.minutesLeft > 0 ? 'Quedan ' + (this.state.minutesLeft | 0) + ' minutos' : 'Finalizada (a punto de ser borrada)',
+	          this.state.minutesLeft > 0 ? 'Quedan ' + this.formatTime(this.state.minutesLeft | 0) : 'Finalizada (a punto de ser borrada)',
 	          _react2.default.createElement(
 	            'button',
 	            { type: 'button', onClick: this.toDetails },

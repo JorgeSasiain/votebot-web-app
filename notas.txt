@@ -45,8 +45,8 @@ ESTRUCTURA
 
 XEPs
 
-- 0030 (Service Discovery) - Usado por 0045 para descubrimiento de MUCs
-- 0045 (MUCs) - Para obtener las MUCs a las que está conectado el usuario
+- 0030 (Service Discovery) - Usado por 0045 para descubrimiento de MUCs (disco#items)
+- 0045 (MUCs) - Para obtener las MUCs a las que está conectado el usuario (o la lista de MUCs del servicio de chat de su servidor)
 - 0124/0206 (BOSH) - Para permitir conexión XMPP en navegador (si se usa BOSH)
 
 
@@ -54,7 +54,7 @@ TODO
 
 ** XMPP
 - La conexión XMPP se pierde al cabo de unos minutos (pings sin respuesta) (a veces???)
-- Cerrar la conexión XMPP al salir de la aplicación
+- Cerrar la conexión XMPP y borrar la sesión al salir de la aplicación
 - (Usar WebSockets en vez de BOSH)
 
 ** DB
@@ -62,6 +62,11 @@ TODO
 
 ** UI
 - Notificar al usuario si ha habido un error en una operación con la base de datos (HTTP status code >= 400), mostrando la página correspondiente y pudiendo volver atrás
-- Poner el tiempo restante de una encuesta en horas + días + minutos
 - En selección de contactos y grupos, añadir opción (botón) de ocultar los contactos que ya estén clasificados en algún grupo
 - Presentación y CSS
+
+
+WIKI (por actualizar)
+
+- Toda la parte de obtener y mostrar las MUCs, como se termine haciendo
+- Información de sesiones se almacena en MongoDB
