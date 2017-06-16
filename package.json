@@ -23,6 +23,7 @@
     "express-session": "^1.15.3",
     "isomorphic-fetch": "^2.2.1",
     "mongodb": "^2.2.26",
+    "randomstring": "^1.1.5",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-router": "^2.6.1",

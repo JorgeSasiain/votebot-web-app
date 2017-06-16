@@ -28655,7 +28655,11 @@
 	    value: function onReadyToSendVote(mucs) {
 	      var _this2 = this;
 	
-	      var requestBody = JSON.stringify(this.state.poll);
+	      var requestBody = {};
+	      requestBody.poll = this.state.poll;
+	      requestBody.mucs = mucs;
+	
+	      requestBody = JSON.stringify(requestBody);
 	
 	      var postRequest = {
 	        method: 'POST',
@@ -28689,7 +28693,11 @@
 	    value: function onReadyToSendPoll(contacts) {
 	      var _this3 = this;
 	
-	      var requestBody = JSON.stringify(this.state.poll);
+	      var requestBody = {};
+	      requestBody.poll = this.state.poll;
+	      requestBody.users = contacts;
+	
+	      requestBody = JSON.stringify(requestBody);
 	
 	      var postRequest = {
 	        method: 'POST',

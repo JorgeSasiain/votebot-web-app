@@ -39,21 +39,85 @@ const Mongo = {
     }
   },
 
-  addPoll: function(doc, res) {
+  addPoll: function(pollData, userOrMucData, res) {
 
-    let _addPoll = function(doc) {
-      if (doc == null) {
+    let _addPoll = function(data) {
+      if (data == null) {
         res.sendStatus(500); /* Connection to DB failed */
         return;
       }
-      Mongo.db.collection('polls').insertOne(doc, function(err, result) {
+      Mongo.db.collection('polls').insertOne(data[0], function(err, result) {
+        if (err || !result) {
+          res.sendStatus(422); /* Insert into DB failed */
+          return
+        }
+        else Mongo.updateUsersOrMucsCollection(data[1], res); /* Success */
+      });
+    };
+
+    pollData.expireAt = new Date(pollData.expireAt);
+    let data = [pollData, userOrMucData];
+    Mongo.connect(_addPoll, data);
+
+  },
+
+  updateUsersOrMucsCollection: function(_data, res) {
+    if (_data.users) Mongo.updateUsersCollection (_data, res);
+    else if (_data.mucs) Mongo.updateMucsCollection (_data, res);
+  },
+
+  updateUsersCollection: function(_data, res) {
+
+    // TODO
+    // Once for each user, not just owner
+    // If document for that user already exists, don't create another
+    // Don't overwrite availablePolls, add another element to the array
+
+    let _updateUsersCollection = function(data) {
+      if (data == null) {
+        res.sendStatus(500); /* Connection to DB failed */
+        return;
+      }
+      Mongo.db.collection('users').insertOne(data, function(err, result) {
         if (err || !result) res.sendStatus(422); /* Insert into DB failed */
         else res.sendStatus(201); /* Success */
       });
     };
 
-    doc.expireAt = new Date(doc.expireAt);
-    Mongo.connect(_addPoll, doc);
+    let data = {};
+    data._id = _data._id;
+    data.user = _data.owner;
+    data.availablePolls = {};
+    data.availablePolls.poll_id = _data.poll_id;
+    data.availablePolls.id_select = _data.id_select;
+    data.availablePolls.owner = true;
+    Mongo.connect(_updateUsersCollection, data);
+
+  },
+
+  updateMucsCollection: function(_data, res) {
+
+    // TODO
+    // Once for each MUC, unless a document with that muc already exists
+    // Sharing a poll in this case should be prevented before
+
+    let _updateMucsCollection = function(data) {
+      if (data == null) {
+        res.sendStatus(500); /* Connection to DB failed */
+        return;
+      }
+      Mongo.db.collection('mucs').insertOne(data, function(err, result) {
+        if (err || !result) res.sendStatus(422); /* Insert into DB failed */
+        else res.sendStatus(201); /* Success */
+      });
+    };
+
+    let data = {};
+    data._id = _data._id;
+    data.muc = _data.mucs[0] ? _data.mucs[0] : "test_muc";
+    data.poll_id = _data.poll_id;
+    data.expireAt = new Date(_data.expireAt);
+    Mongo.connect(_updateMucsCollection, data);
 
   },
 

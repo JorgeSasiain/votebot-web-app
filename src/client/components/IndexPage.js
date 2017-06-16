@@ -102,7 +102,11 @@ class IndexPage extends Component {
 
   onReadyToSendVote(mucs) {
 
-    let requestBody = JSON.stringify(this.state.poll);
+    let requestBody = {};
+    requestBody.poll = this.state.poll;
+    requestBody.mucs = mucs;
+
+    requestBody = JSON.stringify(requestBody);
 
     let postRequest = {
       method: 'POST',
@@ -135,7 +139,11 @@ class IndexPage extends Component {
 
   onReadyToSendPoll(contacts) {
 
-    let requestBody = JSON.stringify(this.state.poll);
+    let requestBody = {};
+    requestBody.poll = this.state.poll;
+    requestBody.users = contacts;
+
+    requestBody = JSON.stringify(requestBody);
 
     let postRequest = {
       method: 'POST',

@@ -7,6 +7,7 @@ import { ObjectID } from 'mongodb';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from '../Routes';
+import randomstring from 'randomstring';
 
 const app = new Express();
 const server = new Server(app);
@@ -55,16 +56,37 @@ app.get('/polls', (req, res) => {
   Mongo.getPollsByCreator(session.jid, res);
 });
 
-/* Insert new poll */
+/* Insert new poll and update users or mucs collection */
 app.post('/polls', (req, res) => {
+
   session = req.session;
-  if (session.jid !== req.body.creator) {
+  if (session.jid !== req.body.poll.creator) {
     res.sendStatus(401);
     return;
   }
-  req.body._id = new ObjectID();
-  Mongo.addPoll(req.body, res);
-  /* Insert into collection users or mucs */
+
+  let pollData = req.body.poll;
+  pollData._id = new ObjectID();
+
+  let userOrMucData = {};
+  userOrMucData._id = new ObjectID();
+  userOrMucData.poll_id = pollData._id;
+
+  if (req.body.hasOwnProperty('users')) {
+
+    userOrMucData.users = req.body.users;
+    userOrMucData.owner = req.body.poll.creator;
+    userOrMucData.id_select = randomstring.generate(5);
+
+  } else if (req.body.hasOwnProperty('mucs')) {
+
+    userOrMucData.mucs = req.body.mucs;
+    userOrMucData.expireAt = req.body.poll.expireAt;
+
+  }
+
+  Mongo.addPoll(pollData, userOrMucData, res);
+
 });
 
 /* Delete poll */
