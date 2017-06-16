@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-let MONGO_URI = '';
+var MONGO_URI = '';
 try {
   MONGO_URI = require('./mongoUri').MONGO_URI;
 } catch (ex) {
@@ -46,7 +46,7 @@ const Mongo = {
         res.sendStatus(500); /* Connection to DB failed */
         return;
       }
-      Mongo.db.collection('polls').insert(doc, function(err, result) {
+      Mongo.db.collection('polls').insertOne(doc, function(err, result) {
         if (err || !result) res.sendStatus(422); /* Insert into DB failed */
         else res.sendStatus(201); /* Success */
       });
@@ -98,7 +98,7 @@ const Mongo = {
         res.sendStatus(500); /* Connection to DB failed */
         return;
       }
-      Mongo.db.collection('polls').update({_id: params._id}, {$set: {expireAt: params.date}},
+      Mongo.db.collection('polls').updateOne({_id: params._id}, {$set: {expireAt: params.date}},
       function(err, result) {
         if (err || !result) res.sendStatus(422); /* Delete from DB failed */
         else res.sendStatus(204); /* Success */

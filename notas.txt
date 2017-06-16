@@ -69,4 +69,5 @@ TODO
 WIKI (por actualizar)
 
 - Toda la parte de obtener y mostrar las MUCs, como se termine haciendo
-- Información de sesiones se almacena en MongoDB
+- Parece que al final se usará BOSH
+- Información de sesiones se almacena en MongoDB (se reusa conexión)

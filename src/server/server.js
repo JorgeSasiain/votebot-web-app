@@ -11,7 +11,7 @@ import routes from '../Routes';
 const app = new Express();
 const server = new Server(app);
 const PORT = process.env.PORT || 3000;
-let session = require('express-session');
+var session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 /* Static files */
@@ -64,6 +64,7 @@ app.post('/polls', (req, res) => {
   }
   req.body._id = new ObjectID();
   Mongo.addPoll(req.body, res);
+  /* Insert into collection users or mucs */
 });
 
 /* Delete poll */
