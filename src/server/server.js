@@ -69,7 +69,6 @@ app.post('/polls', (req, res) => {
   pollData._id = new ObjectID();
 
   let userOrMucData = {};
-  userOrMucData._id = new ObjectID();
   userOrMucData.poll_id = pollData._id;
 
   if (req.body.hasOwnProperty('users')) {
