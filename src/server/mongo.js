@@ -88,10 +88,10 @@ const Mongo = {
 
     let updateUsersLoop = function() {
       data.user = _data.owner;
-      data.availablePolls.owner = false;
+      data.availablePolls.owner = true;
       Mongo.connect(_updateUsersCollection, data);
 
-      data.availablePolls.owner = true;
+      data.availablePolls.owner = false;
       for (let user of _data.users) {
         data.user = user;
         Mongo.connect(_updateUsersCollection, data);
