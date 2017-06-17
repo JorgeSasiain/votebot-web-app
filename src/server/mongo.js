@@ -72,30 +72,42 @@ const Mongo = {
   /* Update available polls of users with new poll */
   updateUsersCollection: async function(_data, res) {
 
-    // TODO
-    // Once for each user, not just owner
-    // If document for that user already exists, don't create another
-    // Don't overwrite availablePolls, add another element to the array
-
     let _updateUsersCollection = function(data) {
       if (data == null) {
         res.sendStatus(500); /* Connection to DB failed */
         return;
       }
-      Mongo.db.collection('users').insertOne(data, function(err, result) {
-        if (err || !result) res.sendStatus(422); /* Insert into DB failed */
-        else res.sendStatus(201); /* Success */
+      Mongo.db.collection('users').updateMany(
+        { user: data.user },
+        { $push: {availablePolls: data.availablePolls} },
+        { upsert: true },
+        function(err, result) {
+          if (err || !result) error = true;
       });
     };
 
+    let updateUsersLoop = function() {
+      data.user = _data.owner;
+      data.availablePolls.owner = false;
+      Mongo.connect(_updateUsersCollection, data);
+
+      data.availablePolls.owner = true;
+      for (let user of _data.users) {
+        data.user = user;
+        Mongo.connect(_updateUsersCollection, data);
+      }
+    }
+
+    let error = false;
     let data = {};
-    data.user = _data.owner;
     data.availablePolls = {};
     data.availablePolls.poll_id = _data.poll_id;
     data.availablePolls.id_select = _data.id_select;
-    data.availablePolls.owner = true;
 
-    Mongo.connect(_updateUsersCollection, data);
+    await updateUsersLoop();
+
+    if (error) res.sendStatus(422); /* Insert into DB failed */
+    else res.sendStatus(201); /* Success */
 
   },
 
