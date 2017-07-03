@@ -30458,7 +30458,7 @@
 	  contacts: [], /* user's contacts in roster */
 	  groups: [], /* groups among user's contacts */
 	  groupUsers: {}, /* user's ontacts arranged by group */
-	  mucs: [], /* MUCs user belongs to */
+	  mucs: [], /* MUCs in user's server */
 	
 	  NS: {
 	    MUC_ROOMS: "http://jabber.org/protocol/muc#rooms",
@@ -30480,6 +30480,10 @@
 	      if (status === _strophe.Strophe.Status.CONNECTED) {
 	        XMPP.jid = jid;
 	        XMPP.server = jid.substr(jid.indexOf("@") + 1);
+	        XMPP.contacts = [];
+	        XMPP.groups = [];
+	        XMPP.groupUsers = {};
+	        XMPP.mucs = [];
 	        onConnected();
 	        if (presence) XMPP.conn.send((0, _strophe.$pres)());
 	      } else if (status === _strophe.Strophe.Status.DISCONNECTED) {
