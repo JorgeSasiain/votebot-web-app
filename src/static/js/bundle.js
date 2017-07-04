@@ -28615,7 +28615,6 @@
 	        creator: _xmpp2.default.jid,
 	        private: false,
 	        expireAt: expireAt,
-	        hidden: false,
 	        questions: [{
 	          question: voteInfo.question,
 	          multiple: voteInfo.multiple,
@@ -28639,7 +28638,6 @@
 	        title: pollInfo.title,
 	        private: true,
 	        expireAt: expireAt,
-	        hidden: pollInfo.hidden,
 	        questions: pollInfo.questions
 	      };
 	
@@ -38934,7 +38932,6 @@
 	    _this3.state = {
 	      title: '',
 	      duration: _constants.DRTN.P_DEF,
-	      hidden: false,
 	      questions: [{
 	        question: '',
 	        multiple: false,
@@ -38946,7 +38943,6 @@
 	    _this3.addQuestion = _this3.addQuestion.bind(_this3);
 	    _this3.handleTitleChange = _this3.handleTitleChange.bind(_this3);
 	    _this3.handleDurationChange = _this3.handleDurationChange.bind(_this3);
-	    _this3.handleHiddenChange = _this3.handleHiddenChange.bind(_this3);
 	    _this3.callbacks = _this3.callbacks.bind(_this3);
 	    _this3.onGotRoster = _this3.onGotRoster.bind(_this3);
 	    _this3.handleSubmit = _this3.handleSubmit.bind(_this3);
@@ -38984,11 +38980,6 @@
 	    key: 'handleDurationChange',
 	    value: function handleDurationChange(event) {
 	      this.setState({ duration: parseInt(event.target.value) });
-	    }
-	  }, {
-	    key: 'handleHiddenChange',
-	    value: function handleHiddenChange(event) {
-	      this.setState({ hidden: event.target.checked });
 	    }
 	  }, {
 	    key: 'callbacks',
@@ -39099,24 +39090,13 @@
 	          _react2.default.createElement(
 	            'label',
 	            null,
-	            'Vigencia:',
+	            'Vigencia (horas):',
 	            _react2.default.createElement('input', {
 	              type: 'number',
 	              min: _constants.DRTN.P_MIN, max: _constants.DRTN.P_MAX, step: _constants.DRTN.P_STEP,
 	              value: this.state.duration,
 	              required: true,
 	              onChange: this.handleDurationChange
-	            })
-	          ),
-	          _react2.default.createElement('br', null),
-	          _react2.default.createElement(
-	            'label',
-	            null,
-	            'Resultados ocultos:',
-	            _react2.default.createElement('input', {
-	              type: 'checkbox',
-	              checked: this.state.hidden,
-	              onChange: this.handleHiddenChange
 	            })
 	          ),
 	          _react2.default.createElement('br', null),

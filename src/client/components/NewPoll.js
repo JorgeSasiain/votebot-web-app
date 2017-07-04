@@ -154,7 +154,6 @@ class NewPoll extends Component {
     this.state = {
       title: '',
       duration: DRTN.P_DEF,
-      hidden: false,
       questions: [
         {
           question: '',
@@ -168,7 +167,6 @@ class NewPoll extends Component {
     this.addQuestion = this.addQuestion.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDurationChange = this.handleDurationChange.bind(this);
-    this.handleHiddenChange = this.handleHiddenChange.bind(this);
     this.callbacks = this.callbacks.bind(this);
     this.onGotRoster = this.onGotRoster.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -201,10 +199,6 @@ class NewPoll extends Component {
 
   handleDurationChange(event) {
     this.setState({duration: parseInt(event.target.value)});
-  }
-
-  handleHiddenChange(event) {
-    this.setState({hidden: event.target.checked});
   }
 
   callbacks() {
@@ -305,15 +299,6 @@ class NewPoll extends Component {
               value={this.state.duration}
               required
               onChange={this.handleDurationChange}
-            />
-          </label>
-          <br />
-          <label>
-            Resultados ocultos:
-            <input
-              type="checkbox"
-              checked={this.state.hidden}
-              onChange={this.handleHiddenChange}
             />
           </label>
           <br />

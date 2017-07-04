@@ -61,7 +61,6 @@ class IndexPage extends Component {
       creator: XMPP.jid,
       private: false,
       expireAt: expireAt,
-      hidden: false,
       questions: [
         {
           question: voteInfo.question,
@@ -87,7 +86,6 @@ class IndexPage extends Component {
       title: pollInfo.title,
       private: true,
       expireAt: expireAt,
-      hidden: pollInfo.hidden,
       questions: pollInfo.questions
     };
 
