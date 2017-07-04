@@ -14,3 +14,15 @@ export const CHOICE_MAX_LEN = 50;
 export const ONE_HOUR = 3600000;
 export const ONE_MINUTE = 60000;
 //export const MAX_POLLS_PER_USER = 5;
+export const DRTN = {
+  /* minutes */
+  V_DEF :   60,
+  V_MIN :   20,
+  V_STEP:   20,
+  V_MAX : 1440,
+  /* hours */
+  P_DEF :   24,
+  P_MIN :    1,
+  P_STEP:    1,
+  P_MAX :  168
+};

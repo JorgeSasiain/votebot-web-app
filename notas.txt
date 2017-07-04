@@ -64,7 +64,6 @@ TODO
 - Límite de encuestas creadas por usuario al mismo tiempo (ej. max 5)
 
 ** UI
-- Menor rango de vigencia para votaciones públicas (ej. 20 min - 1 día)
 - Obligar a que al menos se seleccione un contacto o muc para enviar una encuesta
 - Notificar al usuario si ha habido un error en una operación con la base de datos (HTTP status code >= 400), mostrando la página correspondiente y pudiendo volver atrás
 - En selección de contactos y grupos, añadir opción (botón) de ocultar los contactos que ya estén clasificados en algún grupo

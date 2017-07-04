@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VIEWS, TITLE_MAX_LEN, QUESTION_MAX_LEN, CHOICE_MAX_LEN } from '../constants';
+import { VIEWS, TITLE_MAX_LEN, QUESTION_MAX_LEN, CHOICE_MAX_LEN, DRTN } from '../constants';
 import XMPP from '../xmpp';
 
 class TextField extends Component {
@@ -153,7 +153,7 @@ class NewPoll extends Component {
 
     this.state = {
       title: '',
-      duration: 24,
+      duration: DRTN.P_DEF,
       hidden: false,
       questions: [
         {
@@ -298,10 +298,10 @@ class NewPoll extends Component {
           />
           <br />
           <label>
-            Vigencia:
+            Vigencia (horas):
             <input
               type="number"
-              min={1} max={168} step={1}
+              min={DRTN.P_MIN} max={DRTN.P_MAX} step={DRTN.P_STEP}
               value={this.state.duration}
               required
               onChange={this.handleDurationChange}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VIEWS, QUESTION_MAX_LEN, CHOICE_MAX_LEN } from '../constants';
+import { VIEWS, QUESTION_MAX_LEN, CHOICE_MAX_LEN, DRTN } from '../constants';
 import XMPP from '../xmpp';
 
 class TextField extends Component {
@@ -31,7 +31,7 @@ class NewVote extends Component {
     super(props);
 
     this.state = {
-      duration: 24,
+      duration: DRTN.V_DEF,
       question: '',
       multiple: false,
       choices: ['', ''],
@@ -137,10 +137,10 @@ class NewVote extends Component {
         <br />
         <form onSubmit={this.handleSubmit}>
           <label>
-            Vigencia:
+            Vigencia (minutos):
             <input
               type="number"
-              min={1} max={168} step={1}
+              min={DRTN.V_MIN} max={DRTN.V_MAX} step={DRTN.V_STEP}
               value={this.state.duration}
               required
               onChange={this.handleDurationChange}

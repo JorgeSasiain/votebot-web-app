@@ -28609,7 +28609,7 @@
 	    key: 'onNewVote',
 	    value: function onNewVote(voteInfo) {
 	
-	      var expireAt = this.getExpirationTime(voteInfo.duration * _constants.ONE_HOUR);
+	      var expireAt = this.getExpirationTime(voteInfo.duration * _constants.ONE_MINUTE);
 	
 	      var poll = {
 	        creator: _xmpp2.default.jid,
@@ -30436,6 +30436,18 @@
 	var ONE_HOUR = exports.ONE_HOUR = 3600000;
 	var ONE_MINUTE = exports.ONE_MINUTE = 60000;
 	//export const MAX_POLLS_PER_USER = 5;
+	var DRTN = exports.DRTN = {
+	  /* minutes */
+	  V_DEF: 60,
+	  V_MIN: 20,
+	  V_STEP: 20,
+	  V_MAX: 1440,
+	  /* hours */
+	  P_DEF: 24,
+	  P_MIN: 1,
+	  P_STEP: 1,
+	  P_MAX: 168
+	};
 
 /***/ }),
 /* 256 */
@@ -37086,7 +37098,7 @@
 	    var _this2 = _possibleConstructorReturn(this, (NewVote.__proto__ || Object.getPrototypeOf(NewVote)).call(this, props));
 	
 	    _this2.state = {
-	      duration: 24,
+	      duration: _constants.DRTN.V_DEF,
 	      question: '',
 	      multiple: false,
 	      choices: ['', ''],
@@ -37213,10 +37225,10 @@
 	          _react2.default.createElement(
 	            'label',
 	            null,
-	            'Vigencia:',
+	            'Vigencia (minutos):',
 	            _react2.default.createElement('input', {
 	              type: 'number',
-	              min: 1, max: 168, step: 1,
+	              min: _constants.DRTN.V_MIN, max: _constants.DRTN.V_MAX, step: _constants.DRTN.V_STEP,
 	              value: this.state.duration,
 	              required: true,
 	              onChange: this.handleDurationChange
@@ -38921,7 +38933,7 @@
 	
 	    _this3.state = {
 	      title: '',
-	      duration: 24,
+	      duration: _constants.DRTN.P_DEF,
 	      hidden: false,
 	      questions: [{
 	        question: '',
@@ -39090,7 +39102,7 @@
 	            'Vigencia:',
 	            _react2.default.createElement('input', {
 	              type: 'number',
-	              min: 1, max: 168, step: 1,
+	              min: _constants.DRTN.P_MIN, max: _constants.DRTN.P_MAX, step: _constants.DRTN.P_STEP,
 	              value: this.state.duration,
 	              required: true,
 	              onChange: this.handleDurationChange
