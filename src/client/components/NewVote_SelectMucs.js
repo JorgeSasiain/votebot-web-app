@@ -53,7 +53,10 @@ class NewVote_SelectMucs extends Component {
   render() {
     return (
       <div className="New-vote-mucs">
-        Seleccione en que chats grupales compartir la votación:
+        Seleccione en que chats grupales compartir la votación.
+        <br />
+        Cualquier chat grupal seleccionado que ya tenga una votación activa será ignorado.
+        No se soporta la compartición de encuestas en chats protegidos por contraseña.
         <br />
         <Select
           name="mucs-select"

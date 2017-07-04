@@ -37385,7 +37385,9 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'New-vote-mucs' },
-	        'Seleccione en que chats grupales compartir la votaci\xF3n:',
+	        'Seleccione en que chats grupales compartir la votaci\xF3n.',
+	        _react2.default.createElement('br', null),
+	        'Cualquier chat grupal seleccionado que ya tenga una votaci\xF3n activa ser\xE1 ignorado. No se soporta la compartici\xF3n de encuestas en chats protegidos por contrase\xF1a.',
 	        _react2.default.createElement('br', null),
 	        _react2.default.createElement(_reactSelect2.default, {
 	          name: 'mucs-select',
@@ -39259,7 +39261,9 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'New-poll-contacts' },
-	        'Seleccione con quien compartir la votaci\xF3n:',
+	        'Seleccione los contactos individuales y/o grupos de contactos con quien compartir la votaci\xF3n.',
+	        _react2.default.createElement('br', null),
+	        'Si un contacto es seleccionado varias veces a trav\xE9s de uno o mas grupos de contactos, la encuesta solo se compartir\xE1 una vez con dicho contacto.',
 	        _react2.default.createElement('br', null),
 	        _react2.default.createElement(_reactSelect2.default, {
 	          name: 'groups-select',

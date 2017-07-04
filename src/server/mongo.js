@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+import { ObjectID } from 'mongodb';
 
 var MONGO_URI = '';
 try {
@@ -70,80 +71,62 @@ const Mongo = {
   },
 
   /* Update available polls of users with new poll */
-  updateUsersCollection: async function(_data, res) {
+  updateUsersCollection: function(_data, res) {
 
     let _updateUsersCollection = function(data) {
-      if (data == null) {
-        res.sendStatus(500); /* Connection to DB failed */
-        return;
-      }
-      Mongo.db.collection('users').updateMany(
+      Mongo.db.collection('users').updateOne(
         { user: data.user },
         { $push: {availablePolls: data.availablePolls} },
         { upsert: true },
-        function(err, result) {
-          if (err || !result) error = true;
-      });
+      );
     };
 
     let updateUsersLoop = function() {
       data.user = _data.owner;
       data.availablePolls.owner = true;
-      Mongo.connect(_updateUsersCollection, data);
+      _updateUsersCollection(data);
 
       data.availablePolls.owner = false;
       for (let user of _data.users) {
         data.user = user;
-        Mongo.connect(_updateUsersCollection, data);
+        _updateUsersCollection(data);
       }
     }
 
-    let error = false;
     let data = {};
     data.availablePolls = {};
     data.availablePolls.poll_id = _data.poll_id;
     data.availablePolls.id_select = _data.id_select;
+    updateUsersLoop();
 
-    await updateUsersLoop();
-
-    if (error) res.sendStatus(422); /* Insert into DB failed */
-    else res.sendStatus(201); /* Success */
+    res.sendStatus(201);
 
   },
 
   /* Add new poll (vote) to MUC */
-  updateMucsCollection: async function(_data, res) {
+  updateMucsCollection: function(_data, res) {
 
-    let _updateMucsCollection = function(data) {
-      if (data == null) {
-        res.sendStatus(500); /* Connection to DB failed */
-        return;
-      }
-      Mongo.db.collection('mucs').findOneAndReplace(
-        { muc: data.muc },
-        data,
-        { upsert: true },
-        function(err, result) {
-          if (err || !result) error = true;
+    let _updateMucsCollection = function(data, muc) {
+      Mongo.db.collection('mucs').count({muc: muc}, function(err, count) {
+        if (err || count != 0) return; /* Don't insert if a vote is active in this MUC */
+        data.muc = muc;
+        data._id = new ObjectID();
+        Mongo.db.collection('mucs').insertOne(data);
       });
     };
 
     let updateMucsLoop = function() {
       for (let muc of _data.mucs) {
-        data.muc = muc;
-        Mongo.connect(_updateMucsCollection, data);
+        _updateMucsCollection(data, muc);
       }
     };
 
-    let error = false;
     let data = {};
     data.poll_id = _data.poll_id;
     data.expireAt = new Date(_data.expireAt);
+    updateMucsLoop();
 
-    await updateMucsLoop();
-
-    if (error) res.sendStatus(422); /* Insert into DB failed */
-    else res.sendStatus(201); /* Success */
+    res.sendStatus(201);
 
   },
 
