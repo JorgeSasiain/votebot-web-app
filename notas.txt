@@ -58,8 +58,6 @@ TODO
 
 ** DB
 - Validar la entrada de datos a la BD, ya sea al introducir la información o la proipa BD
-- Cuando un usuario caduca una encuesta en la página de gestión, eliminar las entradas correspondientes de la colección 'users'
-- Cuando un usuario elimina una votación en la página de gestión, eliminar también el documento de 'mucs' de las mucs en que se compartió esa encuesta (id_votación === _id)
 - Límite de encuestas creadas por usuario al mismo tiempo (ej. max 5)
 
 ** UI

@@ -152,21 +152,37 @@ const Mongo = {
   deletePollByID: function(_id, res) {
 
     let _deletePollByID = function(_id) {
+
       if (_id == null) {
         res.sendStatus(500); /* Connection to DB failed */
         return;
       }
+
       Mongo.db.collection('polls').deleteOne({_id: _id}, function(err, result) {
+
         if (err || !result) res.sendStatus(422); /* Delete from DB failed */
-        else res.sendStatus(204); /* Success */
+
+        /* Also delete matching subdocuments in 'polls' or 'mucs' collection */
+        else {
+          res.sendStatus(204); /* Success */
+          Mongo.db.collection('users').updateMany(
+            { },
+            { $pull: { availablePolls: { poll_id: _id } } }
+          );
+          Mongo.db.collection('mucs').deleteMany(
+            { poll_id: _id }
+          );
+        }
+
       });
+
     }
 
     Mongo.connect(_deletePollByID, _id);
 
   },
 
-  /* Update expireAt field of poll with matching _id field */
+  /* Update expireAt field of poll with matching _id field. Always called to terminate a poll */
   updatePollTTLByID: function(_id, date, res) {
 
     let _updatePollTTLByID = function(params) {
@@ -174,11 +190,23 @@ const Mongo = {
         res.sendStatus(500); /* Connection to DB failed */
         return;
       }
+
       Mongo.db.collection('polls').updateOne({_id: params._id}, {$set: {expireAt: params.date}},
       function(err, result) {
+
         if (err || !result) res.sendStatus(422); /* Delete from DB failed */
-        else res.sendStatus(204); /* Success */
+
+        /* Also delete matching subdocuments in 'polls' collection */
+        else {
+          res.sendStatus(204); /* Success */
+          Mongo.db.collection('users').updateMany(
+            { },
+            { $pull: { availablePolls: { poll_id: _id } } }
+          );
+        }
+
       });
+
     }
 
     date = new Date(date);
