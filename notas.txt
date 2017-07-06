@@ -55,7 +55,6 @@ TODO
 ** XMPP
 - La conexión XMPP se pierde al cabo de unos minutos (pings sin respuesta) (a veces???)
 - Cerrar la conexión XMPP y borrar la sesión al salir de la aplicación (que se haga post a /logout)
-- (Usar WebSockets en vez de BOSH)
 
 ** DB
 - Validar la entrada de datos a la BD, ya sea al introducir la información o la proipa BD

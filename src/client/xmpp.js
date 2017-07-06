@@ -72,13 +72,6 @@ const XMPP = {
     XMPP.conn.sendIQ(iq, callback);
   },
 
-  /*
-  getMUCSupport: function(callback) {
-    let iq = $iq({'type':'get', 'to':XMPP.jid, 'id':'rooms1'}).c('query', {'xmlns':Strophe.NS.DISCO_INFO});
-    XMPP.conn.sendIQ(iq, callback);
-  },
-  */
-
   getMUCs: function(callback) {
     let iq = $iq({'type':'get', 'to':'conference.' + XMPP.server, 'id':'rooms2'})
       .c('query', {'xmlns':Strophe.NS.DISCO_ITEMS});
@@ -114,29 +107,6 @@ const XMPP = {
   },
 
   getMUCsIfSupported: function(callback) {
-
-    /*
-    let onFeatures = function(iq) {
-      //alert(new XMLSerializer().serializeToString(iq));
-      let mucSupport = false;
-      let features = iq.getElementsByTagName("feature");
-      if (features.length > 0) {
-        for (let feature of features) {
-          let curFeature = feature.getAttribute("var");
-          if (curFeature === XMPP.NS.MUC_SUPPORT) {
-            mucSupport = true;
-            break;
-          }
-        }
-      }
-      if (mucSupport) {
-        XMPP.getMUCs(onMUCs);
-      } else {
-        //XMPP.getMUCs(onMUCs);
-        callback();
-      }
-    }
-    */
 
     let onMUCs = function(iq) {
       //alert(new XMLSerializer().serializeToString(iq));

@@ -119,6 +119,8 @@ class IndexPage extends Component {
       type: 'newVote',
       pollTitle: this.state.poll.questions[0].question,
       creator: this.state.poll.creator,
+      multiple: this.state.poll.questions[0].multiple,
+      choices: this.state.poll.questions[0].choices,
       mucs: mucs
     };
 

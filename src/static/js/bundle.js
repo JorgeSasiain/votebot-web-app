@@ -28672,6 +28672,8 @@
 	        type: 'newVote',
 	        pollTitle: this.state.poll.questions[0].question,
 	        creator: this.state.poll.creator,
+	        multiple: this.state.poll.questions[0].multiple,
+	        choices: this.state.poll.questions[0].choices,
 	        mucs: mucs
 	      };
 	
@@ -30520,13 +30522,6 @@
 	    XMPP.conn.sendIQ(iq, callback);
 	  },
 	
-	  /*
-	  getMUCSupport: function(callback) {
-	    let iq = $iq({'type':'get', 'to':XMPP.jid, 'id':'rooms1'}).c('query', {'xmlns':Strophe.NS.DISCO_INFO});
-	    XMPP.conn.sendIQ(iq, callback);
-	  },
-	  */
-	
 	  getMUCs: function getMUCs(callback) {
 	    var iq = (0, _strophe.$iq)({ 'type': 'get', 'to': 'conference.' + XMPP.server, 'id': 'rooms2' }).c('query', { 'xmlns': _strophe.Strophe.NS.DISCO_ITEMS });
 	    XMPP.conn.sendIQ(iq, callback);
@@ -30600,29 +30595,6 @@
 	  },
 	
 	  getMUCsIfSupported: function getMUCsIfSupported(callback) {
-	
-	    /*
-	    let onFeatures = function(iq) {
-	      //alert(new XMLSerializer().serializeToString(iq));
-	      let mucSupport = false;
-	      let features = iq.getElementsByTagName("feature");
-	      if (features.length > 0) {
-	        for (let feature of features) {
-	          let curFeature = feature.getAttribute("var");
-	          if (curFeature === XMPP.NS.MUC_SUPPORT) {
-	            mucSupport = true;
-	            break;
-	          }
-	        }
-	      }
-	      if (mucSupport) {
-	        XMPP.getMUCs(onMUCs);
-	      } else {
-	        //XMPP.getMUCs(onMUCs);
-	        callback();
-	      }
-	    }
-	    */
 	
 	    var onMUCs = function onMUCs(iq) {
 	      //alert(new XMLSerializer().serializeToString(iq));
