@@ -30435,7 +30435,6 @@
 	var CHOICE_MAX_LEN = exports.CHOICE_MAX_LEN = 50;
 	var ONE_HOUR = exports.ONE_HOUR = 3600000;
 	var ONE_MINUTE = exports.ONE_MINUTE = 60000;
-	//export const MAX_POLLS_PER_USER = 5;
 	var DRTN = exports.DRTN = {
 	  /* minutes */
 	  V_DEF: 60,
@@ -37345,6 +37344,11 @@
 	    key: 'handleSubmit',
 	    value: function handleSubmit(event) {
 	      event.preventDefault();
+	      if (!this.state.mucs) {
+	        alert("Selecciona al menos un chat grupal.");
+	        return;
+	      }
+	
 	      this.setState({ submitVisible: false });
 	
 	      var mucs = [];
@@ -39189,6 +39193,11 @@
 	    value: function handleSubmit(event) {
 	
 	      event.preventDefault();
+	
+	      if (!this.state.contacts && !this.state.groups) {
+	        alert("Selecciona al menos un contacto o grupo.");
+	        return;
+	      }
 	
 	      this.setState({ submitVisible: false });
 	

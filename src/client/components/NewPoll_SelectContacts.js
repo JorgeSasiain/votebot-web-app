@@ -44,6 +44,11 @@ class NewPoll_SelectContacts extends Component {
 
     event.preventDefault();
 
+    if (!this.state.contacts && !this.state.groups) {
+      alert("Selecciona al menos un contacto o grupo.");
+      return;
+    }
+
     this.setState({ submitVisible: false });
 
     let contacts = [];

@@ -61,9 +61,16 @@ TODO
 - Límite de encuestas creadas por usuario al mismo tiempo (ej. max 5)
 
 ** UI
-- Obligar a que al menos se seleccione un contacto o muc para enviar una encuesta
 - Notificar al usuario si ha habido un error en una operación con la base de datos (HTTP status code >= 400), mostrando la página correspondiente y pudiendo volver atrás
 - En selección de contactos y grupos, añadir opción (botón) de ocultar los contactos que ya estén clasificados en algún grupo
 - Presentación y CSS
 
-* En principio notificaciones cuando un usuario expira o elimina una encuesta o votación manualmente no se va a hacer
+
+EXTENSIONES
+
+- En principio notificaciones cuando un usuario expira o elimina una encuesta o votación manualmente no se va a hacer
+- Estaría bien que los resultados de votaciones se actualizaran a tiempo real en la página de gestion de encuestas
+- Despliegue de la aplicación web y servicio BOSH/WS 24/7
+- WebSockets en vez de BOSH
+- App web para móvil
+

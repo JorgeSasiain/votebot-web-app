@@ -35,6 +35,11 @@ class NewVote_SelectMucs extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    if (!this.state.mucs) {
+      alert("Selecciona al menos un chat grupal.");
+      return;
+    }
+
     this.setState({ submitVisible: false });
 
     let mucs = [];

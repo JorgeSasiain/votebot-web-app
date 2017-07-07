@@ -13,7 +13,6 @@ export const QUESTION_MAX_LEN = 100;
 export const CHOICE_MAX_LEN = 50;
 export const ONE_HOUR = 3600000;
 export const ONE_MINUTE = 60000;
-//export const MAX_POLLS_PER_USER = 5;
 export const DRTN = {
   /* minutes */
   V_DEF :   60,
