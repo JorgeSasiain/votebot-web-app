@@ -61,7 +61,9 @@ class NewVote_SelectMucs extends Component {
         Seleccione en que chats grupales compartir la votación.
         <br />
         Cualquier chat grupal seleccionado que ya tenga una votación activa será ignorado.
-        No se soporta la compartición de encuestas en chats protegidos por contraseña.
+        Para compartir una votación en una habitación protegida por contraseña, es necesario
+        enviar primero un mensaje de invitación (invite) a {XMPP.votebot} indicando la
+        contraseña.
         <br />
         <Select
           name="mucs-select"

@@ -2,7 +2,7 @@ import { Strophe, $iq, $msg, $pres } from 'strophe.js';
 
 const XMPP = {
 
-  votebot: 'votebot@xmpp.jp',  /* bot JID */
+  votebot: 'votebot@jabjab.de',  /* bot JID */
 
   conn: {},       /* connection object */
   jid: "",        /* user's JID */
