@@ -12,11 +12,6 @@ const XMPP = {
   groupUsers: {}, /* user's ontacts arranged by group */
   mucs: [],       /* MUCs in user's server */
 
-  NS: {
-    MUC_ROOMS: "http://jabber.org/protocol/muc#rooms",
-    MUC_SUPPORT: "http://jabber.org/protocol/muc"
-  },
-
   URL_BOSH: "https://votebot-web-app-bosh.herokuapp.com/http-bind/",
   URL_WSS: "wss://votebot-web-app-bosh.herokuapp.com/http-bind/",
 
@@ -72,8 +67,14 @@ const XMPP = {
     XMPP.conn.sendIQ(iq, callback);
   },
 
-  getMUCs: function(callback) {
-    let iq = $iq({'type':'get', 'to':'conference.' + XMPP.server, 'id':'rooms2'})
+  getMUCs: function(mucservice, callback) {
+    let iq = $iq({'type':'get', 'to': mucservice, 'id':'rooms2'})
+      .c('query', {'xmlns':Strophe.NS.DISCO_ITEMS});
+    XMPP.conn.sendIQ(iq, callback);
+  },
+
+  getMUCService: function(callback) {
+    let iq = $iq({'type':'get', 'to':XMPP.server, 'id':'rooms1'})
       .c('query', {'xmlns':Strophe.NS.DISCO_ITEMS});
     XMPP.conn.sendIQ(iq, callback);
   },
@@ -108,6 +109,29 @@ const XMPP = {
 
   getMUCsIfSupported: function(callback) {
 
+    let isMUC = function(jid) {
+      if (jid.startsWith('conference.')) return true;
+      if (jid.startsWith('conferences.')) return true;
+      if (jid.startsWith('conf.')) return true;
+      if (jid.startsWith('rooms.')) return true;
+      if (jid.startsWith('muc.')) return true;
+      if (jid.startsWith('chat.')) return true;
+      if (jid.startsWith('salas.')) return true;
+      return false;
+    }
+
+    let onMUCService = function(iq) {
+      let items = iq.getElementsByTagName("item");
+      if (items.length > 0) {
+        for (let item of items) {
+          if (isMUC(item.getAttribute("jid"))) {
+            XMPP.getMUCs(item.getAttribute("jid"), onMUCs);
+            break;
+          }
+        }
+      }
+    }
+
     let onMUCs = function(iq) {
       //alert(new XMLSerializer().serializeToString(iq));
       let items = iq.getElementsByTagName("item");
@@ -120,7 +144,7 @@ const XMPP = {
       callback();
     }
 
-    XMPP.getMUCs(onMUCs);
+    XMPP.getMUCService(onMUCService);
   },
 
   sendMessage: function(dests, type, text) {
