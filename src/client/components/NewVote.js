@@ -133,7 +133,7 @@ class NewVote extends Component {
   render() {
     return (
       <div className="New-vote">
-        Introduzca la información de la votación:
+        Introduzca la información de la encuesta:
         <br />
         <form onSubmit={this.handleSubmit}>
           <label>
