@@ -53,7 +53,7 @@ class MainMenu extends Component {
     return (
       <div className="Main-menu">
         <SubmitButton
-          value="Crear nueva votación de grupo"
+          value="Crear nueva encuesta pública"
           onSubmit={this.toNewVote}
         />
         <SubmitButton

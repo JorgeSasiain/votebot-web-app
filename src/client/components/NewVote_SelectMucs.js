@@ -58,10 +58,10 @@ class NewVote_SelectMucs extends Component {
   render() {
     return (
       <div className="New-vote-mucs">
-        Seleccione en que chats grupales compartir la votación.
+        Seleccione en que chats grupales compartir la encuesta.
         <br />
-        Cualquier chat grupal seleccionado que ya tenga una votación activa será ignorado.
-        Para compartir una votación en una habitación protegida por contraseña, es necesario
+        Cualquier chat grupal seleccionado que ya tenga una encuesta activa será ignorado.
+        Para compartir una encuesta en una habitación protegida por contraseña, es necesario
         enviar primero un mensaje de invitación (invite) a {XMPP.votebot} indicando la
         contraseña.
         <br />
