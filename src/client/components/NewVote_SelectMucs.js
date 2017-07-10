@@ -80,7 +80,7 @@ class NewVote_SelectMucs extends Component {
         </form>
         <br />
         <button type="button" onClick={this.redoVote}>
-          Rehacer votación
+          Rehacer encuesta
         </button>
         <button type="button" onClick={this.toMainMenu}>
           Volver al menú principal

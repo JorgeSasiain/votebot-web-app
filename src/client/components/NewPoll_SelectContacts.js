@@ -83,7 +83,7 @@ class NewPoll_SelectContacts extends Component {
     return (
       <div className="New-poll-contacts">
         Seleccione los contactos individuales y/o grupos de contactos con quien compartir
-        la votación.
+        la encuesta.
         <br />
         Si un contacto es seleccionado varias veces a través de uno o mas grupos de contactos,
         la encuesta solo se compartirá una vez con dicho contacto.
